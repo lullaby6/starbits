@@ -68,10 +68,22 @@ const game = new CanvasEngine.Game({
             passive: false
         });
 
+        this.setupJoystick()
+
+        window.addEventListener("resize", event => {
+            this.setupJoystick()
+        });
+    },
+    setupJoystick() {
+        const windowWidth = window.innerWidth
+        const joystickSize = windowWidth / 10
+
+        if (this.data.manager) this.data.manager.destroy()
+
         this.data.manager = nipplejs.create({
             zone: $id('joystick'),
             mode: 'static', // 'semi' - 'dynamic'
-            size: 150, // default 100
+            size: joystickSize, // default 100
             position: {
                 left: '10%',
                 bottom: '10%'
@@ -96,7 +108,7 @@ const game = new CanvasEngine.Game({
                 if (entity.onJoystickEnd) entity.onJoystickEnd()
             })
         });
-    }
+    },
 })
 
 game.start();
