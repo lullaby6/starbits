@@ -121,14 +121,6 @@ const game = new CanvasEngine.Game({
             }
         });
 
-        window.addEventListener("wheel", event => {
-            if (event.ctrlKey) {
-                event.preventDefault();
-            }
-        }, {
-            passive: false
-        });
-
         if (CanvasEngine.Utils.isMobile()) {
             this._createJoysticks()
 
@@ -138,6 +130,28 @@ const game = new CanvasEngine.Game({
                 }
             });
         }
+
+        window.addEventListener("wheel", event => {
+            if (event.ctrlKey) {
+                event.preventDefault();
+            }
+        }, {
+            passive: false
+        });
+
+        window.addEventListener('contextmenu', event => {
+            event.preventDefault()
+        });
+
+        window.addEventListener('keydown', event => {
+            if (
+                event.key === 'F12' ||
+                (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'i') ||
+                (event.ctrlKey && event.key.toLowerCase() === 'u')
+            ) {
+                event.preventDefault()
+            }
+        })
     },
 
     _createJoysticks() {
