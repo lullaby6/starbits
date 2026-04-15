@@ -81,8 +81,6 @@ const game = new CanvasEngine.Game({
         }
     },
     setupJoystick() {
-        console.log('create');
-
         const windowWidth = window.innerWidth
         const joystickSize = windowWidth / 10
 
