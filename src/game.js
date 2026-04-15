@@ -81,6 +81,8 @@ const game = new CanvasEngine.Game({
         }
     },
     setupJoystick() {
+        console.log('create');
+
         const windowWidth = window.innerWidth
         const joystickSize = windowWidth / 10
 
@@ -105,16 +107,18 @@ const game = new CanvasEngine.Game({
         this.data.manager = nipplejs.create({
             zone: $id('joystick'),
             mode: 'static', // 'static' - 'semi' - 'dynamic'
+            multitouch: true,
+            maxNumberOfJoysticks: 1,
             size: joystickSize, // default 100
             position: {
                 left: '50%',
                 bottom: '50%'
             },
+            restOpacity: 0.25, // default 0.5
             // color: {
             //     front: 'rgba(255, 255, 255, 255)',
             //     back: 'rgba(255, 255, 255, 255)',
             // }
-            restOpacity: 0.25, // default 0.5
         });
 
         this.data.manager.on('move', (event) => {
@@ -129,7 +133,14 @@ const game = new CanvasEngine.Game({
             this._activeScene.entities.forEach(entity => {
                 if (entity.onJoystickEnd) entity.onJoystickEnd()
             })
+
+            this.setupJoystick()
         });
+    },
+    onTouchstart() {
+        if (this.data.manager && this.data.manager.all.length > 1) {
+            this.setupJoystick()
+        }
     },
 })
 
