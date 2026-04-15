@@ -45,17 +45,17 @@ const player = {
         this.shot();
     },
 
-    onTouchstart({ worldX, worldY }) {
-        if (!CanvasEngine.Utils.isMobile()) return;
-        this.rotateAt(worldX, worldY);
-        this.shot();
-    },
+    // onTouchstart({ worldX, worldY }) {
+    //     if (!CanvasEngine.Utils.isMobile()) return;
+    //     this.rotateAt(worldX, worldY);
+    //     this.shot();
+    // },
 
-    onTouchhold({ worldX, worldY }) {
-        if (!CanvasEngine.Utils.isMobile()) return;
-        this.rotateAt(worldX, worldY);
-        this.shot();
-    },
+    // onTouchhold({ worldX, worldY }) {
+    //     if (!CanvasEngine.Utils.isMobile()) return;
+    //     this.rotateAt(worldX, worldY);
+    //     this.shot();
+    // },
 
     shot() {
         if (this.data.shotTimer > 0) return;
@@ -106,7 +106,7 @@ const player = {
         }
     },
 
-    onJoystickMove(event) {
+    onLeftJoystickMove(event) {
         const vx = event.data.vector.x;
         const vy = event.data.vector.y;
         const len = Math.sqrt(vx * vx + vy * vy);
@@ -116,8 +116,13 @@ const player = {
         // this.rotation = -event.data.angle.radian;
     },
 
-    onJoystickEnd() {
+    onLeftJoystickEnd() {
         this.data.joystickDir = null;
+    },
+
+    onRightJoystickMove(event) {
+        this.shot();
+        this.rotation = -event.data.angle.radian;
     },
 }
 

@@ -6,6 +6,9 @@ import { $id, $idEvent } from "./utils/utils.js";
 const $canvasContainer = $id('canvas-container');
 const $pauseMenu = $id('menu_pause');
 
+const windowWidth = window.innerWidth
+const joystickSize = windowWidth / 10
+
 const game = new CanvasEngine.Game({
     canvas: 'canvas',
     backgroundColor: config.colors.background,
@@ -28,6 +31,33 @@ const game = new CanvasEngine.Game({
     scenes: [
         mainScene
     ],
+
+    data: {
+        joysticks: {
+            Left: {
+                zone: $id('joystick-left'),
+                mode: 'static', // 'static' - 'semi' - 'dynamic'
+                multitouch: true,
+                maxNumberOfJoysticks: 1,
+                size: joystickSize, // default 100
+                position: {
+                    left: '50%',
+                    bottom: '50%'
+                },
+            },
+            Right: {
+                zone: $id('joystick-right'),
+                mode: 'static', // 'static' - 'semi' - 'dynamic'
+                multitouch: true,
+                maxNumberOfJoysticks: 1,
+                size: joystickSize, // default 100
+                position: {
+                    left: '50%',
+                    bottom: '50%'
+                },
+            }
+        }
+    },
 
     onKeydown({ key }) {
         if (key === 'p' || key === 'Escape') game.togglePause();
@@ -73,72 +103,60 @@ const game = new CanvasEngine.Game({
         });
 
         if (CanvasEngine.Utils.isMobile()) {
-            this.setupJoystick()
+            this._createJoysticks()
 
             window.addEventListener("resize", event => {
-                this.setupJoystick()
+                this._createJoysticks()
             });
         }
     },
-    setupJoystick() {
-        const windowWidth = window.innerWidth
-        const joystickSize = windowWidth / 10
 
-        if (this.data.manager) {
-            try {
-                this.data.manager.all.forEach(joystick => {
-                    joystick.destroy()
+    _createJoysticks() {
+        this.data._joysticks = {}
+
+        Object.entries(this.data.joysticks).forEach(([name, config]) => {
+            this.data._joysticks[name] = nipplejs.create(config);
+
+            this.data._joysticks[name].on('move', event => {
+                if (this._activeScene[`on${name}JoystickMove`]) this._activeScene[`on${name}JoystickMove`](event)
+
+                this._activeScene.entities.forEach(entity => {
+                    if (entity[`on${name}JoystickMove`]) entity[`on${name}JoystickMove`](event)
                 })
-            } catch (error) {
-                console.log(error);
-            }
+            });
 
-            try {
-                if (this.data.manager) {
-                    this.data.manager.destroy()
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        }
+            this.data._joysticks[name].on('end', () => {
+                this._activeScene.entities.forEach(entity => {
+                    if (entity[`on${name}JoystickEnd`]) entity[`on${name}JoystickEnd`]()
+                })
 
-        this.data.manager = nipplejs.create({
-            zone: $id('joystick'),
-            mode: 'static', // 'static' - 'semi' - 'dynamic'
-            multitouch: true,
-            maxNumberOfJoysticks: 1,
-            size: joystickSize, // default 100
-            position: {
-                left: '50%',
-                bottom: '50%'
-            },
-            // restOpacity: 0.25, // default 0.5
-            // color: {
-            //     front: 'rgba(255, 255, 255, 255)',
-            //     back: 'rgba(255, 255, 255, 255)',
-            // }
-        });
-
-        this.data.manager.on('move', (event) => {
-            if (this._activeScene.onJoystickMove) this._activeScene.onJoystickMove(event)
-
-            this._activeScene.entities.forEach(entity => {
-                if (entity.onJoystickMove) entity.onJoystickMove(event)
-            })
-        });
-
-        this.data.manager.on('end', () => {
-            this._activeScene.entities.forEach(entity => {
-                if (entity.onJoystickEnd) entity.onJoystickEnd()
-            })
-
-            this.setupJoystick()
-        });
+                // this._createJoysticks()
+            });
+        })
     },
-    onTouchstart() {
-        if (this.data.manager && this.data.manager.all.length > 1) {
-            this.setupJoystick()
+
+    _destroyJoysticks() {
+        if (Object.keys(this.data._joysticks) > 0) {
+            Object.values(this.data._joysticks).forEach(joystick => {
+                try {
+                    joystick.all.forEach(joystick => {
+                        joystick.destroy()
+                    })
+                } catch (error) {
+                    console.log(error);
+                }
+
+                try {
+                    joystick.destroy()
+                } catch (error) {
+                    console.log(error);
+                }
+            })
         }
+    },
+
+    onTouchstart() {
+        this._createJoysticks()
     },
 })
 
