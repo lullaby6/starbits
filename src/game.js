@@ -85,8 +85,8 @@ const game = new CanvasEngine.Game({
             mode: 'static', // 'semi' - 'dynamic'
             size: joystickSize, // default 100
             position: {
-                left: '10%',
-                bottom: '10%'
+                left: '50%',
+                bottom: '50%'
             },
             // color: {
             //     front: 'rgba(255, 255, 255, 255)',
