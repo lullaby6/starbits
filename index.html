@@ -3,12 +3,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="icon" type="image/x-icon" href="assets/images/icon.ico">
     <title>Starbits</title>
 
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="./assets/js/tailwind/tailwind-3.4.17"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'h-sm': { 'raw': '(min-height: 400px)' },
+                        'h-md': { 'raw': '(min-height: 600px)' },
+                        'h-lg': { 'raw': '(min-height: 800px)' },
+                        'h-xl': { 'raw': '(min-height: 1000px)' },
+                    }
+                }
+            }
+        }
+    </script>
 
     <script src="./assets/js/nipplejs/nipplejs-1.0.1.umd.js"></script>
 
@@ -30,37 +44,39 @@
             font-family: wendy;
         }
     </style>
+
+    <style type="text/tailwindcss">
+        @layer components {
+            .flex-center {
+                @apply flex justify-center items-center;
+            }
+
+            .menu {
+                @apply text-3xl h-md:text-6xl absolute top-0 left-0 w-full h-full z-50 flex justify-center items-center;
+            }
+
+            .btn {
+                @apply border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer;
+            }
+        }
+    </style>
 </head>
 
 <body class="m-0 p-0 bg-black">
     <main id="game" class="relative w-screen h-screen">
         <div id="canvas-container" class="w-full h-full relative">
-            <div id="menu_start"
-                class="hidden text-6xl absolute top-0 left-0 w-full h-full z-100 flex justify-center items-center">
-                <button id="menu_start_start"
-                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Start</button>
-
-                <button id="menu_start_options"
-                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
-
-                <button id="menu_start_quit"
-                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
+            <div id="menu_start" class="hidden menu">
+                <button id="menu_start_start" class="btn">Start</button>
+                <button id="menu_start_options" class="btn">Options</button>
+                <button id="menu_start_quit" class="btn">Quit</button>
             </div>
 
-            <div id="menu_pause"
-                class="hidden text-6xl absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-100 flex justify-center items-center">
+            <div id="menu_pause" class="hidden menu bg-black bg-opacity-50">
                 <div class="flex flex-col gap-2">
-                    <button id="menu_pause_resume"
-                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Resume</button>
-
-                    <button id="menu_pause_restart"
-                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Restart</button>
-
-                    <button id="menu_pause_options"
-                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
-
-                    <button id="menu_pause_quit"
-                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
+                    <button id="menu_pause_resume" class="btn">Resume</button>
+                    <button id="menu_pause_restart" class="btn">Restart</button>
+                    <button id="menu_pause_options" class="btn">Options</button>
+                    <button id="menu_pause_quit" class="btn">Quit</button>
                 </div>
             </div>
 
@@ -69,8 +85,8 @@
 
             <div id="gui_game"
                 class="text-white absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center pointer-events-none">
-                <span id="gui_game_score" class="text-6xl">0</span>
-                <span class="text-4xl">BEST: <span id="gui_game_best">0</span></span>
+                <span id="gui_game_score" class="text-3xl h-md:text-6xl">0</span>
+                <span class="text-2xl h-md:text-4xl">BEST: <span id="gui_game_best">0</span></span>
             </div>
 
             <div id="joystick" class="fixed left-0 bottom-0 w-[200px] h-[200px] z-50"></div>
