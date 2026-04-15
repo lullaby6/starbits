@@ -84,11 +84,27 @@ const game = new CanvasEngine.Game({
         const windowWidth = window.innerWidth
         const joystickSize = windowWidth / 10
 
-        if (this.data.manager) this.data.manager.destroy()
+        if (this.data.manager) {
+            try {
+                this.data.manager.all.forEach(joystick => {
+                    joystick.destroy()
+                })
+            } catch (error) {
+                console.log(error);
+            }
+
+            try {
+                if (this.data.manager) {
+                    this.data.manager.destroy()
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
         this.data.manager = nipplejs.create({
             zone: $id('joystick'),
-            mode: 'static', // 'semi' - 'dynamic'
+            mode: 'dynamic', // 'static' - 'semi' - 'dynamic'
             size: joystickSize, // default 100
             position: {
                 left: '50%',
