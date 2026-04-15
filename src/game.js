@@ -61,6 +61,8 @@ const game = new CanvasEngine.Game({
         else if (key === 'r') game.resetScene();
         else if (key === 'f') {
             CanvasEngine.Utils.toggleFullscreen(this.container)
+            this._destroyJoysticks();
+            this._createJoysticks()
         }
     },
 
@@ -111,6 +113,9 @@ const game = new CanvasEngine.Game({
                 $span.textContent = 'OFF';
                 CanvasEngine.Utils.exitFullscreen();
             }
+
+            this._destroyJoysticks();
+            this._createJoysticks()
         });
 
         window.addEventListener("wheel", event => {
@@ -125,6 +130,7 @@ const game = new CanvasEngine.Game({
             this._createJoysticks()
 
             window.addEventListener("resize", event => {
+                this._destroyJoysticks();
                 this._createJoysticks()
             });
         }
