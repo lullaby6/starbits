@@ -44,10 +44,12 @@ export function spawnBullet(scene, x, y, angle, speed) {
 
         onPhysicsCollision(other) {
             if (other.hasTag('enemy')) {
+                this.scene.game.camera.shake(4, 0.15);
                 this.scene.addScore(other.data.score || 1);
                 if (other.die) other.die(); else other.destroy();
                 this.destroy();
             } else if (other.hasTag('enemyBullet')) {
+                this.scene.game.camera.shake(2, 0.1);
                 other.destroy();
                 this.destroy();
             }

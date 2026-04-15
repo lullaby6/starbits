@@ -168,8 +168,10 @@ export function createEnemy(enemy) {
         onPhysicsCollision(other) {
             if (this.data.spawnTimer > 0 || this.data.dying) return;
             if (other.name === 'player') {
+                this.scene.game.camera.shake(8, 0.3);
                 this.scene.gameOver();
             }
+
         },
     };
 }

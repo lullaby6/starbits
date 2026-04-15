@@ -54,6 +54,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed) {
             if (other.hasTag('enemy') || other.hasTag('enemyBullet')) return;
 
             if (other.name === 'player') {
+                this.scene.game.camera.shake(8, 0.3);
                 this.destroy();
                 this.scene.gameOver();
             }

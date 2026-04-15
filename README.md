@@ -7,7 +7,6 @@ A JavaScript Arcade Bullet Hell Game
 ## To Do
 
 - Player Particle Trail
-- Camera Shakes
 - Camera Blinks
 - Bosses
 - Sounds
