@@ -1,12 +1,19 @@
 import config from "../config/config.js";
 
-function randomPosition(player, game) {
+function getCenter(scene) {
+    const player = scene.findEntityByName('player');
+    if (player) return { x: player.centerX, y: player.centerY };
+    const cam = scene.game.camera;
+    return { x: cam.x, y: cam.y };
+}
+
+function randomPosition(center, game) {
     const angle = CanvasEngine.Random.float(0, Math.PI * 2);
     const minDist = game.width / 2 / game.camera.zoom + 20;
     const dist = CanvasEngine.Random.float(minDist, config.stars.maxDist);
     return {
-        x: player.centerX + Math.cos(angle) * dist,
-        y: player.centerY + Math.sin(angle) * dist,
+        x: center.x + Math.cos(angle) * dist,
+        y: center.y + Math.sin(angle) * dist,
     };
 }
 
@@ -28,16 +35,15 @@ function createStar() {
         },
 
         resetStar(initial) {
-            const player = this.scene.findEntityByName('player');
-            if (!player) return;
+            const center = getCenter(this.scene);
 
             if (initial) {
                 const angle = CanvasEngine.Random.float(0, Math.PI * 2);
                 const dist = CanvasEngine.Random.float(0, config.stars.maxDist);
-                this.x = player.centerX + Math.cos(angle) * dist;
-                this.y = player.centerY + Math.sin(angle) * dist;
+                this.x = center.x + Math.cos(angle) * dist;
+                this.y = center.y + Math.sin(angle) * dist;
             } else {
-                const pos = randomPosition(player, this.scene.game);
+                const pos = randomPosition(center, this.scene.game);
                 this.x = pos.x;
                 this.y = pos.y;
             }
@@ -66,9 +72,6 @@ function createStar() {
         },
 
         onUpdate(dt) {
-            const player = this.scene.findEntityByName('player');
-            if (!player) return;
-
             if (!this.data.initialized) {
                 this.data.initialized = true;
                 this.resetStar(true);
@@ -91,7 +94,8 @@ function createStar() {
                 }
             }
 
-            const dist = CanvasEngine.Utils.distance(this, player);
+            const center = getCenter(this.scene);
+            const dist = CanvasEngine.Utils.distance(this, center);
             if (dist > config.stars.maxDist) {
                 this.resetStar(false);
             }

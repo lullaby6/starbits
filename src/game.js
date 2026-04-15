@@ -1,5 +1,6 @@
 import config from "./config/config.js";
-import mainScene from "./scenes/main.js";
+import startScene from "./scenes/start.js";
+import gameScene from "./scenes/game.js";
 
 import { $id, $idEvent } from "./utils/utils.js";
 
@@ -26,7 +27,8 @@ const game = new CanvasEngine.Game({
     },
 
     scenes: [
-        mainScene
+        startScene,
+        gameScene,
     ],
 
     data: {
@@ -70,56 +72,17 @@ const game = new CanvasEngine.Game({
 
     onPause() {
         this.setCursorVisibility(true);
-        this.menu.pause.show()
+        this.menu.pause.show();
     },
     onResume() {
         this.setCursorVisibility(false);
-        this.menu.pause.hide()
+        this.menu.pause.hide();
+        this.menu.options.hide();
     },
 
     onCreate() {
-        $idEvent('menu_pause_resume', 'click', () => {
-            game.resume();
-        });
-
-        $idEvent('menu_pause_restart', 'click', () => {
-            game.resume();
-            game.resetScene();
-        });
-
-        $idEvent('menu_pause_quit', 'click', () => {
-            window.close();
-        });
-
-        $idEvent('gui_game_pause', 'click', () => {
-            game.pause();
-        });
-
-        $idEvent('menu_pause_options', 'click', () => {
-            this.menu.pause.hide();
-            this.menu.options.show();
-        });
-
-        $idEvent('menu_options_back', 'click', () => {
-            this.menu.pause.show();
-            this.menu.options.hide();
-        });
-
-        $idEvent('menu_options_fullscreen', 'click', () => {
-            const $span = $id('menu_options_fullscreen_value')
-
-            if ($span.textContent === 'OFF') {
-                $span.textContent = 'ON';
-                CanvasEngine.Utils.setFullscreen(this.container);
-            } else {
-                $span.textContent = 'OFF';
-                CanvasEngine.Utils.exitFullscreen();
-            }
-
-            if (CanvasEngine.Utils.isMobile()) {
-                this.resetJoysticks()
-            }
-        });
+        this.setupWindow();
+        this.setupDom();
 
         if (CanvasEngine.Utils.isMobile()) {
             this._createJoysticks()
@@ -139,28 +102,6 @@ const game = new CanvasEngine.Game({
             this.gui['joystick-left'].style.pointerEvents = 'none'
             this.gui['joystick-right'].style.pointerEvents = 'none'
         }
-
-        window.addEventListener("wheel", event => {
-            if (event.ctrlKey) {
-                event.preventDefault();
-            }
-        }, {
-            passive: false
-        });
-
-        window.addEventListener('contextmenu', event => {
-            event.preventDefault()
-        });
-
-        window.addEventListener('keydown', event => {
-            if (
-                event.key === 'F12' ||
-                (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'i') ||
-                (event.ctrlKey && event.key.toLowerCase() === 'u')
-            ) {
-                event.preventDefault()
-            }
-        })
     },
 
     _createJoysticks() {
@@ -217,6 +158,62 @@ const game = new CanvasEngine.Game({
 
         this._destroyJoysticks();
         this._createJoysticks()
+    },
+
+    setupWindow() {
+        window.addEventListener("wheel", event => {
+            if (event.ctrlKey) {
+                event.preventDefault();
+            }
+        }, {
+            passive: false
+        });
+
+        // window.addEventListener('contextmenu', event => {
+        //     event.preventDefault()
+        // });
+
+        // window.addEventListener('keydown', event => {
+        //     if (
+        //         event.key === 'F12' ||
+        //         (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'i') ||
+        //         (event.ctrlKey && event.key.toLowerCase() === 'u')
+        //     ) {
+        //         event.preventDefault()
+        //     }
+        // })
+    },
+
+    setupDom() {
+        $idEvent('menu_start_options', 'click', () => {
+            this.data._optionsFrom = 'start';
+            this.menu.start.hide();
+            this.menu.options.show();
+        });
+
+        $idEvent('menu_options_back', 'click', () => {
+            this.menu.options.hide();
+
+            if (this.data._optionsFrom && this.menu[this.data._optionsFrom]) {
+                this.menu[this.data._optionsFrom].show();
+            }
+        });
+
+        $idEvent('menu_options_fullscreen', 'click', () => {
+            const $span = $id('menu_options_fullscreen_value')
+
+            if ($span.textContent === 'OFF') {
+                $span.textContent = 'ON';
+                CanvasEngine.Utils.setFullscreen(this.container);
+            } else {
+                $span.textContent = 'OFF';
+                CanvasEngine.Utils.exitFullscreen();
+            }
+
+            if (CanvasEngine.Utils.isMobile()) {
+                this.resetJoysticks()
+            }
+        });
     },
 })
 

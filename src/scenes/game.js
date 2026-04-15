@@ -4,20 +4,24 @@ import crosshairEntity from "../entities/crosshair.js";
 import { enemies, createEnemy } from "../entities/enemies.js";
 import config from "../config/config.js";
 
-import { $id } from "../utils/utils.js";
+import { $id, $idEvent } from "../utils/utils.js";
 
 const enemiesData = Object.entries(enemies).map(([key, config]) => ({ name: key, ...config }));
 
 const $score = $id('gui_game_score');
 const $best = $id('gui_game_best');
 
-const mainScene = {
+export default {
     name: 'main',
 
     entities: [
         ...createStars(),
         playerEntity,
     ],
+
+    menu: {
+        start: false,
+    },
 
     gui: {
         game: true,
@@ -33,7 +37,6 @@ const mainScene = {
             Object.keys(enemies).map(name => [name, 0])
         ),
     },
-
 
     gameOver() {
         this.game.resetScene({
@@ -90,6 +93,8 @@ const mainScene = {
     },
 
     onCreate() {
+        this.setupDom();
+
         if (!CanvasEngine.Utils.isMobile()) {
             this.addEntity(crosshairEntity)
         }
@@ -136,6 +141,35 @@ const mainScene = {
             this.game.camera.zoom = CanvasEngine.Utils.lerp(this.game.camera.zoom, targetZoom, config.camera.zoomLerp);
         }
     },
-}
 
-export default mainScene;
+    setupDom() {
+        $idEvent('menu_pause_resume', 'click', () => {
+            this.game.resume();
+        });
+
+        $idEvent('menu_pause_restart', 'click', () => {
+            this.game.resume();
+            this.game.resetScene();
+        });
+
+        $idEvent('menu_pause_exit', 'click', () => {
+            this.game.changeScene('start')
+        });
+
+        $idEvent('gui_game_pause', 'click', () => {
+            this.game.pause();
+        });
+
+        $idEvent('menu_pause_options', 'click', () => {
+            this.game.data._optionsFrom = 'pause';
+            this.game.menu.pause.hide();
+            this.game.menu.options.show();
+        });
+    },
+    onPause() {
+        this.game.menu.pauseOverlay.show()
+    },
+    onResume() {
+        this.game.menu.pauseOverlay.hide()
+    },
+}
