@@ -104,7 +104,7 @@ const game = new CanvasEngine.Game({
 
         this.data.manager = nipplejs.create({
             zone: $id('joystick'),
-            mode: 'dynamic', // 'static' - 'semi' - 'dynamic'
+            mode: 'semi', // 'static' - 'semi' - 'dynamic'
             size: joystickSize, // default 100
             position: {
                 left: '50%',
