@@ -113,7 +113,7 @@ const player = {
         if (len === 0) return;
 
         this.data.joystickDir = { x: vx / len, y: -(vy / len) };
-        this.rotation = -event.data.angle.radian;
+        // this.rotation = -event.data.angle.radian;
     },
 
     onJoystickEnd() {
