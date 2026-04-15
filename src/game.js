@@ -126,9 +126,18 @@ const game = new CanvasEngine.Game({
 
             window.addEventListener("resize", event => {
                 if (CanvasEngine.Utils.isMobile()) {
+                    this.gui['joystick-left'].style.pointerEvents = 'auto'
+                    this.gui['joystick-right'].style.pointerEvents = 'auto'
+
                     this.resetJoysticks()
+                } else {
+                    this.gui['joystick-left'].style.pointerEvents = 'none'
+                    this.gui['joystick-right'].style.pointerEvents = 'none'
                 }
             });
+        } else {
+            this.gui['joystick-left'].style.pointerEvents = 'none'
+            this.gui['joystick-right'].style.pointerEvents = 'none'
         }
 
         window.addEventListener("wheel", event => {
