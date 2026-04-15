@@ -188,7 +188,8 @@ export const enemies = {
         physics: { density: 0.01, frictionAir: 0.03 },
         data: { speed: 0.01 },
         skills: ['follow'],
-        score: 3,
+        score: 5,
+        requireScore: 10,
         spawnInterval: 6,
     },
     shooter: {
@@ -197,6 +198,7 @@ export const enemies = {
         data: { speed: 0.0004, range: 300, shotCooldown: 1, bulletSpeed: 4 },
         skills: ['keepRange', 'shoot'],
         score: 2,
+        requireScore: 5,
         spawnInterval: 4,
     },
     smartShooter1: {
@@ -205,6 +207,7 @@ export const enemies = {
         data: { speed: 0.001, range: 500, fleeRange: 300, shotCooldown: 1, bulletSpeed: 4 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 2,
+        requireScore: 20,
         spawnInterval: 6,
     },
     smartShooter2: {
@@ -213,6 +216,7 @@ export const enemies = {
         data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.5, bulletSpeed: 5 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 4,
+        requireScore: 30,
         spawnInterval: 8,
     },
     smartShooter3: {
@@ -221,23 +225,8 @@ export const enemies = {
         data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.375, bulletSpeed: 6 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 6,
+        requireScore: 40,
         spawnInterval: 10,
-    },
-    dash: {
-        image: "dash",
-        physics: { density: 0.01, frictionAir: 0.05 },
-        data: { speed: 0.00075, dashSpeed: 15, dashTimer: 3, dashCooldown: 3 },
-        skills: ['follow', 'dash'],
-        score: 3,
-        spawnInterval: 5,
-    },
-    multiShooter2: {
-        image: "multi_shooter_2",
-        physics: { frictionAir: 0.08 },
-        data: { speed: 0.0004, range: 300, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0 },
-        skills: ['keepRange', 'burst'],
-        score: 3,
-        spawnInterval: 7,
     },
     closeShooter1: {
         image: "close_shooter_1",
@@ -245,6 +234,7 @@ export const enemies = {
         data: { speed: 0.005, range: 200, fleeRange: 100, shotCooldown: 1, bulletSpeed: 4 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 2,
+        requireScore: 10,
         spawnInterval: 4,
     },
     closeShooter2: {
@@ -253,7 +243,17 @@ export const enemies = {
         data: { speed: 0.0075, range: 300, fleeRange: 200, shotCooldown: 0.5, bulletSpeed: 5 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 4,
+        requireScore: 20,
         spawnInterval: 8,
+    },
+    multiShooter2: {
+        image: "multi_shooter_2",
+        physics: { frictionAir: 0.08 },
+        data: { speed: 0.0004, range: 300, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0 },
+        skills: ['keepRange', 'burst'],
+        score: 3,
+        requireScore: 20,
+        spawnInterval: 7,
     },
     multiShooter3: {
         image: "multi_shooter_3",
@@ -261,6 +261,7 @@ export const enemies = {
         data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 2, bulletSpeed: 5, burstCount: 3, burstDelay: 0.5, burstRemaining: 0, burstTimer: 0 },
         skills: ['keepRange', 'flee', 'burst'],
         score: 6,
+        requireScore: 30,
         spawnInterval: 10,
     },
     multiShooter4: {
@@ -269,7 +270,17 @@ export const enemies = {
         data: { speed: 0.01, range: 500, fleeRange: 400, shotCooldown: 1.5, bulletSpeed: 6, burstCount: 4, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0 },
         skills: ['keepRange', 'flee', 'burst'],
         score: 8,
+        requireScore: 40,
         spawnInterval: 15,
+    },
+    dash: {
+        image: "dash",
+        physics: { density: 0.01, frictionAir: 0.05 },
+        data: { speed: 0.00075, dashSpeed: 15, dashTimer: 3, dashCooldown: 3 },
+        skills: ['follow', 'dash'],
+        score: 3,
+        requireScore: 5,
+        spawnInterval: 5,
     },
     dashShooter1: {
         image: "dash_shooter_1",
@@ -277,6 +288,7 @@ export const enemies = {
         data: { speed: 0.00075, dashSpeed: 17.5, dashTimer: 3, dashCooldown: 3, range: 300, shotCooldown: 1, bulletSpeed: 4 },
         skills: ['follow', 'dash', 'shoot'],
         score: 5,
+        requireScore: 10,
         spawnInterval: 8,
     },
     dashShooter2: {
@@ -285,6 +297,7 @@ export const enemies = {
         data: { speed: 0.00075, dashSpeed: 20, dashTimer: 2, dashCooldown: 2, range: 400, shotCooldown: 0.75, bulletSpeed: 5 },
         skills: ['follow', 'dash', 'shoot'],
         score: 6,
+        requireScore: 20,
         spawnInterval: 10,
     },
 }

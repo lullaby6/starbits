@@ -103,6 +103,8 @@ const mainScene = {
         if (!player) return;
 
         enemiesData.forEach(enemy => {
+            if (enemy.requireScore && this.data.score < enemy.requireScore) return;
+
             this.data.timers[enemy.name] += dt;
 
             if (this.data.timers[enemy.name] >= (enemy.spawnInterval)) {
