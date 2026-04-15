@@ -60,6 +60,10 @@ const game = new CanvasEngine.Game({
             window.close();
         });
 
+        $idEvent('gui_game_pause', 'click', () => {
+            game.pause();
+        });
+
         window.addEventListener("wheel", event => {
             if (event.ctrlKey) {
                 event.preventDefault();
