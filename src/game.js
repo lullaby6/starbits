@@ -20,6 +20,11 @@ const game = new CanvasEngine.Game({
     pauseOnBlur: true,
     contextMenu: false,
 
+    camera: {
+        x: 0,
+        y: 0,
+    },
+
     scenes: [
         mainScene
     ],
@@ -62,8 +67,36 @@ const game = new CanvasEngine.Game({
         }, {
             passive: false
         });
+
+        this.data.manager = nipplejs.create({
+            zone: $game,
+            mode: 'static', // 'semi' - 'dynamic'
+            size: 150, // default 100
+            position: {
+                left: '10%',
+                bottom: '10%'
+            },
+            // color: {
+            //     front: 'rgba(255, 255, 255, 255)',
+            //     back: 'rgba(255, 255, 255, 255)',
+            // }
+            restOpacity: 0.5 // default 0.5
+        });
+
+        this.data.manager.on('move', (event) => {
+            if (this._activeScene.onJoystickMove) this._activeScene.onJoystickMove(event)
+
+            this._activeScene.entities.forEach(entity => {
+                if (entity.onJoystickMove) entity.onJoystickMove(event)
+            })
+        });
+
+        this.data.manager.on('end', () => {
+            this._activeScene.entities.forEach(entity => {
+                if (entity.onJoystickEnd) entity.onJoystickEnd()
+            })
+        });
     }
 })
-
 
 game.start();

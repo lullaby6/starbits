@@ -50,6 +50,14 @@ const player = {
             this.data.shotTimer -= dt;
         }
 
+        if (this.data.joystickDir) {
+            const dir = this.data.joystickDir;
+            this.applyForce({
+                x: dir.x * this.data.speed,
+                y: dir.y * this.data.speed,
+            });
+        }
+
         const w = config.world;
         const cx = CanvasEngine.Utils.clamp(this.centerX, w.minX, w.maxX);
         const cy = CanvasEngine.Utils.clamp(this.centerY, w.minY, w.maxY);
@@ -73,8 +81,25 @@ const player = {
         else if (key === keys.right) fx = this.data.speed;
 
         if (fx !== 0 || fy !== 0) {
-            this.applyForce({ x: fx, y: fy });
+            this.applyForce({
+                x: fx,
+                y: fy
+            });
         }
+    },
+
+    onJoystickMove(event) {
+        const vx = event.data.vector.x;
+        const vy = event.data.vector.y;
+        const len = Math.sqrt(vx * vx + vy * vy);
+        if (len === 0) return;
+
+        this.data.joystickDir = { x: vx / len, y: -(vy / len) };
+        this.rotation = -event.data.angle.radian;
+    },
+
+    onJoystickEnd() {
+        this.data.joystickDir = null;
     },
 }
 
