@@ -17,7 +17,6 @@ const mainScene = {
     entities: [
         ...createStars(),
         playerEntity,
-        crosshairEntity,
     ],
 
     gui: {
@@ -91,6 +90,10 @@ const mainScene = {
     },
 
     onCreate() {
+        if (!CanvasEngine.Utils.isMobile()) {
+            this.addEntity(crosshairEntity)
+        }
+
         $score.textContent = this.data.score;
 
         this.data.maxScore = parseInt(localStorage.getItem('starsbits_maxScore')) || 0;
