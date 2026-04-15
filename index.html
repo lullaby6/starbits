@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="overflow-hidden m-0 p-0">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/images/icon.ico">
+    <title>Starbits</title>
+
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="./assets/js/tailwind/tailwind-3.4.17"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/lullaby6/canvas-engine.js/src/libs/matter/matter.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/lullaby6/canvas-engine.js/src/canvas-engine.js"></script>
+
+    <script type="module" src="./src/game.js"></script>
+
+    <style>
+        @font-face {
+            font-family: wendy;
+            src: url("./assets/fonts/wendy.ttf") format("truetype");
+        }
+
+        * {
+            font-family: wendy;
+        }
+    </style>
+</head>
+
+<body class="overflow-hidden m-0 p-0 bg-black">
+    <main id="game" class="relative overflow-hidden w-screen h-screen">
+        <div id="menu_start"
+            class="hidden text-4xl absolute top-0 left-0 w-full h-full z-100 flex justify-center items-center">
+            <button id="menu_start_start"
+                class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Start</button>
+
+            <button id="menu_start_options"
+                class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
+
+            <button id="menu_start_quit"
+                class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
+        </div>
+
+        <div id="menu_pause"
+            class="hidden text-4xl absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-100 flex justify-center items-center">
+            <div class="flex flex-col gap-2">
+                <button id="menu_pause_resume"
+                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Resume</button>
+
+                <button id="menu_pause_restart"
+                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Restart</button>
+
+                <button id="menu_pause_options"
+                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
+
+                <button id="menu_pause_quit"
+                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
+            </div>
+        </div>
+
+        <div id="loading" class="absolute top-0 left-0 w-full h-full bg-black z-100 transition-opacity hidden"></div>
+
+        <div id="gui_game"
+            class="text-white absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center pointer-events-none">
+            <span id="gui_game_score" class="text-4xl">0</span>
+            <span class="text-2xl">BEST: <span id="gui_game_best">0</span></span>
+        </div>
+
+        <canvas id="canvas" class="w-full h-full block object-contain"></canvas>
+    </main>
+</body>
+
+</html>
