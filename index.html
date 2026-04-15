@@ -18,7 +18,17 @@
                         'h-md': { 'raw': '(min-height: 600px)' },
                         'h-lg': { 'raw': '(min-height: 800px)' },
                         'h-xl': { 'raw': '(min-height: 1000px)' },
-                    }
+                        'mobile-portrait': { 'raw': '(orientation: portrait) and (hover: none) and (pointer: coarse)' },
+                    },
+                    animation: {
+                        'rotate-device': 'rotate-device 1.5s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        'rotate-device': {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(90deg)' },
+                        },
+                    },
                 }
             }
         }
@@ -116,38 +126,14 @@
     </main>
 
     <div id="rotate-screen"
-        class="fixed inset-0 bg-black z-[9999] flex-center flex-col gap-4 text-white text-2xl hidden">
+        class="fixed inset-0 bg-black z-[9999] flex-center flex-col gap-4 text-white text-2xl hidden mobile-portrait:!flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
-                style="transform-origin:center;animation:rotate90 1.5s ease-in-out infinite alternate" />
+                class="origin-center animate-rotate-device" />
         </svg>
         <span>Rotate your device</span>
     </div>
-
-    <style>
-        @keyframes rotate90 {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(90deg);
-            }
-        }
-
-        @media (max-height: 500px) and (orientation: landscape) {
-            #rotate-screen {
-                display: none !important;
-            }
-        }
-
-        @media (orientation: portrait) and (hover: none) and (pointer: coarse) {
-            #rotate-screen {
-                display: flex !important;
-            }
-        }
-    </style>
 </body>
 
 </html>
