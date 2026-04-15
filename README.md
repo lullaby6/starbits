@@ -2,7 +2,7 @@
 
 A JavaScript Arcade Bullet Hell Game
 
-[Demo](lullaby6.github.io/starbits/)
+[Demo](https://lullaby6.github.io/starbits/)
 
 ## To Do
 
