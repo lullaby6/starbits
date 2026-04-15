@@ -112,7 +112,7 @@ const game = new CanvasEngine.Game({
                 left: '50%',
                 bottom: '50%'
             },
-            restOpacity: 0.25, // default 0.5
+            // restOpacity: 0.25, // default 0.5
             // color: {
             //     front: 'rgba(255, 255, 255, 255)',
             //     back: 'rgba(255, 255, 255, 255)',
