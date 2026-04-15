@@ -32,46 +32,52 @@
     </style>
 </head>
 
-<body class="overflow-hidden m-0 p-0 bg-black">
-    <main id="game" class="relative overflow-hidden w-screen h-screen">
-        <div id="menu_start"
-            class="hidden text-4xl absolute top-0 left-0 w-full h-full z-100 flex justify-center items-center">
-            <button id="menu_start_start"
-                class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Start</button>
+<body class="m-0 p-0 bg-black">
+    <main id="game" class="relative w-screen h-screen">
+        <div id="canvas-container" class="w-full h-full relative">
+            <div id="menu_start"
+                class="hidden text-4xl absolute top-0 left-0 w-full h-full z-100 flex justify-center items-center">
+                <button id="menu_start_start"
+                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Start</button>
 
-            <button id="menu_start_options"
-                class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
-
-            <button id="menu_start_quit"
-                class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
-        </div>
-
-        <div id="menu_pause"
-            class="hidden text-4xl absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-100 flex justify-center items-center">
-            <div class="flex flex-col gap-2">
-                <button id="menu_pause_resume"
-                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Resume</button>
-
-                <button id="menu_pause_restart"
-                    class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Restart</button>
-
-                <button id="menu_pause_options"
+                <button id="menu_start_options"
                     class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
 
-                <button id="menu_pause_quit"
+                <button id="menu_start_quit"
                     class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
             </div>
+
+            <div id="menu_pause"
+                class="hidden text-4xl absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-100 flex justify-center items-center">
+                <div class="flex flex-col gap-2">
+                    <button id="menu_pause_resume"
+                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Resume</button>
+
+                    <button id="menu_pause_restart"
+                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Restart</button>
+
+                    <button id="menu_pause_options"
+                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Options</button>
+
+                    <button id="menu_pause_quit"
+                        class='border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer'>Quit</button>
+                </div>
+            </div>
+
+            <div id="loading" class="absolute top-0 left-0 w-full h-full bg-black z-100 transition-opacity hidden">
+            </div>
+
+            <div id="gui_game"
+                class="text-white absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center pointer-events-none">
+                <span id="gui_game_score" class="text-4xl">0</span>
+                <span class="text-2xl">BEST: <span id="gui_game_best">0</span></span>
+            </div>
+
+            <div id="joystick" class="fixed left-[100px] bottom-[100px] w-[200px] h-[200px] z-50">
+            </div>
+
+            <canvas id="canvas" class="w-full h-full block object-contain"></canvas>
         </div>
-
-        <div id="loading" class="absolute top-0 left-0 w-full h-full bg-black z-100 transition-opacity hidden"></div>
-
-        <div id="gui_game"
-            class="text-white absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center pointer-events-none">
-            <span id="gui_game_score" class="text-4xl">0</span>
-            <span class="text-2xl">BEST: <span id="gui_game_best">0</span></span>
-        </div>
-
-        <canvas id="canvas" class="w-full h-full block object-contain"></canvas>
     </main>
 </body>
 

@@ -3,7 +3,7 @@ import mainScene from "./scenes/main.js";
 
 import { toggleFullscreen, $id, $idEvent } from "./utils/utils.js";
 
-const $game = $id('game');
+const $canvasContainer = $id('canvas-container');
 const $pauseMenu = $id('menu_pause');
 
 const game = new CanvasEngine.Game({
@@ -33,7 +33,7 @@ const game = new CanvasEngine.Game({
         if (key === 'p' || key === 'Escape') game.togglePause();
         else if (key === 'r') game.resetScene();
         else if (key === 'f') {
-            toggleFullscreen($game)
+            toggleFullscreen($canvasContainer)
         }
     },
 
@@ -69,7 +69,7 @@ const game = new CanvasEngine.Game({
         });
 
         this.data.manager = nipplejs.create({
-            zone: $game,
+            zone: $id('joystick'),
             mode: 'static', // 'semi' - 'dynamic'
             size: 150, // default 100
             position: {
@@ -80,7 +80,7 @@ const game = new CanvasEngine.Game({
             //     front: 'rgba(255, 255, 255, 255)',
             //     back: 'rgba(255, 255, 255, 255)',
             // }
-            restOpacity: 0.5 // default 0.5
+            restOpacity: 0.5, // default 0.5
         });
 
         this.data.manager.on('move', (event) => {
