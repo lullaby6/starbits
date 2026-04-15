@@ -82,6 +82,7 @@ export function createEnemy(enemy) {
     });
 
     const SPAWN_DURATION = config.enemies.spawnDuration;
+    const DEATH_DURATION = config.enemies.deathDuration;
 
     return {
         imageScale: 10,
@@ -110,13 +111,34 @@ export function createEnemy(enemy) {
             score: enemy.score || 1,
             shotTimer: 0,
             spawnTimer: SPAWN_DURATION,
+            dying: false,
+            deathTimer: 0,
             ...enemy.data,
         },
         onCreate() {
             if (enemy.onCreate) enemy.onCreate(this);
         },
 
+        die() {
+            if (this.data.dying) return;
+            this.data.dying = true;
+            this.data.deathTimer = DEATH_DURATION;
+            this.tint = null;
+            if (this._physicsBody) {
+                this.scene.game.physics.setVelocity(this._physicsBody, { x: 0, y: 0 });
+            }
+        },
+
         onUpdate(dt) {
+            if (this.data.dying) {
+                this.data.deathTimer -= dt;
+                this.alpha = Math.max(0, this.data.deathTimer / DEATH_DURATION);
+                if (this.data.deathTimer <= 0) {
+                    this.destroy();
+                }
+                return;
+            }
+
             const player = this.scene.findEntityByName('player');
             if (!player) return;
 
@@ -144,7 +166,7 @@ export function createEnemy(enemy) {
         },
 
         onPhysicsCollision(other) {
-            if (this.data.spawnTimer > 0) return;
+            if (this.data.spawnTimer > 0 || this.data.dying) return;
             if (other.name === 'player') {
                 this.scene.gameOver();
             }

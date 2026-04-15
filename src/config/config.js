@@ -41,6 +41,7 @@ export default {
     enemies: {
         tintMaxDist: 500,
         spawnDuration: 1,
+        deathDuration: 0.5,
     },
     bullets: {
         player: {

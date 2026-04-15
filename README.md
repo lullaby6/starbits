@@ -1,5 +1,18 @@
 # Starbits
 
-A JavaScript Arcace Bullet Hell Game
+A JavaScript Arcade Bullet Hell Game
 
 [Demo](lullaby6.github.io/starbits/)
+
+## To Do
+
+- Player Particle Trail
+- Camera Shakes
+- Camera Blinks
+- Bosses
+- Sounds
+- Music
+- Start Menu
+- Game Over Menu
+- Upgrades
+- Special Stars

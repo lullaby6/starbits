@@ -45,7 +45,7 @@ export function spawnBullet(scene, x, y, angle, speed) {
         onPhysicsCollision(other) {
             if (other.hasTag('enemy')) {
                 this.scene.addScore(other.data.score || 1);
-                other.destroy();
+                if (other.die) other.die(); else other.destroy();
                 this.destroy();
             } else if (other.hasTag('enemyBullet')) {
                 other.destroy();
