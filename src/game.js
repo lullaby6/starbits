@@ -114,7 +114,7 @@ const game = new CanvasEngine.Game({
             //     front: 'rgba(255, 255, 255, 255)',
             //     back: 'rgba(255, 255, 255, 255)',
             // }
-            restOpacity: 0.5, // default 0.5
+            restOpacity: 0.25, // default 0.5
         });
 
         this.data.manager.on('move', (event) => {
