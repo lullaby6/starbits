@@ -61,8 +61,7 @@ const game = new CanvasEngine.Game({
         else if (key === 'r') game.resetScene();
         else if (key === 'f') {
             CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
-            this._destroyJoysticks();
-            this._createJoysticks()
+            this.resetJoysticks()
         }
     },
 
@@ -114,8 +113,7 @@ const game = new CanvasEngine.Game({
                 CanvasEngine.Utils.exitFullscreen();
             }
 
-            this._destroyJoysticks();
-            this._createJoysticks()
+            this.resetJoysticks();
         });
 
         window.addEventListener("wheel", event => {
@@ -130,8 +128,7 @@ const game = new CanvasEngine.Game({
             this._createJoysticks()
 
             window.addEventListener("resize", event => {
-                this._destroyJoysticks();
-                this._createJoysticks()
+                this.resetJoysticks();
             });
         }
     },
@@ -162,7 +159,7 @@ const game = new CanvasEngine.Game({
     },
 
     _destroyJoysticks() {
-        if (Object.keys(this.data._joysticks).length > 0) {
+        if (this.data._joysticks && Object.keys(this.data._joysticks).length > 0) {
             Object.values(this.data._joysticks).forEach(joystick => {
                 try {
                     joystick.all.forEach(joystick => {
@@ -179,6 +176,17 @@ const game = new CanvasEngine.Game({
                 }
             })
         }
+    },
+
+    resetJoysticks() {
+        const windowWidth = window.innerWidth
+        const joystickSize = windowWidth / 10
+
+        this.data.joysticks.Left.size = joystickSize;
+        this.data.joysticks.Right.size = joystickSize;
+
+        this._destroyJoysticks();
+        this._createJoysticks()
     },
 })
 
