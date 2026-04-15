@@ -33,7 +33,7 @@ const game = new CanvasEngine.Game({
         if (key === 'p' || key === 'Escape') game.togglePause();
         else if (key === 'r') game.resetScene();
         else if (key === 'f') {
-            toggleFullscreen($canvasContainer)
+            CanvasEngine.Utils.toggleFullscreen($canvasContainer)
         }
     },
 
