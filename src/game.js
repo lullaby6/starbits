@@ -1,7 +1,7 @@
 import config from "./config/config.js";
 import mainScene from "./scenes/main.js";
 
-import { toggleFullscreen, $id, $idEvent } from "./utils/utils.js";
+import { $id, $idEvent } from "./utils/utils.js";
 
 const $canvasContainer = $id('canvas-container');
 const $pauseMenu = $id('menu_pause');
