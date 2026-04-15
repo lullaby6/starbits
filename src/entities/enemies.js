@@ -124,9 +124,7 @@ export function createEnemy(enemy) {
             this.data.dying = true;
             this.data.deathTimer = DEATH_DURATION;
             this.tint = null;
-            if (this._physicsBody) {
-                this.scene.game.physics.setVelocity(this._physicsBody, { x: 0, y: 0 });
-            }
+            this.removePhysics();
         },
 
         onUpdate(dt) {
