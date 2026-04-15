@@ -45,8 +45,15 @@ const player = {
         this.shot();
     },
 
-    onTouchstart() {
+    onTouchstart({ worldX, worldY }) {
         if (!CanvasEngine.Utils.isMobile()) return;
+        this.rotateAt(worldX, worldY);
+        this.shot();
+    },
+
+    onTouchhold({ worldX, worldY }) {
+        if (!CanvasEngine.Utils.isMobile()) return;
+        this.rotateAt(worldX, worldY);
         this.shot();
     },
 
