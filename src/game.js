@@ -61,7 +61,10 @@ const game = new CanvasEngine.Game({
         else if (key === 'r') game.resetScene();
         else if (key === 'f') {
             CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
-            this.resetJoysticks()
+
+            if (CanvasEngine.Utils.isMobile()) {
+                this.resetJoysticks()
+            }
         }
     },
 
@@ -113,7 +116,9 @@ const game = new CanvasEngine.Game({
                 CanvasEngine.Utils.exitFullscreen();
             }
 
-            this.resetJoysticks();
+            if (CanvasEngine.Utils.isMobile()) {
+                this.resetJoysticks()
+            }
         });
 
         window.addEventListener("wheel", event => {
@@ -128,7 +133,9 @@ const game = new CanvasEngine.Game({
             this._createJoysticks()
 
             window.addEventListener("resize", event => {
-                this.resetJoysticks();
+                if (CanvasEngine.Utils.isMobile()) {
+                    this.resetJoysticks()
+                }
             });
         }
     },
