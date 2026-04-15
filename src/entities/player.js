@@ -40,6 +40,16 @@ const player = {
     },
 
     onClick() {
+        if (CanvasEngine.Utils.isMobile()) return;
+        this.shot();
+    },
+
+    onTouchstart() {
+        if (!CanvasEngine.Utils.isMobile()) return;
+        this.shot();
+    },
+
+    shot() {
         if (this.data.shotTimer > 0) return;
         this.data.shotTimer = this.data.shotCooldown;
         spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed);

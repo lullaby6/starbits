@@ -68,11 +68,13 @@ const game = new CanvasEngine.Game({
             passive: false
         });
 
-        this.setupJoystick()
-
-        window.addEventListener("resize", event => {
+        if (CanvasEngine.Utils.isMobile()) {
             this.setupJoystick()
-        });
+
+            window.addEventListener("resize", event => {
+                this.setupJoystick()
+            });
+        }
     },
     setupJoystick() {
         const windowWidth = window.innerWidth
