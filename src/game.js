@@ -118,45 +118,44 @@ const game = new CanvasEngine.Game({
             this.data._joysticks[name] = nipplejs.create(config);
 
             this.data._joysticks[name].on('move', event => {
-                if (this._activeScene[`on${name}JoystickMove`]) this._activeScene[`on${name}JoystickMove`](event)
+                if (this._activeScene[`on${name}JoystickMove`]) this._activeScene[`on${name}JoystickMove`](event);
 
                 this._activeScene.entities.forEach(entity => {
-                    if (entity[`on${name}JoystickMove`]) entity[`on${name}JoystickMove`](event)
+                    if (entity[`on${name}JoystickMove`]) entity[`on${name}JoystickMove`](event);
                 })
             });
 
             this.data._joysticks[name].on('end', () => {
                 this._activeScene.entities.forEach(entity => {
-                    if (entity[`on${name}JoystickEnd`]) entity[`on${name}JoystickEnd`]()
+                    if (entity[`on${name}JoystickEnd`]) entity[`on${name}JoystickEnd`]();
                 })
 
-                // this._createJoysticks()
+                this._destroyJoysticks();
+                this._createJoysticks()
             });
         })
     },
 
     _destroyJoysticks() {
-        if (Object.keys(this.data._joysticks) > 0) {
+        if (Object.keys(this.data._joysticks).length > 0) {
+            console.log('destroy2');
+
             Object.values(this.data._joysticks).forEach(joystick => {
                 try {
                     joystick.all.forEach(joystick => {
-                        joystick.destroy()
+                        joystick.destroy();
                     })
                 } catch (error) {
                     console.log(error);
                 }
 
                 try {
-                    joystick.destroy()
+                    joystick.destroy();
                 } catch (error) {
                     console.log(error);
                 }
             })
         }
-    },
-
-    onTouchstart() {
-        this._createJoysticks()
     },
 })
 
