@@ -114,9 +114,14 @@ const mainScene = {
 
             this.data.timers[enemy.name] += dt;
 
-            if (this.data.timers[enemy.name] >= (enemy.spawnInterval)) {
-                this.data.timers[enemy.name] = 0;
+            const scoreAbove = Math.max(0, this.data.score - (enemy.requireScore || 0));
+            const interval = Math.max(
+                enemy.minSpawnInterval || 1,
+                enemy.spawnInterval - scoreAbove * config.enemies.spawnSpeedupPerScore
+            );
 
+            if (this.data.timers[enemy.name] >= interval) {
+                this.data.timers[enemy.name] = 0;
                 this.spawnEnemy(createEnemy(enemy));
             }
         })

@@ -42,6 +42,7 @@ export default {
         tintMaxDist: 500,
         spawnDuration: 1,
         deathDuration: 0.5,
+        spawnSpeedupPerScore: 0.01,
     },
     bullets: {
         player: {
