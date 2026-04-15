@@ -64,14 +64,14 @@
 
 <body class="m-0 p-0 bg-black">
     <main id="game" class="relative w-screen h-screen">
-        <div id="canvas-container" class="w-full h-full relative">
-            <div id="menu_start" class="hidden menu">
+        <div data-canvas-game-container id="canvas-container" class="w-full h-full relative">
+            <div data-canvas-game-menu="start" id="menu_start" class="menu">
                 <button id="menu_start_start" class="btn">Start</button>
                 <button id="menu_start_options" class="btn">Options</button>
                 <button id="menu_start_quit" class="btn">Quit</button>
             </div>
 
-            <div id="menu_pause" class="hidden menu bg-black bg-opacity-50">
+            <div data-canvas-game-menu="pause" id="menu_pause" class="menu bg-black bg-opacity-50">
                 <div class="flex flex-col gap-2">
                     <button id="menu_pause_resume" class="btn">Resume</button>
                     <button id="menu_pause_restart" class="btn">Restart</button>
@@ -80,10 +80,19 @@
                 </div>
             </div>
 
-            <div id="loading" class="absolute top-0 left-0 w-full h-full bg-black z-100 transition-opacity hidden">
+            <div data-canvas-game-menu="options" id="menu_options" class="menu bg-black bg-opacity-50">
+                <div class="flex flex-col gap-2">
+                    <button id="menu_options_fullscreen" class="btn">Fullscreen: <span
+                            id="menu_options_fullscreen_value">OFF</span></button>
+                    <button id="menu_options_back" class="btn">Back</button>
+                </div>
             </div>
 
-            <div id="gui_game"
+            <div data-canvas-game-loading="game" id="loading"
+                class="absolute top-0 left-0 w-full h-full bg-black z-100 transition-opacity">
+            </div>
+
+            <div data-canvas-game-gui="game" id="gui_game"
                 class="text-white absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center pointer-events-none">
                 <span id="gui_game_score" class="text-3xl h-md:text-6xl">0</span>
                 <span class="text-2xl h-md:text-4xl">BEST: <span id="gui_game_best">0</span></span>
@@ -95,8 +104,10 @@
                 </button>
             </div>
 
-            <div id="joystick-left" class="absolute left-0 bottom-0 w-[25%] h-[50%] z-50 opacity-25"></div>
-            <div id="joystick-right" class="absolute right-0 bottom-0 w-[25%] h-[50%] z-50 opacity-25"></div>
+            <div data-canvas-game-gui="joystick-left" id="joystick-left"
+                class="absolute left-0 bottom-0 w-[25%] h-[50%] z-50 opacity-25"></div>
+            <div data-canvas-game-gui="joystick-right" id="joystick-right"
+                class="absolute right-0 bottom-0 w-[25%] h-[50%] z-50 opacity-25"></div>
 
             <canvas id="canvas" class="w-full h-full block object-contain"></canvas>
         </div>

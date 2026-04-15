@@ -20,6 +20,12 @@ const mainScene = {
         crosshairEntity,
     ],
 
+    gui: {
+        game: true,
+        'joystick-left': true,
+        'joystick-right': true,
+    },
+
     data: {
         score: 0,
         maxScore: 0,
@@ -28,6 +34,7 @@ const mainScene = {
             Object.keys(enemies).map(name => [name, 0])
         ),
     },
+
 
     gameOver() {
         this.game.resetScene({

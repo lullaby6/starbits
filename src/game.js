@@ -3,9 +3,6 @@ import mainScene from "./scenes/main.js";
 
 import { $id, $idEvent } from "./utils/utils.js";
 
-const $canvasContainer = $id('canvas-container');
-const $pauseMenu = $id('menu_pause');
-
 const windowWidth = window.innerWidth
 const joystickSize = windowWidth / 10
 
@@ -63,17 +60,17 @@ const game = new CanvasEngine.Game({
         if (key === 'p' || key === 'Escape') game.togglePause();
         else if (key === 'r') game.resetScene();
         else if (key === 'f') {
-            CanvasEngine.Utils.toggleFullscreen($canvasContainer)
+            CanvasEngine.Utils.toggleFullscreen(this.container)
         }
     },
 
     onPause() {
         this.setCursorVisibility(true);
-        $pauseMenu.style.display = 'flex';
+        this.menu.pause.show()
     },
     onResume() {
         this.setCursorVisibility(false);
-        $pauseMenu.style.display = 'none';
+        this.menu.pause.hide()
     },
 
     onCreate() {
@@ -92,6 +89,28 @@ const game = new CanvasEngine.Game({
 
         $idEvent('gui_game_pause', 'click', () => {
             game.pause();
+        });
+
+        $idEvent('menu_pause_options', 'click', () => {
+            this.menu.pause.hide();
+            this.menu.options.show();
+        });
+
+        $idEvent('menu_options_back', 'click', () => {
+            this.menu.pause.show();
+            this.menu.options.hide();
+        });
+
+        $idEvent('menu_options_fullscreen', 'click', () => {
+            const $span = $id('menu_options_fullscreen_value')
+
+            if ($span.textContent === 'OFF') {
+                $span.textContent = 'ON';
+                CanvasEngine.Utils.setFullscreen(this.container);
+            } else {
+                $span.textContent = 'OFF';
+                CanvasEngine.Utils.exitFullscreen();
+            }
         });
 
         window.addEventListener("wheel", event => {
@@ -138,8 +157,6 @@ const game = new CanvasEngine.Game({
 
     _destroyJoysticks() {
         if (Object.keys(this.data._joysticks).length > 0) {
-            console.log('destroy2');
-
             Object.values(this.data._joysticks).forEach(joystick => {
                 try {
                     joystick.all.forEach(joystick => {
