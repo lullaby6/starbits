@@ -159,6 +159,14 @@ const game = new CanvasEngine.Game({
             this.adjustCanvasHeight();
         });
 
+        // window.addEventListener('touchstart', event => {
+        //     event.preventDefault();
+        // }, { passive: false });
+
+        // window.addEventListener('touchmove', event => {
+        //     event.preventDefault();
+        // }, { passive: false });
+
         // don't delete:
         // window.addEventListener('contextmenu', event => {
         //     event.preventDefault()

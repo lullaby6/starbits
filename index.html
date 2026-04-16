@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <link rel="icon" type="image/x-icon" href="assets/images/icon.ico">
     <title>Starbits</title>
 
@@ -55,6 +55,8 @@
         * {
             font-family: wendy;
             user-select: none;
+            touch-action: none;
+            -webkit-user-select: none;
         }
     </style>
 
@@ -86,6 +88,12 @@
 <body class="m-0 p-0 bg-black text-neutral-300">
     <main id="game" class="relative w-screen h-screen">
         <div data-canvas-game-container id="canvas-container" class="w-full h-full relative">
+            <div data-canvas-game-gui="version" data-canvas-game-display="flex" id="gui_version"
+                class="overlay pointer-events-none hidden">
+                <span class="absolute bottom-0 left-2 text-xl">v0.0.1</span>
+            </div>
+
+
             <div data-canvas-game-menu="start" data-canvas-game-display="flex" id="menu_start" class="menu hidden">
                 <div class="menu-btns">
                     <h1 class="text-6xl h-md:text-9xl">Starbits</h1>

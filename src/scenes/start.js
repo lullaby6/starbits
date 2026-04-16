@@ -14,9 +14,9 @@ export default {
         start: true,
     },
 
-    // gui: {
-    //     mobile: true,
-    // },
+    gui: {
+        version: true,
+    },
 
     onCreate() {
         this.setupDom();
