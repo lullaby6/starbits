@@ -15,7 +15,6 @@ const game = new CanvasEngine.Game({
     fps: config.game.fps,
     limitFPS: true,
     physics: {},
-    cursor: false,
     pixelArt: true,
     title: config.game.title,
     pauseOnBlur: true,
@@ -59,16 +58,6 @@ const game = new CanvasEngine.Game({
         if (keys.pause.includes(key)) this.togglePause();
         else if (keys.reset.includes(key)) this.resetScene();
         else if (keys.fullscreen.includes(key)) CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
-    },
-
-    onPause() {
-        this.setCursorVisibility(true);
-        this.menu.pause.show();
-    },
-    onResume() {
-        this.setCursorVisibility(false);
-        this.menu.pause.hide();
-        this.menu.options.hide();
     },
 
     onCreate() {

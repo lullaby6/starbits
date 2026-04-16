@@ -1,15 +1,20 @@
 import config from "../config/config.js";
 
 function getCenter(scene) {
-    const player = scene.findEntityByName('player');
-    if (player) return { x: player.centerX, y: player.centerY };
     const cam = scene.game.camera;
     return { x: cam.x, y: cam.y };
 }
 
-function randomPosition(center, game) {
+function viewportRadius(game) {
+    const halfW = game.width / 2 / game.camera.zoom;
+    const halfH = game.height / 2 / game.camera.zoom;
+    return Math.hypot(halfW, halfH);
+}
+
+function randomPosition(scene, initial) {
+    const center = getCenter(scene);
     const angle = CanvasEngine.Random.float(0, Math.PI * 2);
-    const minDist = game.width / 2 / game.camera.zoom + 20;
+    const minDist = initial ? 0 : viewportRadius(scene.game) + 20;
     const dist = CanvasEngine.Random.float(minDist, config.stars.maxDist);
     return {
         x: center.x + Math.cos(angle) * dist,
@@ -27,6 +32,7 @@ function createStar() {
 
         data: {
             speed: 0,
+            driftAngle: 0,
             blinkCooldown: 0,
             blinkTimer: 0,
             blinkFlash: 0,
@@ -35,18 +41,9 @@ function createStar() {
         },
 
         resetStar(initial) {
-            const center = getCenter(this.scene);
-
-            if (initial) {
-                const angle = CanvasEngine.Random.float(0, Math.PI * 2);
-                const dist = CanvasEngine.Random.float(0, config.stars.maxDist);
-                this.x = center.x + Math.cos(angle) * dist;
-                this.y = center.y + Math.sin(angle) * dist;
-            } else {
-                const pos = randomPosition(center, this.scene.game);
-                this.x = pos.x;
-                this.y = pos.y;
-            }
+            const pos = randomPosition(this.scene, initial);
+            this.x = pos.x;
+            this.y = pos.y;
 
             const [cMin, cMax] = config.stars.colorRange;
             const r = CanvasEngine.Random.int(cMin, cMax);
@@ -59,6 +56,7 @@ function createStar() {
 
             const [sMin, sMax] = config.stars.speed;
             this.data.speed = CanvasEngine.Random.float(sMin, sMax);
+            this.data.driftAngle = CanvasEngine.Random.float(0, Math.PI * 2);
 
             const [szMin, szMax] = config.stars.size;
             const size = CanvasEngine.Random.float(szMin, szMax);
@@ -78,7 +76,8 @@ function createStar() {
                 return;
             }
 
-            this.x += this.data.speed * dt;
+            this.x += Math.cos(this.data.driftAngle) * this.data.speed * dt;
+            this.y += Math.sin(this.data.driftAngle) * this.data.speed * dt;
 
             if (this.data.blinkFlash > 0) {
                 this.data.blinkFlash -= dt;
@@ -95,8 +94,9 @@ function createStar() {
             }
 
             const center = getCenter(this.scene);
-            const dist = CanvasEngine.Utils.distance(this, center);
-            if (dist > config.stars.maxDist) {
+            const dx = this.centerX - center.x;
+            const dy = this.centerY - center.y;
+            if (Math.hypot(dx, dy) > config.stars.maxDist) {
                 this.resetStar(false);
             }
         },

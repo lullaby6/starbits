@@ -12,8 +12,8 @@ const $score = $id('gui_game_score_score');
 const $best = $id('gui_game_score_best');
 
 export default {
-    name: 'main',
-
+    name: 'game',
+    cursor: false,
     camera: {
         x: 0,
         y: 0,
@@ -47,6 +47,7 @@ export default {
 
     gameOver() {
         this.ignorePause = true;
+        this.game.showCursor();
 
         this.game.menu.restart.show();
 
@@ -170,6 +171,17 @@ export default {
         }
     },
 
+    onPause() {
+        this.game.showCursor();
+        this.game.showMenu('pause');
+        this.game.showMenu('pauseOverlay');
+    },
+    onResume() {
+        this.game.hideCursor();
+        this.game.hideMenu('pause');
+        this.game.hideMenu('pauseOverlay');
+    },
+
     setupDom() {
         $idEvent('menu_pause_resume', 'click', () => {
             this.game.resume();
@@ -202,11 +214,5 @@ export default {
         $idEvent('gui_game_mobile_pause', 'click', () => {
             this.game.pause();
         });
-    },
-    onPause() {
-        this.game.menu.pauseOverlay.show()
-    },
-    onResume() {
-        this.game.menu.pauseOverlay.hide()
     },
 }

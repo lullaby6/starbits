@@ -4,6 +4,7 @@ import { $idEvent } from "../utils/utils.js";
 export default {
     name: 'start',
     ignorePause: true,
+    cursor: true,
 
     entities: [
         ...createStars(),
@@ -18,10 +19,8 @@ export default {
     },
 
     setupDom() {
-        this.game.setCursorVisibility(true);
-
         $idEvent('menu_start_start', 'click', () => {
-            this.game.changeScene('main');
+            this.game.changeScene('game');
         });
 
         $idEvent('menu_start_options', 'click', () => {
