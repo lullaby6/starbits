@@ -14,6 +14,10 @@ export default {
         start: true,
     },
 
+    gui: {
+        mobile: true,
+    },
+
     onCreate() {
         this.setupDom();
     },

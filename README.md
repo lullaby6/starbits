@@ -36,3 +36,4 @@ Upgrades:
 - Bullet Count
 - Bullet Life
 - Bullet Piercing
+- Shot Cooldown

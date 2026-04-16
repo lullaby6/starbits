@@ -32,7 +32,7 @@ export default {
 
     gui: {
         game_score: false,
-        game_mobile: true,
+        mobile: true,
         'joystick-left': true,
         'joystick-right': true,
     },
@@ -255,7 +255,7 @@ export default {
             this.game.changeScene('start')
         });
 
-        $idEvent('gui_game_mobile_pause', 'click', () => {
+        $idEvent('gui_mobile_pause', 'click', () => {
             this.game.pause();
         });
     },
