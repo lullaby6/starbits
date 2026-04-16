@@ -40,6 +40,7 @@ export default {
         size: [1, 5],
         colorRange: [100, 255],
         alphaRange: [0.3, 1],
+        depthRange: [0.15, 1],
     },
     enemies: {
         tintMaxDist: 500,
@@ -47,6 +48,19 @@ export default {
         deathDuration: 0.5,
         spawnSpeedupPerScore: 0.01,
         recycleDistance: 900,
+    },
+    dangerVignette: {
+        maxDist: 350,
+        minDist: 80,
+        maxOpacity: 0.375,
+        pulseSpeed: 4,
+        pulseAmount: 0.2,
+        innerStop: 50,
+        midStop: 75,
+        outerStop: 100,
+        midAlpha: 0.4,
+        outerAlpha: 0.85,
+        shape: 'ellipse',
     },
     bullets: {
         player: {

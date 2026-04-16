@@ -17,3 +17,10 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 - Bloom
 - Meteors
 - Black Hole
+- Danger Enemy Indicator
+
+Enemies:
+- Square/Line Movement
+- Round
+- Round Shoot
+- ZigZag

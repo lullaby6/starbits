@@ -38,6 +38,10 @@ function createStar() {
             blinkFlash: 0,
             baseColor: '#fff',
             initialized: false,
+            depth: 1,
+            depthT: 1,
+            prevCamX: 0,
+            prevCamY: 0,
         },
 
         resetStar(initial) {
@@ -45,21 +49,27 @@ function createStar() {
             this.x = pos.x;
             this.y = pos.y;
 
+            const [dMin, dMax] = config.stars.depthRange;
+            this.data.depth = CanvasEngine.Random.float(dMin, dMax);
+            this.data.depthT = (this.data.depth - dMin) / Math.max(dMax - dMin, 0.0001);
+            const depthT = this.data.depthT;
+
             const [cMin, cMax] = config.stars.colorRange;
             const r = CanvasEngine.Random.int(cMin, cMax);
             const g = CanvasEngine.Random.int(cMin, cMax);
             const b = CanvasEngine.Random.int(cMin, cMax);
             const [aMin, aMax] = config.stars.alphaRange;
-            const a = CanvasEngine.Random.float(aMin, aMax).toFixed(2);
+            const alphaBase = CanvasEngine.Random.float(aMin, aMax);
+            const a = (alphaBase * (0.3 + 0.7 * depthT)).toFixed(2);
             this.data.baseColor = `rgba(${r},${g},${b},${a})`;
             this.color = this.data.baseColor;
 
             const [sMin, sMax] = config.stars.speed;
-            this.data.speed = CanvasEngine.Random.float(sMin, sMax);
+            this.data.speed = CanvasEngine.Random.float(sMin, sMax) * depthT;
             this.data.driftAngle = CanvasEngine.Random.float(0, Math.PI * 2);
 
             const [szMin, szMax] = config.stars.size;
-            const size = CanvasEngine.Random.float(szMin, szMax);
+            const size = CanvasEngine.Random.float(szMin, szMax) * (0.3 + 0.7 * depthT);
             this.width = size;
             this.height = size;
 
@@ -70,11 +80,25 @@ function createStar() {
         },
 
         onUpdate(dt) {
+            const center = getCenter(this.scene);
+
             if (!this.data.initialized) {
                 this.data.initialized = true;
+                this.data.prevCamX = center.x;
+                this.data.prevCamY = center.y;
                 this.resetStar(true);
                 return;
             }
+
+            const camDx = center.x - this.data.prevCamX;
+            const camDy = center.y - this.data.prevCamY;
+            this.data.prevCamX = center.x;
+            this.data.prevCamY = center.y;
+
+            // Parallax: lower depth => star follows camera more => looks farther away
+            const parallax = 1 - this.data.depth;
+            this.x += camDx * parallax;
+            this.y += camDy * parallax;
 
             this.x += Math.cos(this.data.driftAngle) * this.data.speed * dt;
             this.y += Math.sin(this.data.driftAngle) * this.data.speed * dt;
@@ -93,7 +117,6 @@ function createStar() {
                 }
             }
 
-            const center = getCenter(this.scene);
             const dx = this.centerX - center.x;
             const dy = this.centerY - center.y;
             if (Math.hypot(dx, dy) > config.stars.maxDist) {

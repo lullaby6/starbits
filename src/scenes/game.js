@@ -10,6 +10,7 @@ const enemiesData = Object.entries(enemies).map(([key, config]) => ({ name: key,
 
 const $score = $id('gui_game_score_score');
 const $best = $id('gui_game_score_best');
+const $dangerVignette = $id('gui_danger_vignette');
 
 export default {
     name: 'game',
@@ -39,6 +40,7 @@ export default {
     data: {
         score: 0,
         maxScore: 0,
+        dangerTime: 0,
 
         timers: Object.fromEntries(
             Object.keys(enemies).map(name => [name, 0])
@@ -50,6 +52,8 @@ export default {
         this.game.showCursor();
 
         this.game.menu.restart.show();
+
+        $dangerVignette.style.opacity = 0;
 
         const player = this.findEntityByName('player');
         if (player) player.destroy();
@@ -117,6 +121,7 @@ export default {
 
     onCreate() {
         this.setupDom();
+        this.setupDangerVignette();
 
         if (!CanvasEngine.Utils.isMobile()) {
             this.addEntity(crosshairEntity)
@@ -169,6 +174,44 @@ export default {
             const targetZoom = CanvasEngine.Utils.clamp(config.camera.zoomMax - speed * config.camera.zoomSpeedFactor, config.camera.zoomMin, config.camera.zoomMax);
             this.game.camera.zoom = CanvasEngine.Utils.lerp(this.game.camera.zoom, targetZoom, config.camera.zoomLerp);
         }
+
+        this.updateDangerVignette(player, dt);
+    },
+
+    setupDangerVignette() {
+        const cfg = config.dangerVignette;
+        $dangerVignette.style.background =
+            `radial-gradient(${cfg.shape} at center, ` +
+            `rgba(255,0,0,0) ${cfg.innerStop}%, ` +
+            `rgba(255,20,20,${cfg.midAlpha}) ${cfg.midStop}%, ` +
+            `rgba(180,0,0,${cfg.outerAlpha}) ${cfg.outerStop}%)`;
+    },
+
+    updateDangerVignette(player, dt) {
+        const cfg = config.dangerVignette;
+        const threats = [
+            ...this.findByTag('enemy'),
+            ...this.findByTag('enemyBullet'),
+        ];
+
+        let minDist = Infinity;
+        for (const threat of threats) {
+            if (threat.data?.dying || threat.data?.spawnTimer > 0) continue;
+            const d = CanvasEngine.Utils.distance(threat, player);
+            if (d < minDist) minDist = d;
+        }
+
+        let intensity = 0;
+        if (minDist < cfg.maxDist) {
+            const t = 1 - (minDist - cfg.minDist) / (cfg.maxDist - cfg.minDist);
+            intensity = CanvasEngine.Utils.clamp(t, 0, 1);
+        }
+
+        this.data.dangerTime += dt;
+        const pulse = 1 - cfg.pulseAmount + Math.sin(this.data.dangerTime * cfg.pulseSpeed) * cfg.pulseAmount;
+        const opacity = intensity * cfg.maxOpacity * pulse;
+
+        $dangerVignette.style.opacity = opacity.toFixed(3);
     },
 
     onPause() {
