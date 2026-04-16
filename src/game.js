@@ -243,11 +243,21 @@ const game = new CanvasEngine.Game({
             if (this.data.options.autoAim) {
                 this.setBooleanOption('autoAim', true)
 
-                if (this._activeScene.name == 'game') this.hideGui('joystick-right')
+                if (this._activeScene.name == 'game') {
+                    this.hideGui('joystick-right')
+
+                    const crosshair = this._activeScene.findEntityByName('crosshair');
+                    if (crosshair) crosshair.active = false;
+                }
             } else {
                 this.setBooleanOption('autoAim', false)
 
-                if (this._activeScene.name == 'game') this.showGui('joystick-right')
+                if (this._activeScene.name == 'game') {
+                    this.showGui('joystick-right')
+
+                    const crosshair = this._activeScene.findEntityByName('crosshair');
+                    if (crosshair) crosshair.active = true;
+                }
             }
         }
 

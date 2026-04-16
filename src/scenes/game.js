@@ -123,12 +123,16 @@ export default {
         this.setupDom();
         this.setupDangerVignette();
 
-        if (this.game.data.options.autoAim) (
-            this.game.hideGui('joystick-right')
-        )
-
         if (!CanvasEngine.Utils.isMobile()) {
-            this.addEntity(crosshairEntity)
+            const crosshair = this.addEntity(crosshairEntity);
+
+            if (this.game.data.options.autoAim) {
+                crosshair.active = false;
+            }
+        }
+
+        if (this.game.data.options.autoAim) {
+            this.game.hideGui('joystick-right');
         }
 
         $score.textContent = this.data.score;
