@@ -183,7 +183,7 @@ export default {
             this.game.camera.zoom = CanvasEngine.Utils.lerp(this.game.camera.zoom, targetZoom, config.camera.zoomLerp);
         }
 
-        this.updateDangerVignette(player, dt);
+        if (this.game.data.options.dangerVignette) this.updateDangerVignette(player, dt);
     },
 
     setupDangerVignette() {

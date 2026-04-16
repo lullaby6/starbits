@@ -238,8 +238,11 @@ const game = new CanvasEngine.Game({
             }
         });
 
+        const setAutoAim = value => {
+            this.data.options.autoAim = value
 
-        const updateAutoAim = () => {
+            localStorage.setItem('starbits_options_autoAim', this.data.options.autoAim)
+
             if (this.data.options.autoAim) {
                 this.setBooleanOption('autoAim', true)
 
@@ -261,14 +264,36 @@ const game = new CanvasEngine.Game({
             }
         }
 
-        updateAutoAim()
+        setAutoAim()
 
         $idEvent('menu_options_autoaim', 'click', () => {
-            this.data.options.autoAim = !this.data.options.autoAim
+            setAutoAim(!this.data.options.autoAim)
+        });
 
-            localStorage.setItem('starbits_options_autoAim', this.data.options.autoAim)
+        const setDangerVignette = value => {
+            this.data.options.dangerVignette = value
 
-            updateAutoAim()
+            localStorage.setItem('starbits_options_dangerVignette', this.data.options.dangerVignette)
+
+            if (this.data.options.dangerVignette) {
+                this.setBooleanOption('dangerVignette', true)
+
+                if (this._activeScene.name == 'game') {
+                    this.showGui('danger_vignette')
+                }
+            } else {
+                this.setBooleanOption('dangerVignette', false)
+
+                if (this._activeScene.name == 'game') {
+                    this.hideGui('danger_vignette')
+                }
+            }
+        }
+
+        setDangerVignette()
+
+        $idEvent('menu_options_dangervignette', 'click', () => {
+            setDangerVignette(!this.data.options.dangerVignette)
         });
     },
 })
