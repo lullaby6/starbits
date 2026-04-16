@@ -20,7 +20,7 @@
                         'h-xl': { 'raw': '(min-height: 1000px)' },
                         'h-2xl': { 'raw': '(min-height: 1200px)' },
                         'h-3xl': { 'raw': '(min-height: 1400px)' },
-                        'mobile-portrait': { 'raw': '(orientation: portrait) and (hover: none) and (pointer: coarse)' },
+                        'mobile-portrait': { 'raw': '(orientation: portrait) and (pointer: coarse)' },
                     },
                     animation: {
                         'rotate-device': 'rotate-device 1.5s ease-in-out infinite alternate',
@@ -156,8 +156,7 @@
     </main>
 
     <div id="rotate-screen"
-        class="fixed inset-0 bg-black z-[9999] flex-center flex-col gap-4 text-2xl"
-        style="display: none;">
+        class="fixed inset-0 bg-black z-[9999] flex-center flex-col gap-4 text-2xl hidden mobile-portrait:!flex">
         <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
