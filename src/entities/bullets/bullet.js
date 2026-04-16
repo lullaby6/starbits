@@ -18,6 +18,7 @@ export function spawnBullet(scene, x, y, angle, speed) {
         },
 
         physics: {
+            density: 0.01,
             frictionAir: 0,
             fixedRotation: true,
             group: 'playerBullet',
