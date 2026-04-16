@@ -72,7 +72,9 @@ const game = new CanvasEngine.Game({
         this.adjustCanvasHeight();
 
         if (CanvasEngine.Utils.isMobile()) {
-            this.data.options.autoAim = true;
+            if (localStorage.getItem('starbits_options_autoAim') !== 'false') {
+                this.setBooleanOption('autoAim', true)
+            }
 
             this._createJoysticks()
 
@@ -199,6 +201,18 @@ const game = new CanvasEngine.Game({
         this.ctx.imageSmoothingEnabled = !this.pixelArt;
     },
 
+    setBooleanOption(option, value) {
+        this.data.options[option] = value;
+
+        const $value = $id(`menu_options_${option.toLowerCase()}_value`);
+
+        if (value) {
+            $value.textContent = 'ON';
+        } else {
+            $value.textContent = 'OFF';
+        }
+    },
+
     setupDom() {
         $idEvent('menu_start_options', 'click', () => {
             this.switchMenu('options', 'start')
@@ -209,14 +223,14 @@ const game = new CanvasEngine.Game({
         });
 
         $idEvent('menu_options_fullscreen', 'click', () => {
-            const $span = $id('menu_options_fullscreen_value')
+            if (CanvasEngine.Utils.isFullscreen()) {
+                this.setBooleanOption('fullscreen', false)
 
-            if ($span.textContent === 'OFF') {
-                $span.textContent = 'ON';
-                CanvasEngine.Utils.setFullscreen(this.container);
-            } else {
-                $span.textContent = 'OFF';
                 CanvasEngine.Utils.exitFullscreen();
+            } else {
+                this.setBooleanOption('fullscreen', true)
+
+                CanvasEngine.Utils.setFullscreen(this.container);
             }
 
             if (CanvasEngine.Utils.isMobile()) {
@@ -224,15 +238,14 @@ const game = new CanvasEngine.Game({
             }
         });
 
-        const $autoAimSpam = $id('menu_options_autoaim_value')
 
         const updateAutoAim = () => {
             if (this.data.options.autoAim) {
-                $autoAimSpam.textContent = 'ON';
+                this.setBooleanOption('autoAim', true)
 
                 if (this._activeScene.name == 'game') this.hideGui('joystick-right')
             } else {
-                $autoAimSpam.textContent = 'OFF';
+                this.setBooleanOption('autoAim', false)
 
                 if (this._activeScene.name == 'game') this.showGui('joystick-right')
             }
