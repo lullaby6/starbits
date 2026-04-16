@@ -29,7 +29,7 @@ const game = new CanvasEngine.Game({
         keys: config.keys,
 
         options: {
-            autoAim: localStorage.getItem('starbits_options_autoAim') || true,
+            autoAim: localStorage.getItem('starbits_options_autoAim') || false,
             dangerVignette: localStorage.getItem('starbits_options_dangerVignette') || true,
         },
 

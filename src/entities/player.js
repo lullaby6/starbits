@@ -64,7 +64,7 @@ const player = {
         spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
     },
 
-    autoAim() {
+    autoAim(dt) {
         const enemies = this.scene.findEntitiesByTag('enemy')
         let minDist = Infinity;
         let closestEnemy = null;
@@ -80,7 +80,7 @@ const player = {
 
         if (!closestEnemy) return;
 
-        this.rotateToEntity(closestEnemy)
+        this.rotateToEntity(closestEnemy, 10, dt)
 
         this.shot();
     },
@@ -110,7 +110,7 @@ const player = {
         }
 
         if (this.scene.game.data.options.autoAim) {
-            this.autoAim()
+            this.autoAim(dt)
         }
     },
 
