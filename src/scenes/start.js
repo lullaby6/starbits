@@ -25,8 +25,7 @@ export default {
         });
 
         $idEvent('menu_start_options', 'click', () => {
-            this.game.menu.start.hide();
-            this.game.menu.options.show();
+            this.game.switchMenu('options')
         });
 
         $idEvent('menu_start_quit', 'click', () => {

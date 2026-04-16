@@ -165,9 +165,7 @@ export default {
         });
 
         $idEvent('menu_pause_options', 'click', () => {
-            this.game.data._optionsFrom = 'pause';
-            this.game.menu.pause.hide();
-            this.game.menu.options.show();
+            this.game.switchMenu('options', 'pause')
         });
 
         $idEvent('menu_restart_restart', 'click', () => {
@@ -175,9 +173,7 @@ export default {
         });
 
         $idEvent('menu_restart_options', 'click', () => {
-            this.game.data._optionsFrom = 'restart';
-            this.game.menu.restart.hide();
-            this.game.menu.options.show();
+            this.game.switchMenu('options', 'restart')
         });
 
         $idEvent('menu_restart_exit', 'click', () => {

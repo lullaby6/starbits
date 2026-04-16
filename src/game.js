@@ -201,17 +201,11 @@ const game = new CanvasEngine.Game({
 
     setupDom() {
         $idEvent('menu_start_options', 'click', () => {
-            this.data._optionsFrom = 'start';
-            this.menu.start.hide();
-            this.menu.options.show();
+            this.switchMenu('options', 'start')
         });
 
         $idEvent('menu_options_back', 'click', () => {
-            this.menu.options.hide();
-
-            if (this.data._optionsFrom && this.menu[this.data._optionsFrom]) {
-                this.menu[this.data._optionsFrom].show();
-            }
+            this.menuBack()
         });
 
         $idEvent('menu_options_fullscreen', 'click', () => {
