@@ -78,12 +78,11 @@ const player = {
             }
         })
 
-        console.log(closestEnemy);
-
-
         if (!closestEnemy) return;
 
         this.rotateToEntity(closestEnemy)
+
+        this.shot();
     },
 
     onUpdate(dt) {
@@ -148,6 +147,8 @@ const player = {
     },
 
     onRightJoystickMove(event) {
+        if (this.scene.game.data.options.autoAim) return;
+
         this.shot();
         this.rotation = -event.data.angle.radian;
     },
