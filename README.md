@@ -15,3 +15,5 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 - Special Stars
 - Waves
 - Bloom
+- Meteors
+- Black Hole
