@@ -1,10 +1,10 @@
 import config from "../../config/config.js";
 
-export function spawnBullet(scene, x, y, angle, speed) {
+export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
     scene.addEntity({
         x: x - 5,
         y: y - 5,
-        imageScale: 10,
+        imageScale: size,
         scaleWithImageScale: true,
         color: 'transparent',
         tags: ['bullet'],
@@ -26,7 +26,7 @@ export function spawnBullet(scene, x, y, angle, speed) {
         },
 
         data: {
-            lifetime: config.bullets.player.lifetime,
+            lifetime,
         },
 
         onCreate() {

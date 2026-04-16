@@ -3,6 +3,53 @@ const height = width / (16 / 9);
 const worldGrid = 7;
 const motionBlur = 0.75; // 0 to 1
 
+const upgrades = {
+    speed: {
+        min: 0.0025,
+        max: 0.005
+    },
+    shield: {
+        min: 0,
+        max: 3
+    },
+    zoom: {
+        min: 0.6,
+        max: 1.2
+    },
+    health: {
+        min: 1,
+        max: 5
+    },
+    friction: {
+        min: 0.075,
+        max: 0.15
+    },
+    bulletSpeed: {
+        min: 10,
+        max: 20
+    },
+    bulletSize: {
+        min: 10,
+        max: 20
+    },
+    bulletCount: {
+        min: 1,
+        max: 5
+    },
+    bulletLifetime: {
+        min: 3,
+        max: 6
+    },
+    bulletPiercing: {
+        min: 0,
+        max: 6
+    },
+    shotCooldown: {
+        min: 0.2,
+        max: 0.05,
+    }
+}
+
 export default {
     game: {
         aspectRatio: 16 / 9,
@@ -63,14 +110,12 @@ export default {
         shape: 'ellipse',
     },
     bullets: {
-        player: {
-            lifetime: 3,
-        },
         enemy: {
             lifetime: 4,
             tintMaxDist: 600,
         },
     },
+    upgrades,
     colors: {
         background: `rgba(1, 1, 15, ${motionBlur})`,
     },

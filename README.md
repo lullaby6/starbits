@@ -24,3 +24,15 @@ Enemies:
 - Round
 - Round Shoot
 - ZigZag
+
+Upgrades:
+- Speed
+- Shield
+- Zoom
+- Health
+- Friction
+- Bullet Speed
+- Bullet Size
+- Bullet Count
+- Bullet Life
+- Bullet Piercing

@@ -16,17 +16,24 @@ const player = {
     },
 
     physics: {
-        frictionAir: 0.075,
+        frictionAir: config.upgrades.friction.min,
         fixedRotation: true,
         group: 'player',
         collidesWith: ['enemy', 'enemyBullet'],
     },
 
     data: {
-        speed: 0.0025,
-        bulletSpeed: 10,
-        shotCooldown: 0.2,
+        speed: config.upgrades.speed.min,
+        bulletSpeed: config.upgrades.bulletSpeed.min,
+        shotCooldown: config.upgrades.shotCooldown.min,
         shotTimer: 0,
+        shield: config.upgrades.shield.min,
+        health: config.upgrades.health.min,
+        bulletSize: config.upgrades.bulletSize.min,
+        bulletCount: config.upgrades.bulletCount.min,
+        bulletLifetime: config.upgrades.bulletLifetime.min,
+        bulletPiercing: config.upgrades.bulletPiercing.min,
+        bulletSize: config.upgrades.bulletSize.min,
     },
 
     onMousemove({ worldX, worldY }) {
@@ -54,7 +61,7 @@ const player = {
     shot() {
         if (this.data.shotTimer > 0) return;
         this.data.shotTimer = this.data.shotCooldown;
-        spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed);
+        spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
     },
 
     onUpdate(dt) {

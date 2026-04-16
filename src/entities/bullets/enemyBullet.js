@@ -2,7 +2,7 @@ import config from "../../config/config.js";
 
 const DEATH_DURATION = config.enemies.deathDuration;
 
-export function spawnEnemyBullet(scene, x, y, angle, speed) {
+export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
     scene.addEntity({
         x: x - 4,
         y: y - 4,
@@ -27,7 +27,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed) {
         },
 
         data: {
-            lifetime: config.bullets.enemy.lifetime,
+            lifetime: lifetime ?? config.bullets.enemy.lifetime,
             dying: false,
             deathTimer: 0,
         },

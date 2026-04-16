@@ -63,7 +63,7 @@ const skills = {
             entity.data.shotTimer -= dt;
         } else if (dist <= (entity.data.range || Infinity) + 100 && isInsideWorld(entity)) {
             entity.data.shotTimer = entity.data.shotCooldown;
-            spawnEnemyBullet(entity.scene, entity.centerX, entity.centerY, entity.rotation, entity.data.bulletSpeed);
+            spawnEnemyBullet(entity.scene, entity.centerX, entity.centerY, entity.rotation, entity.data.bulletSpeed, entity.data.bulletLifetime);
         }
     },
 
@@ -74,7 +74,7 @@ const skills = {
                 entity.data.burstRemaining--;
                 entity.data.burstTimer = entity.data.burstDelay;
                 if (isInsideWorld(entity)) {
-                    spawnEnemyBullet(entity.scene, entity.centerX, entity.centerY, entity.rotation, entity.data.bulletSpeed);
+                    spawnEnemyBullet(entity.scene, entity.centerX, entity.centerY, entity.rotation, entity.data.bulletSpeed, entity.data.bulletLifetime);
                 }
             }
         } else {
@@ -323,7 +323,7 @@ export const enemies = {
     closeShooter: {
         image: "close_shooter_1",
         physics: { density: 0.01 },
-        data: { speed: 0.005, range: 200, fleeRange: 100, shotCooldown: 1, bulletSpeed: 4 },
+        data: { speed: 0.005, range: 200, fleeRange: 100, shotCooldown: 1, bulletSpeed: 4, bulletLifetime: config.bullets.enemy.lifetime / 2 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 2,
         requireScore: 25,
@@ -334,7 +334,7 @@ export const enemies = {
     closeShooter2: {
         image: "close_shooter_2",
         physics: { density: 0.01 },
-        data: { speed: 0.0075, range: 300, fleeRange: 200, shotCooldown: 0.5, bulletSpeed: 5 },
+        data: { speed: 0.0075, range: 300, fleeRange: 200, shotCooldown: 0.5, bulletSpeed: 5, bulletLifetime: config.bullets.enemy.lifetime / 2 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 4,
         requireScore: 75,
@@ -345,7 +345,7 @@ export const enemies = {
     closeShooter3: {
         image: "close_shooter_3",
         physics: { density: 0.01 },
-        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 0.375, bulletSpeed: 6, leadTime: 15 },
+        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 0.375, bulletSpeed: 6, leadTime: 15, bulletLifetime: config.bullets.enemy.lifetime / 2 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 6,
         requireScore: 100,
