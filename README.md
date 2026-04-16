@@ -6,7 +6,8 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 
 ## To Do
 
-- Player Particle Trail
+- Player/Enemy Particle Fire Trail
+- Player/Enemy Shoot Particle
 - Camera Blinks
 - Bosses
 - Sounds

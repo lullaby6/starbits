@@ -43,22 +43,22 @@ const player = {
 
     onMousehold() {
         if (CanvasEngine.Utils.isMobile()) return;
-        this.shot();
+        this.shoot();
     },
 
     // onTouchstart({ worldX, worldY }) {
     //     if (!CanvasEngine.Utils.isMobile()) return;
     //     this.rotateAt(worldX, worldY);
-    //     this.shot();
+    //     this.shoot();
     // }
 
     // onTouchhold({ worldX, worldY }) {
     //     if (!CanvasEngine.Utils.isMobile()) return;
     //     this.rotateAt(worldX, worldY);
-    //     this.shot();
+    //     this.shoot();
     // },
 
-    shot() {
+    shoot() {
         if (this.data.shotTimer > 0) return;
         this.data.shotTimer = this.data.shotCooldown;
         spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
@@ -84,7 +84,7 @@ const player = {
 
         this.rotateToEntity(closestEnemy, 10, dt)
 
-        this.shot();
+        this.shoot();
     },
 
     onUpdate(dt) {
@@ -151,7 +151,7 @@ const player = {
     onRightJoystickMove(event) {
         if (this.game.data.options.autoAim) return;
 
-        this.shot();
+        this.shoot();
         this.rotation = -event.data.angle.radian;
     },
 }
