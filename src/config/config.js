@@ -55,7 +55,7 @@ export default {
         aspectRatio: 16 / 9,
         width,
         height,
-        title: "Starsbits",
+        title: "Starbits",
         fps: 60,
         motionBlur,
     },

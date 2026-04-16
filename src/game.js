@@ -29,7 +29,8 @@ const game = new CanvasEngine.Game({
         keys: config.keys,
 
         options: {
-            dangerVignette: localStorage.getItem('starbits_options_dangerVifnette') || true,
+            autoAim: localStorage.getItem('starbits_options_autoAim') || true,
+            dangerVignette: localStorage.getItem('starbits_options_dangerVignette') || true,
         },
 
         joysticks: {
@@ -219,6 +220,26 @@ const game = new CanvasEngine.Game({
             if (CanvasEngine.Utils.isMobile()) {
                 this.resetJoysticks()
             }
+        });
+
+        const $autoAimSpam = $id('menu_options_autoaim_value')
+
+        const updateAutoAim = () => {
+            if (this.data.options.autoAim) {
+                $autoAimSpam.textContent = 'ON';
+            } else {
+                $autoAimSpam.textContent = 'OFF';
+            }
+        }
+
+        updateAutoAim()
+
+        $idEvent('menu_options_autoaim', 'click', () => {
+            this.data.options.autoAim = !this.data.options.autoAim
+
+            localStorage.setItem('starbits_options_autoAim', this.data.options.autoAim)
+
+            updateAutoAim()
         });
     },
 })

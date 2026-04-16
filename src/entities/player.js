@@ -64,6 +64,28 @@ const player = {
         spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
     },
 
+    autoAim() {
+        const enemies = this.scene.findEntitiesByTag('enemy')
+        let minDist = Infinity;
+        let closestEnemy = null;
+
+        enemies.forEach(enemy => {
+            const dist = CanvasEngine.Utils.distance(this, enemy);
+
+            if (dist < minDist) {
+                minDist = dist;
+                closestEnemy = enemy;
+            }
+        })
+
+        console.log(closestEnemy);
+
+
+        if (!closestEnemy) return;
+
+        this.rotateToEntity(closestEnemy)
+    },
+
     onUpdate(dt) {
         if (this.data.shotTimer > 0) {
             this.data.shotTimer -= dt;
@@ -86,6 +108,10 @@ const player = {
                 this.scene.game.physics.setPosition(body, cx, cy);
                 this.scene.game.physics.setVelocity(body, { x: 0, y: 0 });
             }
+        }
+
+        if (this.scene.game.data.options.autoAim) {
+            this.autoAim()
         }
     },
 

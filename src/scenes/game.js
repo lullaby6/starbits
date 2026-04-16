@@ -104,7 +104,7 @@ export default {
         if (this.data.score >= this.data.maxScore) {
             this.data.maxScore = this.data.score;
             $best.textContent = this.data.maxScore;
-            localStorage.setItem('starsbits_maxScore', this.data.maxScore);
+            localStorage.setItem('starbits_maxScore', this.data.maxScore);
         }
 
         this.game.gui.game_score.show(300)
@@ -129,7 +129,7 @@ export default {
 
         $score.textContent = this.data.score;
 
-        this.data.maxScore = parseInt(localStorage.getItem('starsbits_maxScore')) || 0;
+        this.data.maxScore = parseInt(localStorage.getItem('starbits_maxScore')) || 0;
         $best.textContent = this.data.maxScore;
 
         const player = this.findEntityByName('player');
@@ -160,7 +160,7 @@ export default {
                 this.data.timers[enemy.name] = 0;
 
                 if (enemy.max != null) {
-                    const alive = this.findByTag(enemy.name).length;
+                    const alive = this.findEntitiesByTag(enemy.name).length;
                     if (alive >= enemy.max) return;
                 }
 
@@ -192,8 +192,8 @@ export default {
     updateDangerVignette(player, dt) {
         const cfg = config.dangerVignette;
         const threats = [
-            ...this.findByTag('enemy'),
-            ...this.findByTag('enemyBullet'),
+            ...this.findEntitiesByTag('enemy'),
+            ...this.findEntitiesByTag('enemyBullet'),
         ];
 
         let minDist = Infinity;
