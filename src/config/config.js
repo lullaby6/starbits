@@ -32,12 +32,12 @@ export default {
         maxAttempts: 20,
     },
     stars: {
-        count: 300,
+        count: 600,
         maxDist: 1500,
         blinkDuration: 0.6,
         blinkCooldown: [4, 12],
         speed: [10, 40],
-        size: [1, 7.5],
+        size: [1, 5],
         colorRange: [100, 255],
         alphaRange: [0.3, 1],
     },
@@ -46,7 +46,7 @@ export default {
         spawnDuration: 1,
         deathDuration: 0.5,
         spawnSpeedupPerScore: 0.01,
-        recycleDistance: 1100,
+        recycleDistance: 900,
     },
     bullets: {
         player: {

@@ -46,6 +46,8 @@ export default {
     },
 
     gameOver() {
+        this.ignorePause = true;
+
         this.game.menu.restart.show();
 
         const player = this.findEntityByName('player');
