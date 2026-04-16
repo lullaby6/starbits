@@ -8,8 +8,8 @@ import { $id, $idEvent } from "../utils/utils.js";
 
 const enemiesData = Object.entries(enemies).map(([key, config]) => ({ name: key, ...config }));
 
-const $score = $id('gui_game_score');
-const $best = $id('gui_game_best');
+const $score = $id('gui_game_score_score');
+const $best = $id('gui_game_score_best');
 
 export default {
     name: 'main',
@@ -30,7 +30,8 @@ export default {
     },
 
     gui: {
-        game: true,
+        game_score: false,
+        game_mobile: true,
         'joystick-left': true,
         'joystick-right': true,
     },
@@ -99,6 +100,16 @@ export default {
             $best.textContent = this.data.maxScore;
             localStorage.setItem('starsbits_maxScore', this.data.maxScore);
         }
+
+        this.game.gui.game_score.show(300)
+
+        if (this.guiScoreTimeout) {
+            clearTimeout(this.guiScoreTimeout)
+        }
+
+        const guiScoreTimeout = setTimeout(() => {
+            this.game.gui.game_score.hide(300)
+        }, 3000)
     },
 
     onCreate() {
@@ -186,7 +197,7 @@ export default {
             this.game.changeScene('start')
         });
 
-        $idEvent('gui_game_pause', 'click', () => {
+        $idEvent('gui_game_mobile_pause', 'click', () => {
             this.game.pause();
         });
     },

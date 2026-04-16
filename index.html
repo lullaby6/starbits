@@ -75,6 +75,10 @@
             .btn {
                 @apply w-full border border-2 border-neutral-300 text-neutral-300 hover:opacity-50 px-10 py-0.5 cursor-pointer;
             }
+
+            .overlay {
+                @apply absolute top-0 left-0 w-full h-full;
+            }
         }
     </style>
 </head>
@@ -119,16 +123,20 @@
                 </div>
             </div>
 
-            <div data-canvas-game-loading="game" id="loading"
-                class="absolute top-0 left-0 w-full h-full bg-black z-100 transition-opacity">
+            <div data-canvas-game-loading="game" id="loading" class="overlay bg-black z-100 transition-opacity">
             </div>
 
-            <div data-canvas-game-gui="game" data-canvas-game-display="flex" id="gui_game"
-                class="absolute top-0 left-0 w-full h-full flex flex-col justify-start items-center pointer-events-none">
-                <span id="gui_game_score" class="text-3xl h-md:text-6xl">0</span>
-                <span class="text-2xl h-md:text-4xl">BEST: <span id="gui_game_best">0</span></span>
+            <div data-canvas-game-gui="game_score" data-canvas-game-display="flex" id="gui_game_score"
+                class="overlay flex flex-col justify-start items-center pointer-events-none">
+                <span id="gui_game_score_score" class="text-2xl h-md:text-4xl">0</span>
+                <span class="text-lg h-md:text-xl relative bottom-3">BEST: <span
+                        id="gui_game_score_best">0</span></span>
+            </div>
 
-                <button id="gui_game_pause" class="absolute top-0 left-0 m-4 text-xl h-sm:hidden pointer-events-auto">
+            <div data-canvas-game-gui="game_mobile" data-canvas-game-display="flex" id="gui_game_mobile"
+                class="overlay flex flex-col justify-start items-center pointer-events-none">
+                <button id="gui_game_mobile_pause"
+                    class="absolute top-0 left-0 m-4 text-xl h-sm:hidden pointer-events-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1200 1200">
                         <path fill="currentColor" d="M0 0h500v1200H0zm700 0h500v1200H700z" />
                     </svg>
