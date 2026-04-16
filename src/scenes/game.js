@@ -35,6 +35,7 @@ export default {
         mobile: true,
         'joystick-left': true,
         'joystick-right': true,
+        danger_vignette: true,
     },
 
     data: {
@@ -52,8 +53,6 @@ export default {
         this.game.showCursor();
 
         this.game.menu.restart.show();
-
-        $dangerVignette.style.opacity = 0;
 
         const player = this.findEntityByName('player');
         if (player) player.destroy();
@@ -186,6 +185,8 @@ export default {
             `rgba(255,0,0,0) ${cfg.innerStop}%, ` +
             `rgba(255,20,20,${cfg.midAlpha}) ${cfg.midStop}%, ` +
             `rgba(180,0,0,${cfg.outerAlpha}) ${cfg.outerStop}%)`;
+        $dangerVignette.style.opacity = 0;
+        this.data.dangerTime = 0;
     },
 
     updateDangerVignette(player, dt) {

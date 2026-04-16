@@ -157,8 +157,9 @@
 
             <canvas id="canvas" class="w-full h-full block object-contain"></canvas>
 
-            <div id="gui_danger_vignette" class="overlay pointer-events-none z-40 opacity-0"
-                style="transition: opacity 120ms linear; will-change: opacity;">
+            <div data-canvas-game-gui="danger_vignette" data-canvas-game-display="block"
+                id="gui_danger_vignette" class="overlay pointer-events-none z-40"
+                style="opacity: 0; transition: opacity 120ms linear; will-change: opacity;">
             </div>
         </div>
     </main>
