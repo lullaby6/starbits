@@ -149,7 +149,7 @@ export function createEnemy(enemy) {
             this.data.dying = true;
             this.data.deathTimer = DEATH_DURATION;
             this.tint = null;
-            // this.removePhysics();
+            this.disableCollisions();
         },
 
         onUpdate(dt) {
