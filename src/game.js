@@ -27,6 +27,11 @@ const game = new CanvasEngine.Game({
 
     data: {
         keys: config.keys,
+
+        options: {
+            dangerVignette: localStorage.getItem('starbits_options_dangerVifnette') || true,
+        },
+
         joysticks: {
             Left: {
                 zone: $id('joystick-left'),
