@@ -1,6 +1,7 @@
 import config from "../config/config.js";
 
 const crosshair = {
+    name: 'crosshair',
     x: 0,
     y: 0,
     width: 15,

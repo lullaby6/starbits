@@ -39,9 +39,16 @@ export default {
     },
 
     gameOver() {
-        this.game.resetScene({
-            resetCamera: false
-        });
+        this.game.menu.restart.show();
+
+        const player = this.findEntityByName('player');
+        if (player) player.destroy();
+
+        const crosshair = this.findEntityByName('crosshair');
+        if (crosshair) crosshair.destroy();
+        // this.game.resetScene({
+        //     resetCamera: false
+        // });
     },
 
     getSpawnPosition() {
@@ -150,7 +157,6 @@ export default {
         });
 
         $idEvent('menu_pause_restart', 'click', () => {
-            this.game.resume();
             this.game.resetScene();
         });
 
@@ -158,14 +164,28 @@ export default {
             this.game.changeScene('start')
         });
 
-        $idEvent('gui_game_pause', 'click', () => {
-            this.game.pause();
-        });
-
         $idEvent('menu_pause_options', 'click', () => {
             this.game.data._optionsFrom = 'pause';
             this.game.menu.pause.hide();
             this.game.menu.options.show();
+        });
+
+        $idEvent('menu_restart_restart', 'click', () => {
+            this.game.resetScene();
+        });
+
+        $idEvent('menu_restart_options', 'click', () => {
+            this.game.data._optionsFrom = 'restart';
+            this.game.menu.restart.hide();
+            this.game.menu.options.show();
+        });
+
+        $idEvent('menu_restart_exit', 'click', () => {
+            this.game.changeScene('start')
+        });
+
+        $idEvent('gui_game_pause', 'click', () => {
+            this.game.pause();
         });
     },
     onPause() {
