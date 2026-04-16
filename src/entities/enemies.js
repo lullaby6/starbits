@@ -63,7 +63,7 @@ const skills = {
             entity.data.shotTimer -= dt;
         } else if (dist <= (entity.data.range || Infinity) + 100 && isInsideWorld(entity)) {
             entity.data.shotTimer = entity.data.shotCooldown;
-            spawnEnemyBullet(entity.scene, entity.centerX, entity.centerY, entity.rotation, entity.data.bulletSpeed, entity.data.bulletLifetime);
+            entity.shoot();
         }
     },
 
@@ -73,8 +73,9 @@ const skills = {
             if (entity.data.burstTimer <= 0) {
                 entity.data.burstRemaining--;
                 entity.data.burstTimer = entity.data.burstDelay;
+
                 if (isInsideWorld(entity)) {
-                    spawnEnemyBullet(entity.scene, entity.centerX, entity.centerY, entity.rotation, entity.data.bulletSpeed, entity.data.bulletLifetime);
+                    entity.shoot();
                 }
             }
         } else {
@@ -140,9 +141,7 @@ export function createEnemy(enemy) {
             deathTimer: 0,
             ...enemy.data,
         },
-        onCreate() {
-            if (enemy.onCreate) enemy.onCreate(this);
-        },
+
 
         die() {
             if (this.data.dying) return;
@@ -150,6 +149,14 @@ export function createEnemy(enemy) {
             this.data.deathTimer = DEATH_DURATION;
             this.tint = null;
             this.disableCollisions();
+        },
+
+        shoot() {
+            spawnEnemyBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletLifetime);
+        },
+
+        onCreate() {
+            if (enemy.onCreate) enemy.onCreate(this);
         },
 
         onUpdate(dt) {
