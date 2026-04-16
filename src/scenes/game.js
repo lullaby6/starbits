@@ -14,6 +14,12 @@ const $best = $id('gui_game_best');
 export default {
     name: 'main',
 
+    camera: {
+        x: 0,
+        y: 0,
+        zoom: config.camera.zoom,
+    },
+
     entities: [
         ...createStars(),
         playerEntity,

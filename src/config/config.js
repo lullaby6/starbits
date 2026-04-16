@@ -21,6 +21,7 @@ export default {
         maxY: (height * worldGrid) / 2,
     },
     camera: {
+        zoom: 1,
         zoomMax: 1.2,
         zoomMin: 0.6,
         zoomSpeedFactor: 0.05,

@@ -21,11 +21,6 @@ const game = new CanvasEngine.Game({
     pauseOnBlur: true,
     contextMenu: false,
 
-    camera: {
-        x: 0,
-        y: 0,
-    },
-
     scenes: [
         startScene,
         gameScene,
