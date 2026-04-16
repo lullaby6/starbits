@@ -61,13 +61,7 @@ const game = new CanvasEngine.Game({
     onKeydown({ key }) {
         if (key === 'p' || key === 'Escape') this.togglePause();
         else if (key === 'r') this.resetScene();
-        else if (key === 'f') {
-            CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
-
-            if (CanvasEngine.Utils.isMobile()) {
-                this.resetJoysticks()
-            }
-        }
+        else if (key === 'f') CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
     },
 
     onPause() {
