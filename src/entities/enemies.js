@@ -27,7 +27,13 @@ const skills = {
             targetY += v.y * leadTime;
         }
 
-        const angle = Math.atan2(targetY - entity.centerY, targetX - entity.centerX);
+        entity.rotateAt(targetX, targetY);
+        const angle = entity.rotation;
+
+        // const angle = Math.atan2(targetY - entity.centerY, targetX - entity.centerX);
+
+        entity.rotateToEntity(player);
+
         entity.applyForce({
             x: Math.cos(angle) * entity.data.speed,
             y: Math.sin(angle) * entity.data.speed,
