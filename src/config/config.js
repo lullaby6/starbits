@@ -115,6 +115,13 @@ export default {
             lifetime: 4,
             tintMaxDist: 600,
         },
+        trail: {
+            interval: 0.02,
+            size: 6,
+            lifetime: 0.3,
+            color: '#fff',
+            z: -1,
+        },
     },
     upgrades,
     colors: {

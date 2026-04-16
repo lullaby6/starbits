@@ -27,6 +27,7 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
 
         data: {
             lifetime,
+            trailTimer: 0,
         },
 
         onCreate() {
@@ -40,6 +41,22 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
             this.data.lifetime -= dt;
             if (this.data.lifetime <= 0) {
                 this.destroy();
+                return;
+            }
+
+            this.data.trailTimer -= dt;
+            if (this.data.trailTimer <= 0) {
+                this.data.trailTimer = config.bullets.trail.interval;
+                CanvasEngine.Particles.spawn(this.scene, {
+                    x: this.centerX,
+                    y: this.centerY,
+                    size: config.bullets.trail.size,
+                    color: config.bullets.trail.color,
+                    lifetime: config.bullets.trail.lifetime,
+                    scaleEnd: 0,
+                    alphaEnd: 0,
+                    z: config.bullets.trail.z,
+                });
             }
         },
 

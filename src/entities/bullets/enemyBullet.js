@@ -30,6 +30,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             lifetime: lifetime ?? config.bullets.enemy.lifetime,
             dying: false,
             deathTimer: 0,
+            trailTimer: 0,
         },
 
         onCreate() {
@@ -61,6 +62,21 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             if (this.data.lifetime <= 0) {
                 this.die();
                 return;
+            }
+
+            this.data.trailTimer -= dt;
+            if (this.data.trailTimer <= 0) {
+                this.data.trailTimer = config.bullets.trail.interval;
+                CanvasEngine.Particles.spawn(this.scene, {
+                    x: this.centerX,
+                    y: this.centerY,
+                    size: config.bullets.trail.size,
+                    color: config.bullets.trail.color,
+                    lifetime: config.bullets.trail.lifetime,
+                    scaleEnd: 0,
+                    alphaEnd: 0,
+                    z: config.bullets.trail.z,
+                });
             }
 
             const player = this.scene.findEntityByName('player');
