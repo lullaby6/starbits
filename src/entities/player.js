@@ -50,7 +50,7 @@ const player = {
     //     if (!CanvasEngine.Utils.isMobile()) return;
     //     this.rotateAt(worldX, worldY);
     //     this.shot();
-    // },
+    // }
 
     // onTouchhold({ worldX, worldY }) {
     //     if (!CanvasEngine.Utils.isMobile()) return;
