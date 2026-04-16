@@ -46,7 +46,7 @@ export default {
         spawnDuration: 1,
         deathDuration: 0.5,
         spawnSpeedupPerScore: 0.01,
-        recycleDistance: 1200,
+        recycleDistance: 1100,
     },
     bullets: {
         player: {
