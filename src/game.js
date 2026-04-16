@@ -69,6 +69,7 @@ const game = new CanvasEngine.Game({
         this.setupWindow();
         this.setupDom();
         this.adjustCanvasHeight();
+        this.setupRotateScreen();
 
         if (CanvasEngine.Utils.isMobile()) {
             this._createJoysticks()
@@ -88,6 +89,21 @@ const game = new CanvasEngine.Game({
             this.gui['joystick-left'].style.pointerEvents = 'none'
             this.gui['joystick-right'].style.pointerEvents = 'none'
         }
+    },
+
+    setupRotateScreen() {
+        const $rotate = $id('rotate-screen');
+        if (!$rotate) return;
+
+        const update = () => {
+            const isPortrait = window.innerHeight > window.innerWidth;
+            const show = CanvasEngine.Utils.isMobile() && isPortrait;
+            $rotate.style.display = show ? 'flex' : 'none';
+        };
+
+        update();
+        window.addEventListener('resize', update);
+        window.addEventListener('orientationchange', update);
     },
 
     _createJoysticks() {
