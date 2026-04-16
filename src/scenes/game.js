@@ -114,8 +114,9 @@ export default {
             clearTimeout(this.guiScoreTimeout)
         }
 
-        const guiScoreTimeout = setTimeout(() => {
+        this.guiScoreTimeout = setTimeout(() => {
             this.game.gui.game_score.hide(300)
+            this.guiScoreTimeout = null
         }, 3000)
     },
 

@@ -14,11 +14,11 @@ export default {
     },
     world: {
         width: width * worldGrid,
-        height: height * worldGrid,
+        height: width * worldGrid,
         minX: -(width * worldGrid) / 2,
         maxX: (width * worldGrid) / 2,
-        minY: -(height * worldGrid) / 2,
-        maxY: (height * worldGrid) / 2,
+        minY: -(width * worldGrid) / 2,
+        maxY: (width * worldGrid) / 2,
     },
     camera: {
         zoom: 1,
