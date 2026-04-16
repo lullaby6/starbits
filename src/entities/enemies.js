@@ -16,6 +16,24 @@ const skills = {
         });
     },
 
+    smartFollow(entity, player, dist, dt) {
+        const leadTime = entity.data.leadTime || 0;
+        let targetX = player.centerX;
+        let targetY = player.centerY;
+
+        if (leadTime > 0 && player._physicsBody) {
+            const v = player._physicsBody.velocity;
+            targetX += v.x * leadTime;
+            targetY += v.y * leadTime;
+        }
+
+        const angle = Math.atan2(targetY - entity.centerY, targetX - entity.centerX);
+        entity.applyForce({
+            x: Math.cos(angle) * entity.data.speed,
+            y: Math.sin(angle) * entity.data.speed,
+        });
+    },
+
     keepRange(entity, player, dist, dt) {
         if (dist > entity.data.range) {
             entity.applyForce({
@@ -89,7 +107,7 @@ export function createEnemy(enemy) {
         scaleWithImageScale: true,
         color: 'transparent',
         alpha: 0,
-        tags: ['enemy', ...(enemy.tags || [])],
+        tags: ['enemy', enemy.name, ...(enemy.tags || [])],
         originX: 0.5,
         originY: 0.5,
 
@@ -154,6 +172,18 @@ export function createEnemy(enemy) {
 
             const dist = CanvasEngine.Utils.distance(this, player);
 
+            if (dist > config.enemies.recycleDistance) {
+                const pos = this.scene.getSpawnPosition();
+                if (this._physicsBody) {
+                    this.scene.game.physics.setPosition(this._physicsBody, pos.x, pos.y);
+                    this.scene.game.physics.setVelocity(this._physicsBody, { x: 0, y: 0 });
+                } else {
+                    this.x = pos.x - this.width / 2;
+                    this.y = pos.y - this.height / 2;
+                }
+                return;
+            }
+
             const tintStrength = Math.max(0, 1 - dist / config.enemies.tintMaxDist);
             this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
 
@@ -178,11 +208,12 @@ export function createEnemy(enemy) {
 export const enemies = {
     miniom: {
         image: "miniom_1",
-        data: { speed: 0.0005 },
-        skills: ['follow'],
+        data: { speed: 0.0005, leadTime: 30 },
+        skills: ['smartFollow'],
         score: 1,
         spawnInterval: 1.5,
         minSpawnInterval: 0.75,
+        max: 100,
     },
     shooter: {
         image: "shooter_1",
@@ -192,58 +223,64 @@ export const enemies = {
         requireScore: 10,
         spawnInterval: 6,
         minSpawnInterval: 2,
+        max: 100,
     },
     dash: {
         image: "dash_1",
         physics: { density: 0.01 },
-        data: { speed: 0.00075, dashSpeed: 15, dashTimer: 3, dashCooldown: 3 },
-        skills: ['follow', 'dash'],
+        data: { speed: 0.00075, dashSpeed: 15, dashTimer: 3, dashCooldown: 3, leadTime: 30 },
+        skills: ['smartFollow', 'dash'],
         score: 3,
         requireScore: 15,
         spawnInterval: 8,
         minSpawnInterval: 3,
+        max: 100,
     },
 
     speed: {
         image: "speed_1",
         physics: { density: 0.01 },
-        data: { speed: 0.01 },
-        skills: ['follow'],
+        data: { speed: 0.01, leadTime: 40 },
+        skills: ['smartFollow'],
         score: 5,
         requireScore: 30,
         spawnInterval: 8,
         minSpawnInterval: 3,
+        max: 100,
     },
     speed: {
         image: "speed_1",
         physics: { density: 0.01 },
-        data: { speed: 0.015 },
-        skills: ['follow'],
+        data: { speed: 0.015, leadTime: 40 },
+        skills: ['smartFollow'],
         score: 10,
         requireScore: 60,
         spawnInterval: 16,
         minSpawnInterval: 6,
+        max: 100,
     },
 
     dashShooter: {
         image: "dash_shooter_1",
         physics: { density: 0.01 },
-        data: { speed: 0.00075, dashSpeed: 17.5, dashTimer: 3, dashCooldown: 3, range: 300, shotCooldown: 1, bulletSpeed: 4 },
-        skills: ['follow', 'dash', 'shoot'],
+        data: { speed: 0.00075, dashSpeed: 17.5, dashTimer: 3, dashCooldown: 3, range: 300, shotCooldown: 1, bulletSpeed: 4, leadTime: 25 },
+        skills: ['smartFollow', 'dash', 'shoot'],
         score: 5,
         requireScore: 60,
         spawnInterval: 10,
         minSpawnInterval: 4,
+        max: 100,
     },
     dashShooter2: {
         image: "dash_shooter_2",
         physics: { density: 0.01 },
-        data: { speed: 0.00075, dashSpeed: 20, dashTimer: 2, dashCooldown: 2, range: 400, shotCooldown: 0.75, bulletSpeed: 5 },
-        skills: ['follow', 'dash', 'shoot'],
+        data: { speed: 0.00075, dashSpeed: 20, dashTimer: 2, dashCooldown: 2, range: 400, shotCooldown: 0.75, bulletSpeed: 5, leadTime: 25 },
+        skills: ['smartFollow', 'dash', 'shoot'],
         score: 6,
         requireScore: 160,
         spawnInterval: 12,
         minSpawnInterval: 5,
+        max: 100,
     },
 
     rapidShooter: {
@@ -254,6 +291,7 @@ export const enemies = {
         requireScore: 10,
         spawnInterval: 5,
         minSpawnInterval: 2.5,
+        max: 100,
     },
     rapidShooter2: {
         image: "rapid_shooter_1",
@@ -263,6 +301,7 @@ export const enemies = {
         requireScore: 20,
         spawnInterval: 8,
         minSpawnInterval: 4,
+        max: 100,
     },
     rapidShooter3: {
         image: "rapid_shooter_1",
@@ -272,6 +311,7 @@ export const enemies = {
         requireScore: 30,
         spawnInterval: 8,
         minSpawnInterval: 4,
+        max: 100,
     },
 
     closeShooter: {
@@ -283,6 +323,7 @@ export const enemies = {
         requireScore: 25,
         spawnInterval: 6,
         minSpawnInterval: 2,
+        max: 100,
     },
     closeShooter2: {
         image: "close_shooter_2",
@@ -293,73 +334,81 @@ export const enemies = {
         requireScore: 75,
         spawnInterval: 10,
         minSpawnInterval: 4,
+        max: 100,
     },
     closeShooter3: {
         image: "close_shooter_3",
         physics: { density: 0.01 },
-        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 0.375, bulletSpeed: 6 },
+        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 0.375, bulletSpeed: 6, leadTime: 15 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 6,
         requireScore: 100,
         spawnInterval: 15,
         minSpawnInterval: 6,
+        max: 100,
     },
 
     smartShooter: {
         image: "smart_shooter_1",
-        data: { speed: 0.001, range: 500, fleeRange: 300, shotCooldown: 1, bulletSpeed: 4 },
+        data: { speed: 0.001, range: 500, fleeRange: 300, shotCooldown: 1, bulletSpeed: 4, leadTime: 20 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 2,
         requireScore: 40,
         spawnInterval: 8,
         minSpawnInterval: 3,
+        max: 100,
     },
     smartShooter2: {
         image: "smart_shooter_2",
-        data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.5, bulletSpeed: 5 },
+        data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.5, bulletSpeed: 5, leadTime: 20 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 4,
         requireScore: 100,
         spawnInterval: 10,
         minSpawnInterval: 4,
+        max: 100,
     },
     smartShooter3: {
         image: "smart_shooter_3",
-        data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.375, bulletSpeed: 6 },
+        data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.375, bulletSpeed: 6, leadTime: 20 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 6,
         requireScore: 200,
         spawnInterval: 12,
         minSpawnInterval: 5,
+        max: 100,
     },
 
     multiShooter: {
         image: "multi_shooter_1",
-        data: { speed: 0.0004, range: 300, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0 },
+        data: { speed: 0.0004, range: 300, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15 },
         skills: ['keepRange', 'burst'],
         score: 3,
         requireScore: 50,
         spawnInterval: 10,
         minSpawnInterval: 4,
+        max: 100,
     },
     multiShooter2: {
         image: "multi_shooter_2",
         physics: { density: 0.01 },
-        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 2, bulletSpeed: 5, burstCount: 3, burstDelay: 0.5, burstRemaining: 0, burstTimer: 0 },
+        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 2, bulletSpeed: 5, burstCount: 3, burstDelay: 0.5, burstRemaining: 0, burstTimer: 0, leadTime: 15 },
         skills: ['keepRange', 'flee', 'burst'],
         score: 6,
         requireScore: 130,
         spawnInterval: 12,
         minSpawnInterval: 5,
+        max: 100,
     },
     multiShooter3: {
         image: "multi_shooter_3",
         physics: { density: 0.01 },
-        data: { speed: 0.01, range: 500, fleeRange: 400, shotCooldown: 1.5, bulletSpeed: 6, burstCount: 4, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0 },
+        data: { speed: 0.01, range: 500, fleeRange: 400, shotCooldown: 1.5, bulletSpeed: 6, burstCount: 4, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15 },
         skills: ['keepRange', 'flee', 'burst'],
         score: 8,
         requireScore: 250,
         spawnInterval: 15,
         minSpawnInterval: 6,
+        max: 100,
     },
 }

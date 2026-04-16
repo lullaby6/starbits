@@ -43,6 +43,7 @@ export default {
         spawnDuration: 1,
         deathDuration: 0.5,
         spawnSpeedupPerScore: 0.01,
+        recycleDistance: 2000,
     },
     bullets: {
         player: {
@@ -55,6 +56,17 @@ export default {
     },
     colors: {
         background: "rgba(1, 1, 15, 0.5)",
+    },
+    keys: {
+        fullscreen: ['f'],
+        pause: ['p', 'Escape'],
+        reset: ['r'],
+        player: {
+            up: ['w'],
+            down: ['s'],
+            left: ['a'],
+            right: ['d'],
+        },
     },
     images: {
         player: './assets/images/player.png',

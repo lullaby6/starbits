@@ -44,39 +44,35 @@ export default {
         });
     },
 
-    spawnEnemy(entityConfig) {
+    getSpawnPosition() {
         const cam = this.game.camera;
         const halfW = this.game.width / 2 / cam.zoom;
         const halfH = this.game.height / 2 / cam.zoom;
-        const w = config.world;
+        const margin = config.spawn.margin;
 
-        let x, y, attempts = 0;
-        // do {
         const side = CanvasEngine.Random.int(0, 3);
+        let x, y;
         if (side === 0) {
-            x = CanvasEngine.Random.float(cam.x - halfW - config.spawn.margin, cam.x + halfW + config.spawn.margin);
-            y = cam.y - halfH - config.spawn.margin;
+            x = CanvasEngine.Random.float(cam.x - halfW - margin, cam.x + halfW + margin);
+            y = cam.y - halfH - margin;
         } else if (side === 1) {
-            x = CanvasEngine.Random.float(cam.x - halfW - config.spawn.margin, cam.x + halfW + config.spawn.margin);
-            y = cam.y + halfH + config.spawn.margin;
+            x = CanvasEngine.Random.float(cam.x - halfW - margin, cam.x + halfW + margin);
+            y = cam.y + halfH + margin;
         } else if (side === 2) {
-            x = cam.x - halfW - config.spawn.margin;
-            y = CanvasEngine.Random.float(cam.y - halfH - config.spawn.margin, cam.y + halfH + config.spawn.margin);
+            x = cam.x - halfW - margin;
+            y = CanvasEngine.Random.float(cam.y - halfH - margin, cam.y + halfH + margin);
         } else {
-            x = cam.x + halfW + config.spawn.margin;
-            y = CanvasEngine.Random.float(cam.y - halfH - config.spawn.margin, cam.y + halfH + config.spawn.margin);
+            x = cam.x + halfW + margin;
+            y = CanvasEngine.Random.float(cam.y - halfH - margin, cam.y + halfH + margin);
         }
-        //     attempts++;
-        // } while (
-        //     attempts < config.spawn.maxAttempts &&
-        //     (x < w.minX || x > w.maxX || y < w.minY || y > w.maxY)
-        // );
 
-        // if (x < w.minX || x > w.maxX || y < w.minY || y > w.maxY) return;
+        return { x, y };
+    },
 
-        entityConfig.x = x;
-        entityConfig.y = y;
-
+    spawnEnemy(entityConfig) {
+        const pos = this.getSpawnPosition();
+        entityConfig.x = pos.x;
+        entityConfig.y = pos.y;
         this.addEntity(entityConfig);
     },
 
@@ -130,6 +126,12 @@ export default {
 
             if (this.data.timers[enemy.name] >= interval) {
                 this.data.timers[enemy.name] = 0;
+
+                if (enemy.max != null) {
+                    const alive = this.findByTag(enemy.name).length;
+                    if (alive >= enemy.max) return;
+                }
+
                 this.spawnEnemy(createEnemy(enemy));
             }
         })

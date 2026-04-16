@@ -32,6 +32,7 @@ const game = new CanvasEngine.Game({
     ],
 
     data: {
+        keys: config.keys,
         joysticks: {
             Left: {
                 zone: $id('joystick-left'),
@@ -59,9 +60,10 @@ const game = new CanvasEngine.Game({
     },
 
     onKeydown({ key }) {
-        if (key === 'p' || key === 'Escape') this.togglePause();
-        else if (key === 'r') this.resetScene();
-        else if (key === 'f') CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
+        const keys = this.data.keys;
+        if (keys.pause.includes(key)) this.togglePause();
+        else if (keys.reset.includes(key)) this.resetScene();
+        else if (keys.fullscreen.includes(key)) CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
     },
 
     onPause() {
@@ -77,6 +79,7 @@ const game = new CanvasEngine.Game({
     onCreate() {
         this.setupWindow();
         this.setupDom();
+        this.adjustCanvasHeight();
 
         if (CanvasEngine.Utils.isMobile()) {
             this._createJoysticks()
@@ -163,6 +166,11 @@ const game = new CanvasEngine.Game({
             passive: false
         });
 
+        window.addEventListener("resize", () => {
+            this.adjustCanvasHeight();
+        });
+
+        // don't delete:
         // window.addEventListener('contextmenu', event => {
         //     event.preventDefault()
         // });
@@ -176,6 +184,19 @@ const game = new CanvasEngine.Game({
         //         event.preventDefault()
         //     }
         // })
+    },
+
+    adjustCanvasHeight() {
+        if (!CanvasEngine.Utils.isLandscape()) return;
+
+        const windowAspect = window.innerWidth / window.innerHeight;
+        const gameAspect = config.game.width / config.game.height;
+        if (Math.abs(windowAspect - gameAspect) < 0.0001) return;
+
+        const newHeight = config.game.width / windowAspect;
+        this.height = newHeight;
+        this.canvas.height = newHeight;
+        this.ctx.imageSmoothingEnabled = !this.pixelArt;
     },
 
     setupDom() {

@@ -11,7 +11,7 @@ A JavaScript Arcade Bullet Hell Game
 - Bosses
 - Sounds
 - Music
-- Start Menu
 - Game Over Menu
 - Upgrades
 - Special Stars
+- Waves

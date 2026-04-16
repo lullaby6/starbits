@@ -27,12 +27,6 @@ const player = {
         bulletSpeed: 10,
         shotCooldown: 0.2,
         shotTimer: 0,
-        keys: {
-            up: 'w',
-            down: 's',
-            left: 'a',
-            right: 'd',
-        }
     },
 
     onMousemove({ worldX, worldY }) {
@@ -89,14 +83,14 @@ const player = {
     },
 
     onKeyhold({ key }) {
-        const keys = this.data.keys;
+        const keys = this.scene.game.data.keys.player;
         let fx = 0;
         let fy = 0;
 
-        if (key === keys.up) fy = -this.data.speed;
-        else if (key === keys.down) fy = this.data.speed;
-        else if (key === keys.left) fx = -this.data.speed;
-        else if (key === keys.right) fx = this.data.speed;
+        if (keys.up.includes(key)) fy = -this.data.speed;
+        else if (keys.down.includes(key)) fy = this.data.speed;
+        else if (keys.left.includes(key)) fx = -this.data.speed;
+        else if (keys.right.includes(key)) fx = this.data.speed;
 
         if (fx !== 0 || fy !== 0) {
             this.applyForce({
