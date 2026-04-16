@@ -51,7 +51,7 @@ export function spawnBullet(scene, x, y, angle, speed) {
                 this.destroy();
             } else if (other.hasTag('enemyBullet')) {
                 this.scene.game.camera.shake(2, 0.1);
-                other.destroy();
+                if (other.die) other.die(); else other.destroy();
                 this.destroy();
             }
         },

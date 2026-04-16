@@ -1,5 +1,7 @@
 import config from "../../config/config.js";
 
+const DEATH_DURATION = config.enemies.deathDuration;
+
 export function spawnEnemyBullet(scene, x, y, angle, speed) {
     scene.addEntity({
         x: x - 4,
@@ -26,6 +28,8 @@ export function spawnEnemyBullet(scene, x, y, angle, speed) {
 
         data: {
             lifetime: config.bullets.enemy.lifetime,
+            dying: false,
+            deathTimer: 0,
         },
 
         onCreate() {
@@ -35,10 +39,27 @@ export function spawnEnemyBullet(scene, x, y, angle, speed) {
             });
         },
 
+        die() {
+            if (this.data.dying) return;
+            this.data.dying = true;
+            this.data.deathTimer = DEATH_DURATION;
+            this.tint = null;
+            this.disableCollisions();
+        },
+
         onUpdate(dt) {
+            if (this.data.dying) {
+                this.data.deathTimer -= dt;
+                this.alpha = Math.max(0, this.data.deathTimer / DEATH_DURATION);
+                if (this.data.deathTimer <= 0) {
+                    this.destroy();
+                }
+                return;
+            }
+
             this.data.lifetime -= dt;
             if (this.data.lifetime <= 0) {
-                this.destroy();
+                this.die();
                 return;
             }
 
@@ -51,11 +72,12 @@ export function spawnEnemyBullet(scene, x, y, angle, speed) {
         },
 
         onPhysicsCollision(other) {
+            if (this.data.dying) return;
             if (other.hasTag('enemy') || other.hasTag('enemyBullet')) return;
 
             if (other.name === 'player') {
                 this.scene.game.camera.shake(8, 0.3);
-                this.destroy();
+                this.die();
                 this.scene.gameOver();
             }
         },
