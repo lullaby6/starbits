@@ -72,6 +72,8 @@ const player = {
         enemies.forEach(enemy => {
             const dist = CanvasEngine.Utils.distance(this, enemy);
 
+            if (dist > config.game.distanceToAutoAim) return;
+
             if (dist < minDist) {
                 minDist = dist;
                 closestEnemy = enemy;
@@ -104,18 +106,18 @@ const player = {
         if (cx !== this.centerX || cy !== this.centerY) {
             const body = this._physicsBody;
             if (body) {
-                this.scene.game.physics.setPosition(body, cx, cy);
-                this.scene.game.physics.setVelocity(body, { x: 0, y: 0 });
+                this.game.physics.setPosition(body, cx, cy);
+                this.game.physics.setVelocity(body, { x: 0, y: 0 });
             }
         }
 
-        if (this.scene.game.data.options.autoAim) {
+        if (this.game.data.options.autoAim) {
             this.autoAim(dt)
         }
     },
 
     onKeyhold({ key }) {
-        const keys = this.scene.game.data.keys.player;
+        const keys = this.game.data.keys.player;
         let fx = 0;
         let fy = 0;
 
@@ -147,7 +149,7 @@ const player = {
     },
 
     onRightJoystickMove(event) {
-        if (this.scene.game.data.options.autoAim) return;
+        if (this.game.data.options.autoAim) return;
 
         this.shot();
         this.rotation = -event.data.angle.radian;

@@ -72,6 +72,8 @@ const game = new CanvasEngine.Game({
         this.adjustCanvasHeight();
 
         if (CanvasEngine.Utils.isMobile()) {
+            this.data.options.autoAim = true;
+
             this._createJoysticks()
 
             window.addEventListener("resize", event => {
@@ -227,8 +229,12 @@ const game = new CanvasEngine.Game({
         const updateAutoAim = () => {
             if (this.data.options.autoAim) {
                 $autoAimSpam.textContent = 'ON';
+
+                if (this._activeScene.name == 'game') this.hideGui('joystick-right')
             } else {
                 $autoAimSpam.textContent = 'OFF';
+
+                if (this._activeScene.name == 'game') this.showGui('joystick-right')
             }
         }
 

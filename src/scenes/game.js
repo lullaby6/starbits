@@ -123,6 +123,10 @@ export default {
         this.setupDom();
         this.setupDangerVignette();
 
+        if (this.game.data.options.autoAim) (
+            this.game.hideGui('joystick-right')
+        )
+
         if (!CanvasEngine.Utils.isMobile()) {
             this.addEntity(crosshairEntity)
         }

@@ -58,6 +58,7 @@ export default {
         title: "Starbits",
         fps: 60,
         motionBlur,
+        distanceToAutoAim: 600,
     },
     world: {
         width: width * worldGrid,

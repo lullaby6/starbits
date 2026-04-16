@@ -16,7 +16,7 @@ const crosshair = {
     },
 
     onUpdate() {
-        const input = this.scene.game.input;
+        const input = this.game.input;
         this.x = input.mouseWorldX - this.width / 2;
         this.y = input.mouseWorldY - this.height / 2;
     },

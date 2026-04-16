@@ -181,8 +181,8 @@ export function createEnemy(enemy) {
             if (dist > config.enemies.recycleDistance) {
                 const pos = this.scene.getSpawnPosition();
                 if (this._physicsBody) {
-                    this.scene.game.physics.setPosition(this._physicsBody, pos.x, pos.y);
-                    this.scene.game.physics.setVelocity(this._physicsBody, { x: 0, y: 0 });
+                    this.game.physics.setPosition(this._physicsBody, pos.x, pos.y);
+                    this.game.physics.setVelocity(this._physicsBody, { x: 0, y: 0 });
                 } else {
                     this.x = pos.x - this.width / 2;
                     this.y = pos.y - this.height / 2;
@@ -203,7 +203,7 @@ export function createEnemy(enemy) {
         onPhysicsCollision(other) {
             if (this.data.spawnTimer > 0 || this.data.dying) return;
             if (other.name === 'player') {
-                this.scene.game.camera.shake(8, 0.3);
+                this.game.camera.shake(8, 0.3);
                 this.scene.gameOver();
             }
 
