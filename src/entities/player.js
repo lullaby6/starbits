@@ -34,7 +34,7 @@ const player = {
         this.rotateAt(worldX, worldY);
     },
 
-    onClick() {
+    onMousehold() {
         if (CanvasEngine.Utils.isMobile()) return;
         this.shot();
     },

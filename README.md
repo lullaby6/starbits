@@ -15,3 +15,4 @@ A JavaScript Arcade Bullet Hell Game
 - Upgrades
 - Special Stars
 - Waves
+- Bloom

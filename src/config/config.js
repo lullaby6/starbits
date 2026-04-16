@@ -1,6 +1,7 @@
 const width = 1024;
 const height = width / (16 / 9);
 const worldGrid = 3;
+const motionBlur = 0.75;
 
 export default {
     game: {
@@ -9,6 +10,7 @@ export default {
         height,
         title: "Starsbits",
         fps: 60,
+        // motionBlur: 0.5,
     },
     world: {
         width: width * worldGrid,
@@ -55,7 +57,7 @@ export default {
         },
     },
     colors: {
-        background: "rgba(1, 1, 15, 0.5)",
+        background: `rgba(1, 1, 15, ${motionBlur})`,
     },
     keys: {
         fullscreen: ['f'],
