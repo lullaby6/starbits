@@ -172,6 +172,9 @@ export default {
             if (this.data.timers[enemy.name] >= interval) {
                 this.data.timers[enemy.name] = 0;
 
+                const totalAlive = this.countByTag('enemy');
+                if (totalAlive >= config.enemies.max) return;
+
                 if (enemy.max != null) {
                     const alive = this.countByTag(enemy.name);
                     if (alive >= enemy.max) return;

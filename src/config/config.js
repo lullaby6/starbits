@@ -98,6 +98,7 @@ export default {
         depthRange: [0.15, 1],
     },
     enemies: {
+        max: 100,
         tintMaxDist: 500,
         spawnDuration: 1,
         deathDuration: 0.5,
