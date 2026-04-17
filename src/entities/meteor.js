@@ -74,7 +74,7 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
                 if (this.isVisible()) {
                     spawnDestroyParticles(this.scene, other.centerX, other.centerY);
                 }
-                if (other.die) other.die(); else other.destroy();
+                other.destroy();
             }
         },
     };

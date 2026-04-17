@@ -13,7 +13,6 @@ export function spawnBullet(scene, {
     afterTick,
     getTrailExtras,
     onPhysicsCollision,
-    die,
 }) {
     const entity = {
         x: x - size / 2,
@@ -55,7 +54,7 @@ export function spawnBullet(scene, {
 
             this.data.lifetime -= dt;
             if (this.data.lifetime <= 0) {
-                if (this.die) this.die(); else this.destroy();
+                this.destroy();
                 return;
             }
 
@@ -77,8 +76,6 @@ export function spawnBullet(scene, {
             }
         },
     };
-
-    if (die) entity.die = die;
 
     return scene.addEntity(entity);
 }

@@ -10,28 +10,33 @@ export function spawnPlayerBullet(scene, x, y, angle, speed, size, lifetime, pie
         physicsExtras: { density: 0.01 },
         extraData: {
             piercing,
+            speed,
             hitEntities: new Set(),
         },
-        die() {
-            this.destroy();
-        },
         onPhysicsCollision(other) {
+            const pierce = () => {
+                if (this.data.piercing <= 0) {
+                    this.destroy();
+                    return;
+                }
+                this.data.piercing--;
+                this.setVelocity({
+                    x: Math.cos(this.rotation) * this.data.speed,
+                    y: Math.sin(this.rotation) * this.data.speed,
+                });
+            };
+
             if (other.hasTag('enemy')) {
                 if (this.data.hitEntities.has(other)) return;
                 this.data.hitEntities.add(other);
 
                 this.scene.addScore(other.data.score || 1);
                 if (other.die) other.die(); else other.destroy();
-
-                if (this.data.piercing <= 0) {
-                    this.die();
-                } else {
-                    this.data.piercing--;
-                }
+                pierce();
             } else if (other.hasTag('enemyBullet')) {
                 this.game.shakeCamera(config.shakes.bulletCollide.intensity, config.shakes.bulletCollide.duration);
-                if (other.die) other.die(); else other.destroy();
-                this.die();
+                other.destroy();
+                pierce();
             }
         },
     });
