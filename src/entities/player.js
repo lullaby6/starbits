@@ -32,7 +32,7 @@ const player = {
         shield: config.stats.shield.min,
         health: config.stats.health.min,
         bulletSize: config.stats.bulletSize.min,
-        bulletCount: config.stats.bulletCount.min,
+        bulletBurstCount: config.stats.bulletBurstCount.min,
         bulletLifetime: config.stats.bulletLifetime.min,
         bulletPiercing: config.stats.bulletPiercing.min,
         bulletSize: config.stats.bulletSize.min,
