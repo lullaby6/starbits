@@ -1,6 +1,7 @@
 import config from "../config/config.js";
 import { spawnEnemyBullet } from "./bullets/enemyBullet.js";
 import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../particles/particles.js";
+import { getEntityTint } from "../utils/tint.js";
 
 const world = config.world;
 
@@ -221,8 +222,7 @@ export function createEnemy(enemy) {
             const visible = this.isVisible();
 
             if (visible) {
-                const tintStrength = Math.max(0, 1 - dist / config.tint.enemy.max);
-                this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
+                this.tint = getEntityTint(dist);
             }
 
             for (const skill of entitySkills) {

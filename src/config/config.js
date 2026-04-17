@@ -120,11 +120,11 @@ export default {
     },
     tint: {
         enemy: {
-            min: 300,
+            min: 100,
             max: 600
         },
         bullet: {
-            min: 300,
+            min: 100,
             max: 600
         },
     },

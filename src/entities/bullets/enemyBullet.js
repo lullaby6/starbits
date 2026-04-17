@@ -1,5 +1,6 @@
 import config from "../../config/config.js";
 import { spawnBulletTrailParticle } from "../../particles/particles.js";
+import { getBulletTint } from "../../utils/tint.js";
 
 const DEATH_DURATION = config.enemies.deathDuration;
 
@@ -79,8 +80,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
                 const player = this.scene.player;
                 if (player) {
                     const dist = CanvasEngine.Utils.distance(this, player);
-                    const tintStrength = Math.max(0, 1 - dist / config.tint.bullet.max);
-                    this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
+                    this.tint = getBulletTint(dist);
                 }
             }
         },
