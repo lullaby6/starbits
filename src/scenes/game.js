@@ -209,9 +209,9 @@ export default {
             const choice = choices[i];
             if (choice) {
                 const stat = config.stats[choice.statKey];
-                const nextLevel = this.data.upgradeLevels[choice.statKey] + 1;
+                const currentLevel = this.data.upgradeLevels[choice.statKey];
                 const maxLevel = statMaxLevel(stat);
-                btn.textContent = `${stat.label} ${formatUpgradeDelta(stat.upgrade)} (${nextLevel}/${maxLevel})`;
+                btn.textContent = `${stat.label} ${formatUpgradeDelta(stat.upgrade)} (${currentLevel}/${maxLevel})`;
                 btn.style.display = '';
             } else {
                 btn.style.display = 'none';

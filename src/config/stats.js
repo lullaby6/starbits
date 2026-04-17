@@ -31,7 +31,7 @@ export default {
     },
     bulletCount: {
         label: 'Bullet Count',
-        weight: 20,
+        weight: 15,
         min: 1,
         max: 5,
         upgrade: 1,
@@ -45,9 +45,9 @@ export default {
     },
     bulletBurstCount: {
         label: 'Bullet Burst Count',
-        weight: 15,
+        weight: 10,
         min: 0,
-        max: 5,
+        max: 3,
         upgrade: 1,
     },
     bulletBurstDelay: {
