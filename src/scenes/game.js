@@ -59,6 +59,9 @@ export default {
 
         const crosshair = this.findEntityByName('crosshair');
         if (crosshair) crosshair.destroy();
+
+        this.game.showGui('game_score')
+
         // this.game.resetScene({
         //     resetCamera: false
         // });
