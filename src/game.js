@@ -207,17 +207,14 @@ const game = new CanvasEngine.Game({
         if (Math.abs(windowAspect - gameAspect) < 0.0001) return;
 
         const newHeight = config.game.width / windowAspect;
+        this.renderer.setSize(this.width, newHeight);
         this.height = newHeight;
-        this.canvas.height = newHeight;
-        this.ctx.imageSmoothingEnabled = !this.pixelArt;
     },
 
     resetCanvasSize() {
         this.width = config.game.width;
         this.height = config.game.height;
-        this.canvas.width = config.game.width;
-        this.canvas.height = config.game.height;
-        this.ctx.imageSmoothingEnabled = !this.pixelArt;
+        this.renderer.setSize(config.game.width, config.game.height);
     },
 
     setBooleanOption(option, value) {
