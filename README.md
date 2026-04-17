@@ -1,6 +1,6 @@
 # Starbits
 
-A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
+A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 
 [Demo](https://lullaby6.github.io/starbits/)
 
