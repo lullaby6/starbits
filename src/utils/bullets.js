@@ -9,11 +9,14 @@ export function spawnPlayerBullet(scene, x, y, angle, speed, size, lifetime, pie
         x, y, angle, speed, size, lifetime,
         tags: ['bullet'],
         group: 'playerBullet',
-        collidesWith: ['enemy', 'enemyBullet', 'meteor'],
+        collidesWith: ['enemy', 'enemyBullet', 'meteor', 'hole'],
         physicsExtras: { density: 0.01 },
         extraData: {
             piercing,
             hitEntities: new Set(),
+        },
+        die() {
+            this.destroy();
         },
         onPhysicsCollision(other) {
             if (other.hasTag('enemy')) {
@@ -24,14 +27,14 @@ export function spawnPlayerBullet(scene, x, y, angle, speed, size, lifetime, pie
                 if (other.die) other.die(); else other.destroy();
 
                 if (this.data.piercing <= 0) {
-                    this.destroy();
+                    this.die();
                 } else {
                     this.data.piercing--;
                 }
             } else if (other.hasTag('enemyBullet')) {
                 this.game.shakeCamera(config.shakes.bulletCollide.intensity, config.shakes.bulletCollide.duration);
                 if (other.die) other.die(); else other.destroy();
-                this.destroy();
+                this.die();
             }
         },
     });
@@ -44,7 +47,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
         lifetime: lifetime ?? config.bullets.enemy.lifetime,
         tags: ['enemyBullet'],
         group: 'enemyBullet',
-        collidesWith: ['player', 'playerBullet', 'meteor'],
+        collidesWith: ['player', 'playerBullet', 'meteor', 'hole'],
         extraData: {
             dying: false,
             deathTimer: 0,
@@ -61,6 +64,9 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
                 this.data.deathTimer -= dt;
                 this.alpha = Math.max(0, this.data.deathTimer / DEATH_DURATION);
                 if (this.data.deathTimer <= 0) {
+                    if (this.isVisible()) {
+                        spawnBulletDestroyParticles(this.scene, this.centerX, this.centerY, this.width);
+                    }
                     this.destroy();
                 }
                 return false;
@@ -88,9 +94,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             if (other.hasTag('enemy') || other.hasTag('enemyBullet')) return;
 
             if (other.name === 'player') {
-                this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
-                this.die();
-                this.scene.gameOver();
+                other.destroy()
             }
         },
     });

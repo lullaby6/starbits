@@ -21,7 +21,7 @@ const player = {
         frictionAir: config.stats.friction.min,
         fixedRotation: true,
         group: 'player',
-        collidesWith: ['enemy', 'enemyBullet', 'meteor'],
+        collidesWith: ['enemy', 'enemyBullet', 'meteor', 'hole'],
     },
 
     data: {
@@ -237,7 +237,11 @@ const player = {
     },
 
     onDestroy() {
+        this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
+
         spawnDestroyParticles(this.scene, this.centerX, this.centerY);
+
+        this.scene.gameOver();
     },
 }
 

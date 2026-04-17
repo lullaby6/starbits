@@ -3,6 +3,8 @@ import { createStars } from "../entities/star.js";
 import crosshairEntity from "../entities/crosshair.js";
 import { enemies, createEnemy } from "../entities/enemies.js";
 import { spawnMeteor } from "../entities/meteor.js";
+import { spawnBlackHole } from "../entities/holes/blackHole.js";
+import { spawnWormHole } from "../entities/holes/wormHole.js";
 import config from "../config/config.js";
 import Upgrades from "../utils/upgrades.js";
 
@@ -92,6 +94,14 @@ export default {
         ),
     },
 
+    onKeydown({ key }) {
+        if (config.keys.test.includes(key)) {
+            console.log('test');
+            spawnBlackHole(this)
+            // spawnWormHole(this)
+        }
+    },
+
     gameOver() {
         this.ignorePause = true;
         this.game.showCursor();
@@ -99,8 +109,8 @@ export default {
         this.game.menu.restart.show();
 
         const player = this.player;
-        if (player) player.destroy();
         this.player = null;
+        if (player) player.destroy();
 
         const crosshair = this.findEntityByName('crosshair');
         if (crosshair) crosshair.destroy();
@@ -265,9 +275,43 @@ export default {
         }, delay);
     },
 
+    scheduleBlackHoleSpawn() {
+        const cfg = config.holes.black;
+        const delay = CanvasEngine.Random.float(cfg.spawnTimeMin, cfg.spawnTimeMax);
+        this.blackHoleTimer = this.game.setTimeout(() => {
+            this.blackHoleTimer = null;
+            if (!this.player) return;
+
+            const chance = CanvasEngine.Random.float(cfg.spawnChanceMin, cfg.spawnChanceMax);
+            if (Math.random() < chance) {
+                spawnBlackHole(this);
+            }
+
+            this.scheduleBlackHoleSpawn();
+        }, delay);
+    },
+
+    scheduleWormHoleSpawn() {
+        const cfg = config.holes.worm;
+        const delay = CanvasEngine.Random.float(cfg.spawnTimeMin, cfg.spawnTimeMax);
+        this.wormHoleTimer = this.game.setTimeout(() => {
+            this.wormHoleTimer = null;
+            if (!this.player) return;
+
+            const chance = CanvasEngine.Random.float(cfg.spawnChanceMin, cfg.spawnChanceMax);
+            if (Math.random() < chance) {
+                spawnWormHole(this);
+            }
+
+            this.scheduleWormHoleSpawn();
+        }, delay);
+    },
+
     onCreate() {
         this.setupDangerVignette();
         this.scheduleMeteorSpawn();
+        this.scheduleBlackHoleSpawn();
+        this.scheduleWormHoleSpawn();
 
         if (!CanvasEngine.Utils.isMobile()) {
             const crosshair = this.addEntity(crosshairEntity);
@@ -355,11 +399,10 @@ export default {
         const cfg = config.dangerVignette;
 
         let minDist = Infinity;
-        const entities = this.entities;
+        const entities = this.findEntitiesByTag('danger');
         for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
             if (!entity.active) continue;
-            if (!entity.hasTag('enemy') && !entity.hasTag('enemyBullet')) continue;
             if (entity.data?.dying || (entity.data?.spawnTimer && entity.data.spawnTimer > 0)) continue;
             const distance = CanvasEngine.Utils.distance(entity, player);
             if (distance < minDist) minDist = distance;

@@ -1,5 +1,5 @@
 import config from "../../config/config.js";
-import { spawnBulletTrailParticle } from "../../utils/particles.js";
+import { spawnBulletTrailParticle, spawnBulletDestroyParticles } from "../../utils/particles.js";
 
 export function spawnBullet(scene, {
     x, y, angle, speed, size, lifetime,
@@ -70,6 +70,12 @@ export function spawnBullet(scene, {
         },
 
         onPhysicsCollision,
+
+        onDestroy() {
+            if (this.isVisible()) {
+                spawnBulletDestroyParticles(this.scene, this.centerX, this.centerY, this.width);
+            }
+        },
     };
 
     if (die) entity.die = die;

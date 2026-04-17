@@ -1,0 +1,52 @@
+export default {
+    black: {
+        density: 0.1,
+        frictionAir: 0,
+        restitution: 0.2,
+
+        consumeGrowth: 1,
+        pullForceScale: 0.0001,
+        pullForce: 0.0001,
+        maxPullForce: 10,
+        pullRange: 500,
+        spawnDistance: 1800,
+        destroyDistance: 2000,
+        imageScaleMin: 10,
+        imageScaleMax: 25,
+        speedMin: 0.1,
+        speedMax: 2,
+        rotationSpeedMin: -0.02,
+        rotationSpeedMax: 0.02,
+        aimJitter: 800,
+        spawnTimeMin: 5000,
+        spawnTimeMax: 10000,
+        spawnChanceMin: 0.5,
+        spawnChanceMax: 1,
+        density: 0.1,
+        frictionAir: 0,
+        restitution: 0.2,
+        imageScaleCap: 50,
+    },
+    worm: {
+        density: 0.1,
+        frictionAir: 0,
+        restitution: 0.2,
+
+        spawnDistance: 1800,
+        destroyDistance: 2000,
+        imageScaleMin: 10,
+        imageScaleMax: 15,
+        speedMin: 0.1,
+        speedMax: 2,
+        rotationSpeedMin: -0.02,
+        rotationSpeedMax: 0.02,
+        aimJitter: 800,
+        spawnTimeMin: 5000,
+        spawnTimeMax: 10000,
+        spawnChanceMin: 0.5,
+        spawnChanceMax: 1,
+
+        worldMargin: 500,
+    }
+
+}

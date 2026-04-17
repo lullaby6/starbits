@@ -1,5 +1,34 @@
 import config from "../config/config.js";
 
+export function spawnBulletDestroyParticles(scene, x, y, size, extras = {}) {
+    const cfg = config.particles.bulletDestroy;
+    const scale = size / 10;
+
+    for (let i = 0; i < cfg.count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = CanvasEngine.Random.float(cfg.speedMin, cfg.speedMax) * scale;
+        const particleSize = CanvasEngine.Random.float(cfg.sizeMin, cfg.sizeMax) * scale;
+
+        CanvasEngine.Particles.spawn(scene, {
+            x: x + (Math.random() - 0.5) * cfg.jitter * scale,
+            y: y + (Math.random() - 0.5) * cfg.jitter * scale,
+            size: particleSize,
+            color: cfg.color,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            drag: cfg.drag,
+            angularVelocity: CanvasEngine.Random.float(-cfg.maxAngular, cfg.maxAngular),
+            lifetime: CanvasEngine.Random.float(cfg.lifetimeMin, cfg.lifetimeMax),
+            scaleEnd: cfg.scaleEnd,
+            alphaEnd: cfg.alphaEnd,
+            rotation: Math.random() * Math.PI * 2,
+            z: cfg.z,
+            alpha: cfg.alpha,
+            ...extras,
+        });
+    }
+}
+
 export function spawnDestroyParticles(scene, x, y, extras = {}) {
     const cfg = config.particles.destroy;
 

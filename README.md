@@ -10,11 +10,8 @@ A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 - Bosses
 - Sounds
 - Music
-- Roguelike Upgrades
 - Special Stars
 - Waves
-- Meteors Group
-- Black Hole
 - Danger Enemy Indicator
 
 Enemies:
@@ -22,6 +19,7 @@ Enemies:
 - Round
 - Round Shoot
 - ZigZag
+- BulletCount
 
 Upgrades:
 - Speed
@@ -41,5 +39,8 @@ Upgrades:
 
 - Bullet Follow
 
-- Health
-- Shield
+Skills:
+- Dash
+- Temporal Shield
+- Laser
+- Bullets Circle

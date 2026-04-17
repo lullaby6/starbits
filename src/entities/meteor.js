@@ -11,7 +11,7 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
         imageScale: 10,
         scaleWithImageScale: true,
         color: 'transparent',
-        tags: ['meteor'],
+        tags: ['meteor', 'danger'],
         originX: 0.5,
         originY: 0.5,
 
@@ -25,7 +25,7 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
             restitution: cfg.restitution,
             fixedRotation: false,
             group: 'meteor',
-            collidesWith: ['player', 'enemy', 'playerBullet', 'enemyBullet', 'meteor'],
+            collidesWith: ['player', 'enemy', 'playerBullet', 'enemyBullet', 'meteor', 'hole'],
         },
 
         data: {
@@ -61,8 +61,7 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
             if (other.hasTag('meteor')) return;
 
             if (other.name === 'player') {
-                this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
-                this.scene.gameOver();
+                other.destroy();
                 return;
             }
 

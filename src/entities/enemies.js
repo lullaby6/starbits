@@ -119,7 +119,7 @@ export function createEnemy(enemy) {
         scaleWithImageScale: true,
         color: 'transparent',
         alpha: 0,
-        tags: ['enemy', enemy.name, ...(enemy.tags || [])],
+        tags: ['enemy', 'danger', enemy.name, ...(enemy.tags || [])],
         originX: 0.5,
         originY: 0.5,
         dontCollideIsNotVisible: true,
@@ -133,7 +133,7 @@ export function createEnemy(enemy) {
                 frictionAir: 0.05,
                 fixedRotation: true,
                 group: 'enemy',
-                collidesWith: ['player', 'playerBullet', 'enemy', 'meteor'],
+                collidesWith: ['player', 'playerBullet', 'enemy', 'meteor', 'hole'],
             },
             ...enemy.physics,
         },
@@ -185,10 +185,6 @@ export function createEnemy(enemy) {
 
         onCreate() {
             if (enemy.onCreate) enemy.onCreate(this);
-        },
-
-        onDestroy() {
-            // spawnDestroyParticles(this.scene, this.centerX, this.centerY);
         },
 
         onUpdate(dt) {
@@ -254,8 +250,7 @@ export function createEnemy(enemy) {
         onPhysicsCollision(other) {
             if (this.data.spawnTimer > 0 || this.data.dying) return;
             if (other.name === 'player') {
-                this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
-                this.scene.gameOver();
+                other.destroy()
             }
 
         },

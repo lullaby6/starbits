@@ -15,6 +15,7 @@ import shakes from './shakes.js';
 import keys from './keys.js';
 import images from './images.js';
 import colors from './colors.js';
+import holes from './holes.js';
 
 export default {
     game,
@@ -34,4 +35,5 @@ export default {
     keys,
     images,
     colors,
+    holes,
 }
