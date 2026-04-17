@@ -3,10 +3,10 @@ import { spawnBulletTrailParticle } from "../../particles/particles.js";
 
 export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
     scene.addEntity({
-        x: x - 5,
-        y: y - 5,
-        width: 10,
-        height: 10,
+        x: x - size / 2,
+        y: y - size / 2,
+        width: size,
+        height: size,
         color: '#fff',
         tags: ['bullet'],
         originX: 0.5,

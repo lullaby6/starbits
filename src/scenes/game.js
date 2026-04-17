@@ -12,6 +12,41 @@ const enemiesData = Object.entries(enemies).map(([key, config]) => ({ name: key,
 const $score = $id('gui_game_score_score');
 const $best = $id('gui_game_score_best');
 const $dangerVignette = $id('gui_danger_vignette');
+const $upgradeBtns = [
+    $id('upgrade_btn_0'),
+    $id('upgrade_btn_1'),
+    $id('upgrade_btn_2'),
+];
+
+const UPGRADES = [
+    { statKey: 'speed', label: 'Speed', apply: (p, v) => p.data.speed = v },
+    {
+        statKey: 'friction', label: 'Friction', apply: (p, v) => {
+            if (p._physicsBody) p._physicsBody.frictionAir = v;
+        }
+    },
+    { statKey: 'bulletSpeed', label: 'Bullet Speed', apply: (p, v) => p.data.bulletSpeed = v },
+    { statKey: 'bulletSize', label: 'Bullet Size', apply: (p, v) => p.data.bulletSize = v },
+    { statKey: 'bulletLifetime', label: 'Bullet Lifetime', apply: (p, v) => p.data.bulletLifetime = v },
+    { statKey: 'shotCooldown', label: 'Fire Rate', apply: (p, v) => p.data.shotCooldown = v },
+];
+
+function clampToMax(value, stat) {
+    return stat.upgrade >= 0 ? Math.min(value, stat.max) : Math.max(value, stat.max);
+}
+
+function statMaxLevel(stat) {
+    return Math.round((stat.max - stat.min) / stat.upgrade);
+}
+
+function statValueAtLevel(stat, level) {
+    return clampToMax(stat.min + level * stat.upgrade, stat);
+}
+
+function formatUpgradeDelta(value) {
+    const str = value.toString();
+    return value >= 0 ? `+${str}` : str;
+}
 
 export default {
     name: 'game',
@@ -44,6 +79,11 @@ export default {
         maxScore: 0,
         dangerTime: 0,
         elapsedTime: 0,
+        nextUpgradeAt: config.player.upgradePerScore,
+        upgradeIncrement: config.player.upgradePerScore,
+        pendingUpgrades: 0,
+        upgradeLevels: Object.fromEntries(UPGRADES.map(u => [u.statKey, 0])),
+        upgradeChoices: [],
 
         timers: Object.fromEntries(
             Object.keys(enemies).map(name => [name, 0])
@@ -63,6 +103,10 @@ export default {
         const crosshair = this.findEntityByName('crosshair');
         if (crosshair) crosshair.destroy();
 
+        if (this.guiScoreTimeout) {
+            this.game.clearTimer(this.guiScoreTimeout);
+            this.guiScoreTimeout = null;
+        }
         this.game.showGui('game_score')
 
         // this.game.resetScene({
@@ -123,6 +167,76 @@ export default {
             this.game.hideGui('game_score', 300)
             this.guiScoreTimeout = null
         }, 3000)
+
+        while (this.data.score >= this.data.nextUpgradeAt) {
+            this.data.pendingUpgrades++;
+            this.data.nextUpgradeAt += Math.round(this.data.upgradeIncrement);
+            this.data.upgradeIncrement = Math.min(
+                this.data.upgradeIncrement * config.player.upgradeScoreGrowth,
+                config.player.upgradePerScoreMax
+            );
+        }
+        if (this.data.pendingUpgrades > 0 && !this._upgradeActive) {
+            this.showUpgradeMenu();
+        }
+    },
+
+    getAvailableUpgrades() {
+        return UPGRADES.filter(u => this.data.upgradeLevels[u.statKey] < statMaxLevel(config.stats[u.statKey]));
+    },
+
+    showUpgradeMenu() {
+        const available = this.getAvailableUpgrades();
+        if (available.length === 0) {
+            this.data.pendingUpgrades = 0;
+            return;
+        }
+
+        const pool = [...available];
+        const choices = [];
+        const pickCount = Math.min(3, pool.length);
+        for (let i = 0; i < pickCount; i++) {
+            const idx = CanvasEngine.Random.int(0, pool.length - 1);
+            choices.push(pool.splice(idx, 1)[0]);
+        }
+
+        this.data.upgradeChoices = choices;
+
+        for (let i = 0; i < $upgradeBtns.length; i++) {
+            const btn = $upgradeBtns[i];
+            const choice = choices[i];
+            if (choice) {
+                const stat = config.stats[choice.statKey];
+                const nextLevel = this.data.upgradeLevels[choice.statKey] + 1;
+                const maxLevel = statMaxLevel(stat);
+                btn.textContent = `${choice.label} ${formatUpgradeDelta(stat.upgrade)} (${nextLevel}/${maxLevel})`;
+                btn.style.display = '';
+            } else {
+                btn.style.display = 'none';
+            }
+        }
+
+        this._upgradeActive = true;
+        this.game.pause();
+    },
+
+    applyUpgrade(slot) {
+        const choice = this.data.upgradeChoices[slot];
+        if (!choice || !this.player) return;
+
+        const stat = config.stats[choice.statKey];
+        const newLevel = Math.min(this.data.upgradeLevels[choice.statKey] + 1, statMaxLevel(stat));
+        this.data.upgradeLevels[choice.statKey] = newLevel;
+        choice.apply(this.player, statValueAtLevel(stat, newLevel));
+
+        this.data.pendingUpgrades = Math.max(0, this.data.pendingUpgrades - 1);
+        this.data.upgradeChoices = [];
+
+        this.game.resume();
+
+        if (this.data.pendingUpgrades > 0) {
+            this.showUpgradeMenu();
+        }
     },
 
     scheduleMeteorSpawn() {
@@ -195,8 +309,8 @@ export default {
             const interval = Math.max(
                 enemy.minSpawnInterval || 1,
                 enemy.spawnInterval
-                    - scoreAbove * config.enemies.spawnSpeedupPerScore
-                    - this.data.elapsedTime * config.enemies.spawnSpeedupPerSecond
+                - scoreAbove * config.enemies.spawnSpeedupPerScore
+                - this.data.elapsedTime * config.enemies.spawnSpeedupPerSecond
             );
 
             if (this.data.timers[enemy.name] >= interval) {
@@ -264,12 +378,21 @@ export default {
 
     onPause() {
         this.game.showCursor();
-        this.game.showMenu('pause');
         this.game.showMenu('pauseOverlay');
+        if (this._upgradeActive) {
+            this.game.showMenu('upgrade', 300);
+        } else {
+            this.game.showMenu('pause');
+        }
     },
     onResume() {
         this.game.hideCursor();
-        this.game.hideMenu('pause');
         this.game.hideMenu('pauseOverlay');
+        if (this._upgradeActive) {
+            this.game.hideMenu('upgrade', 300);
+            this._upgradeActive = false;
+        } else {
+            this.game.hideMenu('pause');
+        }
     },
 }

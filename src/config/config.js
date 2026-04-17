@@ -3,50 +3,61 @@ const height = width / (16 / 9);
 const worldGrid = 101;
 const motionBlur = 0.75; // 0 to 1
 
-const upgrades = {
+const stats = {
     speed: {
         min: 0.0025,
-        max: 0.005
+        max: 0.005,
+        upgrade: 0.0001,
     },
-    shield: {
+    shield: { //
         min: 0,
-        max: 3
+        max: 3,
+        upgrade: 1,
     },
-    zoom: {
+    zoom: { //
         min: 0.625,
-        max: 0.75
+        max: 0.75,
+        upgrade: 0.025,
     },
-    health: {
+    health: { //
         min: 1,
-        max: 5
+        max: 5,
+        upgrade: 1,
     },
     friction: {
         min: 0.075,
-        max: 0.15
+        max: 0.15,
+        upgrade: 0.01,
     },
     bulletSpeed: {
         min: 10,
-        max: 20
+        max: 20,
+        upgrade: 1,
     },
     bulletSize: {
         min: 10,
-        max: 20
+        max: 30,
+        upgrade: 1,
     },
-    bulletCount: {
+    bulletCount: { //
         min: 1,
-        max: 5
+        max: 5,
+        upgrade: 1,
     },
     bulletLifetime: {
         min: 3,
-        max: 6
+        max: 6,
+        upgrade: 0.5,
     },
-    bulletPiercing: {
+    bulletPiercing: { //
         min: 0,
-        max: 6
+        max: 6,
+        upgrade: 1,
     },
     shotCooldown: {
-        min: 0.2,
+        min: 0.25,
         max: 0.05,
+        upgrade: -0.025,
     }
 }
 
@@ -76,11 +87,14 @@ export default {
     },
     player: {
         autoAimDistanceToShot: 800,
+        upgradePerScore: 25,
+        upgradePerScoreMax: 100,
+        upgradeScoreGrowth: 1.2,
     },
     camera: {
-        zoom: upgrades.zoom.max,
-        zoomMax: upgrades.zoom.max,
-        zoomMin: upgrades.zoom.min,
+        zoom: stats.zoom.max,
+        zoomMax: stats.zoom.max,
+        zoomMin: stats.zoom.min,
         zoomSpeedFactor: 0.05,
         zoomLerp: 0.03,
     },
@@ -228,7 +242,7 @@ export default {
         playerDeath: { intensity: 8, duration: 0.3 },
         bulletCollide: { intensity: 2, duration: 0.1 },
     },
-    upgrades,
+    stats,
     colors: {
         background: `rgba(1, 1, 15, ${motionBlur})`,
     },

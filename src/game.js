@@ -62,6 +62,10 @@ const MENU_ACTIONS = {
     toggleOption(el) { this.toggleOption(el.dataset.option); },
     toggleFullscreen() { this.toggleFullscreenOption(); },
     quit() { window.close(); },
+    selectUpgrade(el) {
+        const scene = this._activeScene;
+        if (scene?.applyUpgrade) scene.applyUpgrade(parseInt(el.dataset.upgradeSlot));
+    },
 };
 
 const game = new CanvasEngine.Game({
@@ -119,6 +123,7 @@ const game = new CanvasEngine.Game({
     onKeydown({ key }) {
         const keys = this.data.keys;
         if (keys.pause.includes(key)) {
+            if (this._activeScene?._upgradeActive) return;
             if (this.paused && this._isInSubMenu()) this.menuBack();
             else this.togglePause();
         }
