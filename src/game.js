@@ -164,6 +164,14 @@ const game = new CanvasEngine.Game({
             this.adjustCanvasHeight();
         });
 
+        document.addEventListener('fullscreenchange', () => {
+            this.adjustCanvasHeight();
+
+            if (CanvasEngine.Utils.isFullscreen()) {
+                this.resetCanvasSize();
+            }
+        });
+
         // window.addEventListener('touchstart', event => {
         //     event.preventDefault();
         // }, { passive: false });
@@ -198,6 +206,14 @@ const game = new CanvasEngine.Game({
         const newHeight = config.game.width / windowAspect;
         this.height = newHeight;
         this.canvas.height = newHeight;
+        this.ctx.imageSmoothingEnabled = !this.pixelArt;
+    },
+
+    resetCanvasSize() {
+        this.width = config.game.width;
+        this.height = config.game.height;
+        this.canvas.width = config.game.width;
+        this.canvas.height = config.game.height;
         this.ctx.imageSmoothingEnabled = !this.pixelArt;
     },
 
