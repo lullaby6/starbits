@@ -28,7 +28,7 @@ const UPGRADES = [
     { statKey: 'bulletSpeed', label: 'Bullet Speed', apply: (p, v) => p.data.bulletSpeed = v },
     { statKey: 'bulletSize', label: 'Bullet Size', apply: (p, v) => p.data.bulletSize = v },
     { statKey: 'bulletLifetime', label: 'Bullet Lifetime', apply: (p, v) => p.data.bulletLifetime = v },
-    { statKey: 'shotCooldown', label: 'Fire Rate', apply: (p, v) => p.data.shotCooldown = v },
+    { statKey: 'shotCooldown', label: 'Shot Cooldown', apply: (p, v) => p.data.shotCooldown = v },
     { statKey: 'bulletBurstCount', label: 'Burst Count', weight: 25, apply: (p, v) => p.data.bulletCount = v },
     { statKey: 'bulletPiercing', label: 'Piercing', weight: 30, apply: (p, v) => p.data.bulletPiercing = v },
 ];

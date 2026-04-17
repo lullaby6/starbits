@@ -33,15 +33,15 @@ Upgrades:
 - Shot Cooldown
 
 - Bullet Count
+- Bullet Spread
 - Bullet Burst Count
 - Bullet Burst Delay
-- Zoom
 - Bullet Piercing
 
-- Health
-- Shield
+- Zoom
 
 - Bullet Knockback
 - Bullet Follow
-- Bullet Multiple
-- Bullet Spread
+
+- Health
+- Shield

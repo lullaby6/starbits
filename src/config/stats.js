@@ -34,15 +34,25 @@ export default {
         max: 30,
         upgrade: 1,
     },
-    bulletBurstCount: {
+    bulletCount: {
         min: 1,
         max: 5,
         upgrade: 1,
     },
+    bulletSpread: {
+        min: 0.15,
+        max: 0.5,
+        upgrade: 0.05,
+    },
+    bulletBurstCount: {
+        min: 0,
+        max: 5,
+        upgrade: 1,
+    },
     bulletBurstDelay: {
-        min: 0.08,
-        max: 0.04,
-        upgrade: 0.01,
+        min: 0.1,
+        max: 0.03,
+        upgrade: -0.01,
     },
     bulletLifetime: {
         min: 3,

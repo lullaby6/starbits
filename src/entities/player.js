@@ -32,10 +32,12 @@ const player = {
         shield: config.stats.shield.min,
         health: config.stats.health.min,
         bulletSize: config.stats.bulletSize.min,
+        bulletCount: config.stats.bulletCount.min,
+        bulletSpread: config.stats.bulletSpread.min,
         bulletBurstCount: config.stats.bulletBurstCount.min,
+        bulletBurstDelay: config.stats.bulletBurstDelay.min,
         bulletLifetime: config.stats.bulletLifetime.min,
         bulletPiercing: config.stats.bulletPiercing.min,
-        bulletSize: config.stats.bulletSize.min,
         burstRemaining: 0,
         burstTimer: 0,
         thrustTimer: 0,
@@ -75,7 +77,15 @@ const player = {
             spawnY += vel.y;
         }
 
-        spawnBullet(this.scene, spawnX, spawnY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
+        const count = this.data.bulletCount;
+        const spread = this.data.bulletSpread;
+
+        for (let bulletIndex = 0; bulletIndex < count; bulletIndex++) {
+            const offset = count === 1 ? 0 : (bulletIndex - (count - 1) / 2) * spread;
+            const angle = this.rotation + offset;
+            spawnBullet(this.scene, spawnX, spawnY, angle, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime, this.data.bulletPiercing);
+        }
+
         spawnShotParticles(this.scene, spawnX, spawnY, this.rotation, this.width);
     },
 
@@ -85,9 +95,19 @@ const player = {
 
         this._spawnBullet();
 
-        if (this.data.bulletCount > 1) {
-            this.data.burstRemaining = this.data.bulletCount - 1;
-            this.data.burstTimer = config.stats.bulletBurstDelay.min;
+        if (this.data.bulletBurstCount > 0) {
+            this.data.burstRemaining = this.data.bulletBurstCount;
+            this.data.burstTimer = this.data.bulletBurstDelay;
+        }
+    },
+
+    _updateBurst(dt) {
+        if (this.data.burstRemaining <= 0) return;
+        this.data.burstTimer -= dt;
+        if (this.data.burstTimer <= 0) {
+            this.data.burstRemaining--;
+            this.data.burstTimer = this.data.bulletBurstDelay;
+            this._spawnBullet();
         }
     },
 
@@ -118,6 +138,8 @@ const player = {
         if (this.data.shotTimer > 0) {
             this.data.shotTimer -= dt;
         }
+
+        this._updateBurst(dt);
 
         let thrustX = 0;
         let thrustY = 0;

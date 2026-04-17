@@ -254,6 +254,12 @@ const game = new CanvasEngine.Game({
             this.updateFullscreenButtons(isFs);
         });
 
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                button.blur()
+            })
+        })
+
         // window.addEventListener('touchstart', event => {
         //     event.preventDefault();
         // }, { passive: false });
