@@ -90,7 +90,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             if (other.hasTag('enemy') || other.hasTag('enemyBullet')) return;
 
             if (other.name === 'player') {
-                this.game.camera.shake(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
+                this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
                 this.die();
                 this.scene.gameOver();
             }

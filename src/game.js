@@ -44,6 +44,9 @@ const OPTIONS = {
             value ? this.enableParticles() : this.disableParticles();
         },
     },
+    cameraShake: {
+        default: true
+    }
 };
 
 function loadOption(name, def) {
@@ -339,6 +342,17 @@ const game = new CanvasEngine.Game({
         Object.keys(OPTIONS).forEach(name => this.setOption(name, this.data.options[name]));
         this.setOptionDisplay('fullscreen', CanvasEngine.Utils.isFullscreen());
     },
+
+    switchMenu(menu, from, duration, easing) {
+        this.constructor.prototype.switchMenu.call(this, menu, from, duration, easing);
+        if (this.paused && this.menu.pauseOverlay) {
+            this.menu.pauseOverlay.show();
+        }
+    },
+    shakeCamera(intensity, duration) {
+        if (!this.data.options.cameraShake) return;
+        this.camera.shake(intensity, duration);
+    }
 })
 
 game.start();

@@ -53,7 +53,7 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
             if (other.hasTag('meteor')) return;
 
             if (other.name === 'player') {
-                this.game.camera.shake(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
+                this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
                 this.scene.gameOver();
                 return;
             }

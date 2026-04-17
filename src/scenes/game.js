@@ -29,6 +29,8 @@ const UPGRADES = [
     { statKey: 'bulletSize', label: 'Bullet Size', apply: (p, v) => p.data.bulletSize = v },
     { statKey: 'bulletLifetime', label: 'Bullet Lifetime', apply: (p, v) => p.data.bulletLifetime = v },
     { statKey: 'shotCooldown', label: 'Fire Rate', apply: (p, v) => p.data.shotCooldown = v },
+    { statKey: 'bulletBurstCount', label: 'Burst Count', weight: 25, apply: (p, v) => p.data.bulletCount = v },
+    { statKey: 'bulletPiercing', label: 'Piercing', weight: 30, apply: (p, v) => p.data.bulletPiercing = v },
 ];
 
 function clampToMax(value, stat) {
@@ -46,6 +48,16 @@ function statValueAtLevel(stat, level) {
 function formatUpgradeDelta(value) {
     const str = value.toString();
     return value >= 0 ? `+${str}` : str;
+}
+
+function weightedRandomPick(pool) {
+    const totalWeight = pool.reduce((sum, item) => sum + (item.weight ?? 100), 0);
+    let roll = CanvasEngine.Random.float(0, totalWeight);
+    for (let i = 0; i < pool.length; i++) {
+        roll -= pool[i].weight ?? 100;
+        if (roll <= 0) return i;
+    }
+    return pool.length - 1;
 }
 
 export default {
@@ -119,7 +131,7 @@ export default {
         const cam = this.game.camera;
         const halfW = this.game.width / 2 / cam.zoom;
         const halfH = this.game.height / 2 / cam.zoom;
-        const margin = config.spawn.margin;
+        const margin = config.spawn.cameraMargin;
 
         const side = CanvasEngine.Random.int(0, 3);
         let x, y;
@@ -197,7 +209,7 @@ export default {
         const choices = [];
         const pickCount = Math.min(3, pool.length);
         for (let i = 0; i < pickCount; i++) {
-            const idx = CanvasEngine.Random.int(0, pool.length - 1);
+            const idx = weightedRandomPick(pool);
             choices.push(pool.splice(idx, 1)[0]);
         }
 

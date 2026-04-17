@@ -157,7 +157,7 @@ export function createEnemy(enemy) {
 
             if (this.isVisible()) {
                 spawnDestroyParticles(this.scene, this.centerX, this.centerY, { tint: this.tint });
-                this.game.camera.shake(config.shakes.enemyDeath.intensity, config.shakes.enemyDeath.duration);
+                this.game.shakeCamera(config.shakes.enemyDeath.intensity, config.shakes.enemyDeath.duration);
             }
 
             this.data.dying = true;
@@ -244,7 +244,7 @@ export function createEnemy(enemy) {
         onPhysicsCollision(other) {
             if (this.data.spawnTimer > 0 || this.data.dying) return;
             if (other.name === 'player') {
-                this.game.camera.shake(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
+                this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
                 this.scene.gameOver();
             }
 

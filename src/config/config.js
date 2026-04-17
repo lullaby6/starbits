@@ -1,271 +1,37 @@
-const width = 1024;
-const height = width / (16 / 9);
-const worldGrid = 101;
-const motionBlur = 0.75; // 0 to 1
-
-const stats = {
-    speed: {
-        min: 0.002,
-        max: 0.005,
-        upgrade: 0.0002,
-    },
-    shield: { //
-        min: 0,
-        max: 3,
-        upgrade: 1,
-    },
-    zoom: { //
-        min: 0.625,
-        max: 0.75,
-        upgrade: 0.025,
-    },
-    health: { //
-        min: 1,
-        max: 5,
-        upgrade: 1,
-    },
-    friction: {
-        min: 0.05,
-        max: 0.15,
-        upgrade: 0.01,
-    },
-    bulletSpeed: {
-        min: 10,
-        max: 25,
-        upgrade: 1,
-    },
-    bulletSize: {
-        min: 10,
-        max: 30,
-        upgrade: 1,
-    },
-    bulletBurstCount: { //
-        min: 1,
-        max: 5,
-        upgrade: 1,
-    },
-    bulletBurstDelay: { //
-        min: 0.08,
-        max: 0.04,
-        upgrade: 0.01,
-    },
-    bulletLifetime: {
-        min: 3,
-        max: 6,
-        upgrade: 0.5,
-    },
-    bulletPiercing: { //
-        min: 0,
-        max: 6,
-        upgrade: 1,
-    },
-    shotCooldown: {
-        min: 0.375,
-        max: 0.05,
-        upgrade: -0.025,
-    }
-}
+import game from './game.js';
+import stats from './stats.js';
+import world from './world.js';
+import camera from './camera.js';
+import player from './player.js';
+import stars from './stars.js';
+import spawn from './spawn.js';
+import tint from './tint.js';
+import enemies from './enemies.js';
+import meteors from './meteors.js';
+import dangerVignette from './dangerVignette.js';
+import bullets from './bullets.js';
+import particles from './particles.js';
+import shakes from './shakes.js';
+import keys from './keys.js';
+import images from './images.js';
+import colors from './colors.js';
 
 export default {
-    game: {
-        aspectRatio: 16 / 9,
-        width,
-        height,
-        title: "Starbits",
-        fps: 120,
-        motionBlur,
-        bloom: {
-            threshold: 1,
-            blur: 5,
-            intensity: 0.25,
-            passes: 1,
-            scale: 0.5,
-        },
-    },
-    world: {
-        width: width * worldGrid,
-        height: width * worldGrid,
-        minX: -(width * worldGrid) / 2,
-        maxX: (width * worldGrid) / 2,
-        minY: -(width * worldGrid) / 2,
-        maxY: (width * worldGrid) / 2,
-    },
-    player: {
-        autoAimDistanceToShot: 800,
-        upgradePerScore: 10,
-        upgradePerScoreMax: 100,
-        upgradeScoreGrowth: 1.2,
-    },
-    camera: {
-        zoom: stats.zoom.max,
-        zoomMax: stats.zoom.max,
-        zoomMin: stats.zoom.min,
-        zoomSpeedFactor: 0.05,
-        zoomLerp: 0.03,
-    },
-    stars: {
-        count: 600,
-        maxDist: 1500,
-        blinkDuration: 0.6,
-        blinkCooldown: [4, 12],
-        speed: [10, 40],
-        size: [1, 5],
-        colorRange: [100, 255],
-        alphaRange: [0.3, 1],
-        depthRange: [0.15, 1],
-    },
-    spawn: {
-        margin: 100,
-        maxAttempts: 20,
-    },
-    tint: {
-        enemy: {
-            min: 100,
-            max: 600
-        },
-        bullet: {
-            min: 100,
-            max: 600
-        },
-    },
-    enemies: {
-        max: 100,
-        spawnDuration: 1,
-        deathDuration: 0.5,
-        spawnSpeedupPerScore: 0.005,
-        spawnSpeedupPerSecond: 0.0025,
-        recycleDistance: 1000,
-    },
-    meteors: {
-        imageCount: 17,
-        max: 8,
-        spawnDistance: 1800,
-        destroyDistance: 3500,
-        speedMin: 0.1,
-        speedMax: 5,
-        rotationSpeedMin: -0.08,
-        rotationSpeedMax: 0.08,
-        density: 0.1,
-        frictionAir: 0,
-        restitution: 0.2,
-        aimJitter: 600,
-        spawnTimeMin: 500,
-        spawnTimeMax: 10000,
-        spawnChanceMin: 0.5,
-        spawnChanceMax: 1,
-        spawnCountMin: 1,
-        spawnCountMax: 6,
-    },
-    dangerVignette: {
-        maxDist: 350,
-        minDist: 80,
-        maxOpacity: 0.375,
-        pulseSpeed: 4,
-        pulseAmount: 0.2,
-        innerStop: 50,
-        midStop: 75,
-        outerStop: 100,
-        midAlpha: 0.4,
-        outerAlpha: 0.85,
-        shape: 'ellipse',
-    },
-    bullets: {
-        enemy: {
-            lifetime: 4,
-        },
-    },
-    particles: {
-        bulletsTrail: {
-            interval: 0.025,
-            size: 10,
-            lifetime: 0.25,
-            color: '#fff',
-            z: -1,
-            scaleEnd: 0.25,
-            alphaEnd: 0,
-            alpha: 0.5,
-        },
-        shot: {
-            count: 10,
-            sizeMin: 5,
-            sizeMax: 12.5,
-            speedMin: 80,
-            speedMax: 180,
-            drag: 4,
-            spread: 0.9,
-            jitter: 3,
-            maxAngular: 8,
-            lifetimeMin: 0.5,
-            lifetimeMax: 1,
-            color: '#fff',
-            z: -1,
-            offset: 0.75,
-            scaleEnd: 0.25,
-            alphaEnd: 0,
-            alpha: 0.5,
-        },
-        thrust: {
-            interval: 0.03,
-            count: 2,
-            sizeMin: 6,
-            sizeMax: 8,
-            speedMin: 30,
-            speedMax: 80,
-            drag: 2,
-            spread: 0.7,
-            jitter: 4,
-            maxAngular: 6,
-            lifetimeMin: 0.2,
-            lifetimeMax: 0.4,
-            color: '#fff',
-            z: -1,
-            offset: 0.75,
-            scaleEnd: 0.25,
-            alphaEnd: 0,
-            alpha: 0.5,
-        },
-        destroy: {
-            count: 20,
-            sizeMin: 8,
-            sizeMax: 16,
-            speedMin: 60,
-            speedMax: 200,
-            drag: 2.5,
-            jitter: 6,
-            maxAngular: 8,
-            lifetimeMin: 0.4,
-            lifetimeMax: 0.8,
-            color: '#fff',
-            z: -1,
-            scaleEnd: 0.25,
-            alphaEnd: 0,
-            alpha: 0.75,
-        }
-    },
-    shakes: {
-        enemyDeath: { intensity: 6, duration: 0.25 },
-        playerDeath: { intensity: 8, duration: 0.3 },
-        bulletCollide: { intensity: 2, duration: 0.1 },
-    },
+    game,
     stats,
-    colors: {
-        background: `rgba(1, 1, 15, ${motionBlur})`,
-    },
-    keys: {
-        fullscreen: ['f'],
-        pause: ['p', 'Escape'],
-        reset: ['r'],
-        player: {
-            up: ['w'],
-            down: ['s'],
-            left: ['a'],
-            right: ['d'],
-        },
-    },
-    images: {
-        player: './assets/images/player.png',
-        crosshair: './assets/images/crosshair.png',
-        enemies: './assets/images/enemies/',
-        meteors: './assets/images/meteors/',
-    }
+    world,
+    camera,
+    player,
+    stars,
+    spawn,
+    tint,
+    enemies,
+    meteors,
+    dangerVignette,
+    bullets,
+    particles,
+    shakes,
+    keys,
+    images,
+    colors,
 }
