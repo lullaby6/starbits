@@ -90,7 +90,7 @@
         <div data-canvas-game-container id="canvas-container" class="w-full h-full relative">
             <div data-canvas-game-gui="version" data-canvas-game-display="flex" id="gui_version"
                 class="overlay pointer-events-none hidden">
-                <span class="absolute bottom-0 left-2 text-lg h-md:text-xl">v0.0.6</span>
+                <span class="absolute bottom-0 left-2 text-lg h-md:text-xl">v0.0.7</span>
             </div>
 
 
@@ -117,11 +117,16 @@
 
             <div data-canvas-game-menu="options" data-canvas-game-display="flex" id="menu_options" class="menu hidden">
                 <div class="menu-btns">
-                    <button class="btn" data-action="toggleFullscreen">Fullscreen: <span data-option-value="fullscreen">OFF</span></button>
-                    <button class="btn" data-action="toggleOption" data-option="autoAim">Auto Aim: <span data-option-value="autoAim"></span></button>
-                    <button class="btn" data-action="toggleOption" data-option="dangerVignette">Danger Vignette: <span data-option-value="dangerVignette"></span></button>
-                    <button class="btn" data-action="toggleOption" data-option="bloom">Bloom: <span data-option-value="bloom"></span></button>
-                    <button class="btn" data-action="toggleOption" data-option="particles">Particles: <span data-option-value="particles"></span></button>
+                    <button class="btn" data-action="toggleFullscreen">Fullscreen: <span
+                            data-option-value="fullscreen">OFF</span></button>
+                    <button class="btn" data-action="toggleOption" data-option="autoAim">Auto Aim: <span
+                            data-option-value="autoAim"></span></button>
+                    <button class="btn" data-action="toggleOption" data-option="dangerVignette">Danger Vignette: <span
+                            data-option-value="dangerVignette"></span></button>
+                    <button class="btn" data-action="toggleOption" data-option="bloom">Bloom: <span
+                            data-option-value="bloom"></span></button>
+                    <button class="btn" data-action="toggleOption" data-option="particles">Particles: <span
+                            data-option-value="particles"></span></button>
                     <button class="btn" data-action="back">Back</button>
                 </div>
             </div>
@@ -129,7 +134,8 @@
             <div data-canvas-game-menu="restart" data-canvas-game-display="flex" id="menu_restart" class="menu hidden">
                 <div class="menu-btns">
                     <button class="btn" data-action="resetScene">Retry</button>
-                    <button class="btn" data-action="navigate" data-target="options" data-from="restart">Options</button>
+                    <button class="btn" data-action="navigate" data-target="options"
+                        data-from="restart">Options</button>
                     <button class="btn" data-action="changeScene" data-scene="start">Exit</button>
                 </div>
             </div>
