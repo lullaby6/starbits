@@ -310,8 +310,8 @@ export const enemies = {
         minSpawnInterval: 3,
         max: 10,
     },
-    multiShooter: {
-        image: "multi_shooter_1",
+    burstShooter: {
+        image: "burst_shooter_1",
         data: { speed: 0.0004, range: 300, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15 },
         skills: ['keepRange', 'burst'],
         score: 4,
@@ -375,8 +375,8 @@ export const enemies = {
         minSpawnInterval: 5,
         max: 5,
     },
-    multiShooter2: {
-        image: "multi_shooter_2",
+    burstShooter2: {
+        image: "burst_shooter_2",
         physics: { density: 0.01 },
         data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 2, bulletSpeed: 5, burstCount: 3, burstDelay: 0.5, burstRemaining: 0, burstTimer: 0, leadTime: 15 },
         skills: ['keepRange', 'flee', 'burst'],
@@ -440,8 +440,8 @@ export const enemies = {
         minSpawnInterval: 7.5,
         max: 5,
     },
-    multiShooter3: {
-        image: "multi_shooter_3",
+    burstShooter3: {
+        image: "burst_shooter_3",
         physics: { density: 0.01 },
         data: { speed: 0.01, range: 500, fleeRange: 400, shotCooldown: 1.5, bulletSpeed: 6, burstCount: 4, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15 },
         skills: ['keepRange', 'flee', 'burst'],

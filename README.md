@@ -6,10 +6,6 @@ A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 
 ## To Do
 
-- Bullet Knockback
-- Bullet Follow
-- Bullet Multiple
-- Bullet Spread
 - Camera Blinks
 - Bosses
 - Sounds
@@ -17,7 +13,6 @@ A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 - Roguelike Upgrades
 - Special Stars
 - Waves
-- Meteors Rain
 - Meteors Group
 - Black Hole
 - Danger Enemy Indicator
@@ -30,13 +25,21 @@ Enemies:
 
 Upgrades:
 - Speed
-- Shield
-- Zoom
-- Health
 - Friction
 - Bullet Speed
 - Bullet Size
-- Bullet Count
-- Bullet Life
-- Bullet Piercing
+- Bullet Lifetime
 - Shot Cooldown
+
+- Bullet Count
+- Bullet Burst Count
+- Zoom
+- Bullet Piercing
+
+- Health
+- Shield
+
+- Bullet Knockback
+- Bullet Follow
+- Bullet Multiple
+- Bullet Spread
