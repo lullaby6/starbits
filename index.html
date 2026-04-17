@@ -97,9 +97,9 @@
             <div data-canvas-game-menu="start" data-canvas-game-display="flex" id="menu_start" class="menu hidden">
                 <div class="menu-btns">
                     <h1 class="text-6xl h-md:text-9xl">Starbits</h1>
-                    <button id="menu_start_start" class="btn">Start</button>
-                    <button id="menu_start_options" class="btn">Options</button>
-                    <button id="menu_start_quit" class="btn">Quit</button>
+                    <button class="btn" data-action="changeScene" data-scene="game">Start</button>
+                    <button class="btn" data-action="navigate" data-target="options" data-from="start">Options</button>
+                    <button class="btn" data-action="quit">Quit</button>
                 </div>
             </div>
 
@@ -108,34 +108,29 @@
 
             <div data-canvas-game-menu="pause" data-canvas-game-display="flex" id="menu_pause" class="menu hidden">
                 <div class="menu-btns">
-                    <button id="menu_pause_resume" class="btn">Resume</button>
-                    <button id="menu_pause_restart" class="btn">Restart</button>
-                    <button id="menu_pause_options" class="btn">Options</button>
-                    <button id="menu_pause_exit" class="btn">Exit</button>
+                    <button class="btn" data-action="resume">Resume</button>
+                    <button class="btn" data-action="resetScene">Restart</button>
+                    <button class="btn" data-action="navigate" data-target="options" data-from="pause">Options</button>
+                    <button class="btn" data-action="changeScene" data-scene="start">Exit</button>
                 </div>
             </div>
 
             <div data-canvas-game-menu="options" data-canvas-game-display="flex" id="menu_options" class="menu hidden">
                 <div class="menu-btns">
-                    <button id="menu_options_fullscreen" class="btn">Fullscreen: <span
-                            id="menu_options_fullscreen_value">OFF</span></button>
-                    <button id="menu_options_autoaim" class="btn">Auto Aim: <span
-                            id="menu_options_autoaim_value"></span></button>
-                    <button id="menu_options_dangervignette" class="btn">Danger Vignette: <span
-                            id="menu_options_dangervignette_value"></span></button>
-                    <button id="menu_options_bloom" class="btn">Bloom: <span
-                            id="menu_options_bloom_value"></span></button>
-                    <button id="menu_options_particles" class="btn">Particles: <span
-                            id="menu_options_particles_value"></span></button>
-                    <button id="menu_options_back" class="btn">Back</button>
+                    <button class="btn" data-action="toggleFullscreen">Fullscreen: <span data-option-value="fullscreen">OFF</span></button>
+                    <button class="btn" data-action="toggleOption" data-option="autoAim">Auto Aim: <span data-option-value="autoAim"></span></button>
+                    <button class="btn" data-action="toggleOption" data-option="dangerVignette">Danger Vignette: <span data-option-value="dangerVignette"></span></button>
+                    <button class="btn" data-action="toggleOption" data-option="bloom">Bloom: <span data-option-value="bloom"></span></button>
+                    <button class="btn" data-action="toggleOption" data-option="particles">Particles: <span data-option-value="particles"></span></button>
+                    <button class="btn" data-action="back">Back</button>
                 </div>
             </div>
 
             <div data-canvas-game-menu="restart" data-canvas-game-display="flex" id="menu_restart" class="menu hidden">
                 <div class="menu-btns">
-                    <button id="menu_restart_restart" class="btn">Retry</button>
-                    <button id="menu_restart_options" class="btn">Options</button>
-                    <button id="menu_restart_exit" class="btn">Exit</button>
+                    <button class="btn" data-action="resetScene">Retry</button>
+                    <button class="btn" data-action="navigate" data-target="options" data-from="restart">Options</button>
+                    <button class="btn" data-action="changeScene" data-scene="start">Exit</button>
                 </div>
             </div>
 
@@ -148,7 +143,7 @@
 
             <div data-canvas-game-gui="mobile" data-canvas-game-display="flex" id="gui_mobile"
                 class="overlay flex flex-col justify-start items-center pointer-events-none hidden">
-                <button id="gui_mobile_pause" class="absolute top-0 left-0 m-4 text-xl h-sm:hidden pointer-events-auto">
+                <button data-action="pause" class="absolute top-0 left-0 m-4 text-xl h-sm:hidden pointer-events-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 1200 1200">
                         <path fill="currentColor" d="M0 0h500v1200H0zm700 0h500v1200H700z" />
                     </svg>

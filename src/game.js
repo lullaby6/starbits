@@ -2,10 +2,67 @@ import config from "./config/config.js";
 import startScene from "./scenes/start.js";
 import gameScene from "./scenes/game.js";
 
-import { $id, $idEvent } from "./utils/utils.js";
+import { $id } from "./utils/utils.js";
 
 const windowWidth = window.innerWidth
 const joystickSize = windowWidth / 10
+
+const OPTION_STORAGE_PREFIX = 'starbits_options_';
+
+const OPTIONS = {
+    autoAim: {
+        default: true,
+        onChange(value) {
+            const scene = this._activeScene;
+            if (scene?.name !== 'game') return;
+            const crosshair = scene.findEntityByName('crosshair');
+            if (value) {
+                this.hideGui('joystick-right');
+                if (crosshair) crosshair.active = false;
+            } else {
+                this.showGui('joystick-right');
+                if (crosshair) crosshair.active = true;
+            }
+        },
+    },
+    dangerVignette: {
+        default: true,
+        onChange(value) {
+            if (this._activeScene?.name !== 'game') return;
+            value ? this.showGui('danger_vignette') : this.hideGui('danger_vignette');
+        },
+    },
+    bloom: {
+        default: true,
+        onChange(value) {
+            if (this.bloom) this.bloom.enabled = value;
+        },
+    },
+    particles: {
+        default: true,
+        onChange(value) {
+            value ? this.enableParticles() : this.disableParticles();
+        },
+    },
+};
+
+function loadOption(name, def) {
+    const stored = localStorage.getItem(OPTION_STORAGE_PREFIX + name);
+    if (stored === null) return def;
+    return stored === 'true';
+}
+
+const MENU_ACTIONS = {
+    navigate(el) { this.switchMenu(el.dataset.target, el.dataset.from); },
+    back() { this.menuBack(); },
+    resume() { this.resume(); },
+    pause() { this.pause(); },
+    resetScene() { this.resetScene(); },
+    changeScene(el) { this.changeScene(el.dataset.scene); },
+    toggleOption(el) { this.toggleOption(el.dataset.option); },
+    toggleFullscreen() { this.toggleFullscreenOption(); },
+    quit() { window.close(); },
+};
 
 const game = new CanvasEngine.Game({
     canvas: 'canvas',
@@ -29,12 +86,9 @@ const game = new CanvasEngine.Game({
     data: {
         keys: config.keys,
 
-        options: {
-            autoAim: localStorage.getItem('starbits_options_autoAim') === 'true' ? true : false,
-            dangerVignette: localStorage.getItem('starbits_options_dangerVignette') === 'false' ? false : true,
-            bloom: localStorage.getItem('starbits_options_bloom') === 'false' ? false : true,
-            particles: localStorage.getItem('starbits_options_particles') === 'false' ? false : true,
-        },
+        options: Object.fromEntries(
+            Object.entries(OPTIONS).map(([name, opt]) => [name, loadOption(name, opt.default)])
+        ),
 
         joysticks: {
             Left: {
@@ -64,9 +118,20 @@ const game = new CanvasEngine.Game({
 
     onKeydown({ key }) {
         const keys = this.data.keys;
-        if (keys.pause.includes(key)) this.togglePause();
+        if (keys.pause.includes(key)) {
+            if (this.paused && this._isInSubMenu()) this.menuBack();
+            else this.togglePause();
+        }
         else if (keys.reset.includes(key)) this.resetScene();
         else if (keys.fullscreen.includes(key)) CanvasEngine.Utils.toggleFullscreen(this.container, 'landscape')
+    },
+
+    _isInSubMenu() {
+        for (const [name, el] of Object.entries(this.menu)) {
+            if (name === 'pause' || name === 'pauseOverlay') continue;
+            if (el.style.display && el.style.display !== 'none') return true;
+        }
+        return false;
     },
 
     onCreate() {
@@ -75,8 +140,8 @@ const game = new CanvasEngine.Game({
         this.adjustCanvasHeight();
 
         if (CanvasEngine.Utils.isMobile()) {
-            if (localStorage.getItem('starbits_options_autoAim') !== 'false') {
-                this.setBooleanOption('autoAim', true)
+            if (localStorage.getItem(OPTION_STORAGE_PREFIX + 'autoAim') !== 'false') {
+                this.setOption('autoAim', true)
             }
 
             this._createJoysticks()
@@ -173,6 +238,8 @@ const game = new CanvasEngine.Game({
             if (CanvasEngine.Utils.isFullscreen()) {
                 this.resetCanvasSize();
             }
+
+            this.setOptionDisplay('fullscreen', CanvasEngine.Utils.isFullscreen());
         });
 
         // window.addEventListener('touchstart', event => {
@@ -217,136 +284,44 @@ const game = new CanvasEngine.Game({
         this.renderer.setSize(config.game.width, config.game.height);
     },
 
-    setBooleanOption(option, value) {
-        this.data.options[option] = value;
+    setOptionDisplay(name, value) {
+        this.container.querySelectorAll(`[data-option-value="${name}"]`).forEach(el => {
+            el.textContent = value ? 'ON' : 'OFF';
+        });
+    },
 
-        const $value = $id(`menu_options_${option.toLowerCase()}_value`);
+    setOption(name, value) {
+        this.data.options[name] = value;
+        localStorage.setItem(OPTION_STORAGE_PREFIX + name, value);
+        this.setOptionDisplay(name, value);
 
-        if (value) {
-            $value.textContent = 'ON';
+        const opt = OPTIONS[name];
+        if (opt?.onChange) opt.onChange.call(this, value);
+    },
+
+    toggleOption(name) {
+        this.setOption(name, !this.data.options[name]);
+    },
+
+    toggleFullscreenOption() {
+        if (CanvasEngine.Utils.isFullscreen()) {
+            CanvasEngine.Utils.exitFullscreen();
         } else {
-            $value.textContent = 'OFF';
+            CanvasEngine.Utils.setFullscreen(this.container);
         }
+        if (CanvasEngine.Utils.isMobile()) this.resetJoysticks();
     },
 
     setupDom() {
-        $idEvent('menu_start_options', 'click', () => {
-            this.switchMenu('options', 'start')
+        this.container.addEventListener('click', e => {
+            const el = e.target.closest('[data-action]');
+            if (!el || !this.container.contains(el)) return;
+            const handler = MENU_ACTIONS[el.dataset.action];
+            if (handler) handler.call(this, el);
         });
 
-        $idEvent('menu_options_back', 'click', () => {
-            this.menuBack()
-        });
-
-        $idEvent('menu_options_fullscreen', 'click', () => {
-            if (CanvasEngine.Utils.isFullscreen()) {
-                this.setBooleanOption('fullscreen', false)
-
-                CanvasEngine.Utils.exitFullscreen();
-            } else {
-                this.setBooleanOption('fullscreen', true)
-
-                CanvasEngine.Utils.setFullscreen(this.container);
-            }
-
-            if (CanvasEngine.Utils.isMobile()) {
-                this.resetJoysticks()
-            }
-        });
-
-        const setAutoAim = value => {
-            this.data.options.autoAim = value
-
-            localStorage.setItem('starbits_options_autoAim', this.data.options.autoAim)
-
-            if (this.data.options.autoAim) {
-                this.setBooleanOption('autoAim', true)
-
-                if (this._activeScene.name == 'game') {
-                    this.hideGui('joystick-right')
-
-                    const crosshair = this._activeScene.findEntityByName('crosshair');
-                    if (crosshair) crosshair.active = false;
-                }
-            } else {
-                this.setBooleanOption('autoAim', false)
-
-                if (this._activeScene.name == 'game') {
-                    this.showGui('joystick-right')
-
-                    const crosshair = this._activeScene.findEntityByName('crosshair');
-                    if (crosshair) crosshair.active = true;
-                }
-            }
-        }
-
-        setAutoAim(this.data.options.autoAim)
-
-        $idEvent('menu_options_autoaim', 'click', () => {
-            setAutoAim(!this.data.options.autoAim)
-        });
-
-        const setDangerVignette = value => {
-            this.data.options.dangerVignette = value
-
-            localStorage.setItem('starbits_options_dangerVignette', this.data.options.dangerVignette)
-
-            if (this.data.options.dangerVignette) {
-                this.setBooleanOption('dangerVignette', true)
-
-                if (this._activeScene.name == 'game') {
-                    this.showGui('danger_vignette')
-                }
-            } else {
-                this.setBooleanOption('dangerVignette', false)
-
-                if (this._activeScene.name == 'game') {
-                    this.hideGui('danger_vignette')
-                }
-            }
-        }
-
-        setDangerVignette(this.data.options.dangerVignette)
-
-        $idEvent('menu_options_dangervignette', 'click', () => {
-            setDangerVignette(!this.data.options.dangerVignette)
-        });
-
-        const setBloom = value => {
-            this.data.options.bloom = value
-
-            localStorage.setItem('starbits_options_bloom', this.data.options.bloom)
-
-            this.setBooleanOption('bloom', value)
-
-            if (this.bloom) this.bloom.enabled = value
-        }
-
-        setBloom(this.data.options.bloom)
-
-        $idEvent('menu_options_bloom', 'click', () => {
-            setBloom(!this.data.options.bloom)
-        });
-
-        const setParticles = value => {
-            this.data.options.particles = value
-
-            localStorage.setItem('starbits_options_particles', this.data.options.particles)
-
-            this.setBooleanOption('particles', value)
-
-            if (value) {
-                this.enableParticles()
-            } else {
-                this.disableParticles()
-            }
-        }
-
-        setParticles(this.data.options.particles)
-
-        $idEvent('menu_options_particles', 'click', () => {
-            setParticles(!this.data.options.particles)
-        });
+        Object.keys(OPTIONS).forEach(name => this.setOption(name, this.data.options[name]));
+        this.setOptionDisplay('fullscreen', CanvasEngine.Utils.isFullscreen());
     },
 })
 

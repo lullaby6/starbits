@@ -103,6 +103,7 @@ export default {
         spawnDuration: 1,
         deathDuration: 0.5,
         spawnSpeedupPerScore: 0.01,
+        spawnSpeedupPerSecond: 0.005,
         recycleDistance: 900,
     },
     dangerVignette: {

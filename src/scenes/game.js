@@ -4,7 +4,7 @@ import crosshairEntity from "../entities/crosshair.js";
 import { enemies, createEnemy } from "../entities/enemies.js";
 import config from "../config/config.js";
 
-import { $id, $idEvent } from "../utils/utils.js";
+import { $id } from "../utils/utils.js";
 
 const enemiesData = Object.entries(enemies).map(([key, config]) => ({ name: key, ...config }));
 
@@ -42,6 +42,7 @@ export default {
         score: 0,
         maxScore: 0,
         dangerTime: 0,
+        elapsedTime: 0,
 
         timers: Object.fromEntries(
             Object.keys(enemies).map(name => [name, 0])
@@ -124,7 +125,6 @@ export default {
     },
 
     onCreate() {
-        this.setupDom();
         this.setupDangerVignette();
 
         if (!CanvasEngine.Utils.isMobile()) {
@@ -158,6 +158,8 @@ export default {
         const player = this.player;
         if (!player) return;
 
+        this.data.elapsedTime += dt;
+
         enemiesData.forEach(enemy => {
             if (enemy.requireScore && this.data.score < enemy.requireScore) return;
 
@@ -166,7 +168,9 @@ export default {
             const scoreAbove = Math.max(0, this.data.score - (enemy.requireScore || 0));
             const interval = Math.max(
                 enemy.minSpawnInterval || 1,
-                enemy.spawnInterval - scoreAbove * config.enemies.spawnSpeedupPerScore
+                enemy.spawnInterval
+                    - scoreAbove * config.enemies.spawnSpeedupPerScore
+                    - this.data.elapsedTime * config.enemies.spawnSpeedupPerSecond
             );
 
             if (this.data.timers[enemy.name] >= interval) {
@@ -241,39 +245,5 @@ export default {
         this.game.hideCursor();
         this.game.hideMenu('pause');
         this.game.hideMenu('pauseOverlay');
-    },
-
-    setupDom() {
-        $idEvent('menu_pause_resume', 'click', () => {
-            this.game.resume();
-        });
-
-        $idEvent('menu_pause_restart', 'click', () => {
-            this.game.resetScene();
-        });
-
-        $idEvent('menu_pause_exit', 'click', () => {
-            this.game.changeScene('start')
-        });
-
-        $idEvent('menu_pause_options', 'click', () => {
-            this.game.switchMenu('options', 'pause')
-        });
-
-        $idEvent('menu_restart_restart', 'click', () => {
-            this.game.resetScene();
-        });
-
-        $idEvent('menu_restart_options', 'click', () => {
-            this.game.switchMenu('options', 'restart')
-        });
-
-        $idEvent('menu_restart_exit', 'click', () => {
-            this.game.changeScene('start')
-        });
-
-        $idEvent('gui_mobile_pause', 'click', () => {
-            this.game.pause();
-        });
     },
 }
