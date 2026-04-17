@@ -13,8 +13,8 @@ const upgrades = {
         max: 3
     },
     zoom: {
-        min: 0.6,
-        max: 1.2
+        min: 0.625,
+        max: 0.75
     },
     health: {
         min: 1,
@@ -76,15 +76,11 @@ export default {
         maxY: (width * worldGrid) / 2,
     },
     camera: {
-        zoom: 1,
-        zoomMax: 1.2,
-        zoomMin: 0.6,
+        zoom: upgrades.zoom.max,
+        zoomMax: upgrades.zoom.max,
+        zoomMin: upgrades.zoom.min,
         zoomSpeedFactor: 0.05,
         zoomLerp: 0.03,
-    },
-    spawn: {
-        margin: 60,
-        maxAttempts: 20,
     },
     stars: {
         count: 600,
@@ -97,14 +93,18 @@ export default {
         alphaRange: [0.3, 1],
         depthRange: [0.15, 1],
     },
+    spawn: {
+        margin: 100,
+        maxAttempts: 20,
+    },
     enemies: {
         max: 100,
         tintMaxDist: 500,
         spawnDuration: 1,
         deathDuration: 0.5,
-        spawnSpeedupPerScore: 0.01,
-        spawnSpeedupPerSecond: 0.005,
-        recycleDistance: 900,
+        spawnSpeedupPerScore: 0.005,
+        spawnSpeedupPerSecond: 0.003,
+        recycleDistance: 1000,
     },
     dangerVignette: {
         maxDist: 350,
