@@ -66,16 +66,16 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
 
             this.data.trailTimer -= dt;
             if (this.data.trailTimer <= 0) {
-                this.data.trailTimer = config.bullets.trail.interval;
+                this.data.trailTimer = config.particles.bulletsTrail.interval;
                 CanvasEngine.Particles.spawn(this.scene, {
                     x: this.centerX,
                     y: this.centerY,
-                    size: config.bullets.trail.size,
-                    color: config.bullets.trail.color,
-                    lifetime: config.bullets.trail.lifetime,
-                    scaleEnd: 0,
-                    alphaEnd: 0,
-                    z: config.bullets.trail.z,
+                    size: config.particles.bulletsTrail.size,
+                    color: config.particles.bulletsTrail.color,
+                    lifetime: config.particles.bulletsTrail.lifetime,
+                    scaleEnd: config.particles.bulletsTrail.scaleEnd,
+                    alphaEnd: config.particles.bulletsTrail.alphaEnd,
+                    z: config.particles.bulletsTrail.z,
                     rotation: this.rotation,
                     tint: this.tint,
                     onUpdate: (dt, particle) => {

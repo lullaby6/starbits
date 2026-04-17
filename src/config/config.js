@@ -115,12 +115,16 @@ export default {
             lifetime: 4,
             tintMaxDist: 600,
         },
-        trail: {
-            interval: 0.02,
-            size: 6,
-            lifetime: 0.3,
+    },
+    particles: {
+        bulletsTrail: {
+            interval: 0.025,
+            size: 10,
+            lifetime: 0.25,
             color: '#fff',
             z: -1,
+            scaleEnd: 0.25,
+            alphaEnd: 0,
         },
     },
     upgrades,
