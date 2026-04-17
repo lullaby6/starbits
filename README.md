@@ -7,6 +7,9 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 ## To Do
 
 - Bullet Knockback
+- Bullet Follow
+- Bullet Multiple
+- Bullet Spread
 - Camera Blinks
 - Bosses
 - Sounds

@@ -36,6 +36,8 @@ const player = {
         bulletLifetime: config.stats.bulletLifetime.min,
         bulletPiercing: config.stats.bulletPiercing.min,
         bulletSize: config.stats.bulletSize.min,
+        burstRemaining: 0,
+        burstTimer: 0,
         thrustTimer: 0,
         _kbX: 0,
         _kbY: 0,
@@ -63,23 +65,30 @@ const player = {
     //     this.shoot();
     // },
 
-    shoot() {
-        if (this.data.shotTimer > 0) return;
-        this.data.shotTimer = this.data.shotCooldown;
-
+    _spawnBullet() {
         let spawnX = this.centerX;
         let spawnY = this.centerY;
 
         if (this._physicsBody) {
             const vel = this._physicsBody.velocity;
-            console.log(vel);
-
             spawnX += vel.x;
             spawnY += vel.y;
         }
 
         spawnBullet(this.scene, spawnX, spawnY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
         spawnShotParticles(this.scene, spawnX, spawnY, this.rotation, this.width);
+    },
+
+    shoot() {
+        if (this.data.shotTimer > 0) return;
+        this.data.shotTimer = this.data.shotCooldown;
+
+        this._spawnBullet();
+
+        if (this.data.bulletCount > 1) {
+            this.data.burstRemaining = this.data.bulletCount - 1;
+            this.data.burstTimer = config.stats.bulletBurstDelay;
+        }
     },
 
     autoAim(dt) {

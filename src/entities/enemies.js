@@ -262,7 +262,7 @@ export const enemies = {
         requireScore: 0,
         spawnInterval: 1.2,
         minSpawnInterval: 0.8,
-        max: 10,
+        max: 20,
     },
 
     // T2 — shoot y dash
@@ -274,7 +274,7 @@ export const enemies = {
         requireScore: 10,
         spawnInterval: 5,
         minSpawnInterval: 2.5,
-        max: 5,
+        max: 15,
     },
     dash: {
         image: "dash_1",
@@ -285,7 +285,7 @@ export const enemies = {
         requireScore: 25,
         spawnInterval: 7,
         minSpawnInterval: 3,
-        max: 5,
+        max: 15,
     },
 
     // T3 — mid distance
@@ -298,7 +298,7 @@ export const enemies = {
         requireScore: 50,
         spawnInterval: 7,
         minSpawnInterval: 3,
-        max: 4,
+        max: 10,
     },
     rapidShooter: {
         image: "rapid_shooter_1",
@@ -308,7 +308,7 @@ export const enemies = {
         requireScore: 75,
         spawnInterval: 6,
         minSpawnInterval: 3,
-        max: 3,
+        max: 10,
     },
     multiShooter: {
         image: "multi_shooter_1",
@@ -318,7 +318,7 @@ export const enemies = {
         requireScore: 100,
         spawnInterval: 8,
         minSpawnInterval: 3.5,
-        max: 3,
+        max: 10,
     },
     smartShooter: {
         image: "smart_shooter_1",
@@ -328,7 +328,7 @@ export const enemies = {
         requireScore: 125,
         spawnInterval: 9,
         minSpawnInterval: 4,
-        max: 3,
+        max: 10,
     },
 
     // T4 — upgrades, mobility
@@ -340,7 +340,7 @@ export const enemies = {
         requireScore: 150,
         spawnInterval: 8,
         minSpawnInterval: 3.5,
-        max: 3,
+        max: 5,
     },
     closeShooter2: {
         image: "close_shooter_2",
@@ -351,7 +351,7 @@ export const enemies = {
         requireScore: 175,
         spawnInterval: 9,
         minSpawnInterval: 4,
-        max: 3,
+        max: 5,
     },
     speed: {
         image: "speed_1",
@@ -362,7 +362,7 @@ export const enemies = {
         requireScore: 200,
         spawnInterval: 11,
         minSpawnInterval: 5,
-        max: 3,
+        max: 5,
     },
     dashShooter: {
         image: "dash_shooter_1",
@@ -373,7 +373,7 @@ export const enemies = {
         requireScore: 225,
         spawnInterval: 11,
         minSpawnInterval: 5,
-        max: 3,
+        max: 5,
     },
     multiShooter2: {
         image: "multi_shooter_2",
@@ -384,7 +384,7 @@ export const enemies = {
         requireScore: 250,
         spawnInterval: 12,
         minSpawnInterval: 5.5,
-        max: 3,
+        max: 5,
     },
     smartShooter2: {
         image: "smart_shooter_2",
@@ -394,7 +394,7 @@ export const enemies = {
         requireScore: 300,
         spawnInterval: 12,
         minSpawnInterval: 5.5,
-        max: 3,
+        max: 5,
     },
 
     // T5 — elite
@@ -406,7 +406,7 @@ export const enemies = {
         requireScore: 350,
         spawnInterval: 11,
         minSpawnInterval: 5,
-        max: 3,
+        max: 5,
     },
     closeShooter3: {
         image: "close_shooter_3",
@@ -417,7 +417,7 @@ export const enemies = {
         requireScore: 400,
         spawnInterval: 14,
         minSpawnInterval: 6,
-        max: 2,
+        max: 5,
     },
     dashShooter2: {
         image: "dash_shooter_2",
@@ -428,7 +428,7 @@ export const enemies = {
         requireScore: 450,
         spawnInterval: 16,
         minSpawnInterval: 7,
-        max: 2,
+        max: 5,
     },
     smartShooter3: {
         image: "smart_shooter_3",
@@ -438,7 +438,7 @@ export const enemies = {
         requireScore: 500,
         spawnInterval: 17,
         minSpawnInterval: 7.5,
-        max: 2,
+        max: 5,
     },
     multiShooter3: {
         image: "multi_shooter_3",
@@ -449,6 +449,6 @@ export const enemies = {
         requireScore: 550,
         spawnInterval: 18,
         minSpawnInterval: 8,
-        max: 2,
+        max: 5,
     },
 }

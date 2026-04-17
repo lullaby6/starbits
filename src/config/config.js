@@ -39,11 +39,12 @@ const stats = {
         max: 30,
         upgrade: 1,
     },
-    bulletCount: { //
+    bulletCount: {
         min: 1,
         max: 5,
         upgrade: 1,
     },
+    bulletBurstDelay: 0.08,
     bulletLifetime: {
         min: 3,
         max: 6,
