@@ -87,7 +87,7 @@ const player = {
 
         if (this.data.bulletCount > 1) {
             this.data.burstRemaining = this.data.bulletCount - 1;
-            this.data.burstTimer = config.stats.bulletBurstDelay;
+            this.data.burstTimer = config.stats.bulletBurstDelay.min;
         }
     },
 

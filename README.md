@@ -33,6 +33,7 @@ Upgrades:
 
 - Bullet Count
 - Bullet Burst Count
+- Bullet Burst Delay
 - Zoom
 - Bullet Piercing
 

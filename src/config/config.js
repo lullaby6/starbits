@@ -7,7 +7,7 @@ const stats = {
     speed: {
         min: 0.0025,
         max: 0.005,
-        upgrade: 0.0001,
+        upgrade: 0.0005,
     },
     shield: { //
         min: 0,
@@ -44,7 +44,11 @@ const stats = {
         max: 5,
         upgrade: 1,
     },
-    bulletBurstDelay: 0.08,
+    bulletBurstDelay: { //
+        min: 0.08,
+        max: 0.04,
+        upgrade: 0.01,
+    },
     bulletLifetime: {
         min: 3,
         max: 6,
