@@ -56,7 +56,7 @@ const stats = {
         upgrade: 1,
     },
     shotCooldown: {
-        min: 0.25,
+        min: 0.375,
         max: 0.05,
         upgrade: -0.025,
     }
