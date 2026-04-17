@@ -7,7 +7,7 @@ const stats = {
     speed: {
         min: 0.0025,
         max: 0.005,
-        upgrade: 0.0005,
+        upgrade: 0.00025,
     },
     shield: { //
         min: 0,
