@@ -58,7 +58,6 @@ export default {
         title: "Starbits",
         fps: 120,
         motionBlur,
-        distanceToAutoAim: 600,
         bloom: {
             threshold: 1,
             blur: 5,
@@ -74,6 +73,9 @@ export default {
         maxX: (width * worldGrid) / 2,
         minY: -(width * worldGrid) / 2,
         maxY: (width * worldGrid) / 2,
+    },
+    player: {
+        autoAimDistanceToShot: 800,
     },
     camera: {
         zoom: upgrades.zoom.max,

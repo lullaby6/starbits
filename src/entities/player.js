@@ -90,7 +90,7 @@ const player = {
         enemies.forEach(enemy => {
             const dist = CanvasEngine.Utils.distance(this, enemy);
 
-            if (dist > config.game.distanceToAutoAim) return;
+            if (dist > config.player.autoAimDistanceToShot) return;
 
             if (dist < minDist) {
                 minDist = dist;
