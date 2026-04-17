@@ -1,5 +1,5 @@
 import config from "../config/config.js";
-import { spawnPlayerBullet } from "../utils/bullets.js";
+import { spawnPlayerBullet } from "./bullets/playerBullet.js";
 import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../utils/particles.js";
 
 const player = {

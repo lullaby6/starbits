@@ -1,5 +1,5 @@
 import config from "../config/config.js";
-import { spawnEnemyBullet } from "../utils/bullets.js";
+import { spawnEnemyBullet } from "./bullets/enemyBullet.js";
 import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../utils/particles.js";
 import { getEntityTint } from "../utils/tint.js";
 
