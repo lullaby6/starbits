@@ -29,8 +29,6 @@ const player = {
         bulletSpeed: config.stats.bulletSpeed.min,
         shotCooldown: config.stats.shotCooldown.min,
         shotTimer: 0,
-        shield: config.stats.shield.min,
-        health: config.stats.health.min,
         bulletSize: config.stats.bulletSize.min,
         bulletCount: config.stats.bulletCount.min,
         bulletSpread: config.stats.bulletSpread.min,

@@ -4,20 +4,10 @@ export default {
         max: 0.005,
         upgrade: 0.0002,
     },
-    shield: {
-        min: 0,
-        max: 3,
-        upgrade: 1,
-    },
     zoom: {
         min: 0.625,
         max: 0.75,
         upgrade: 0.025,
-    },
-    health: {
-        min: 1,
-        max: 5,
-        upgrade: 1,
     },
     friction: {
         min: 0.05,
