@@ -21,7 +21,7 @@ const player = {
         frictionAir: config.upgrades.friction.min,
         fixedRotation: true,
         group: 'player',
-        collidesWith: ['enemy', 'enemyBullet'],
+        collidesWith: ['enemy', 'enemyBullet', 'meteor'],
     },
 
     data: {

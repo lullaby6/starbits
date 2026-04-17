@@ -21,7 +21,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             frictionAir: 0,
             fixedRotation: true,
             group: 'enemyBullet',
-            collidesWith: ['player', 'playerBullet'],
+            collidesWith: ['player', 'playerBullet', 'meteor'],
         },
 
         data: {

@@ -117,6 +117,26 @@ export default {
         spawnSpeedupPerSecond: 0.0025,
         recycleDistance: 1000,
     },
+    meteors: {
+        imageCount: 17,
+        max: 8,
+        spawnDistance: 1800,
+        destroyDistance: 3500,
+        speedMin: 0.1,
+        speedMax: 10,
+        rotationSpeedMin: -0.08,
+        rotationSpeedMax: 0.08,
+        density: 0.1,
+        frictionAir: 0,
+        restitution: 0.2,
+        aimJitter: 600,
+        spawnTimeMin: 500,
+        spawnTimeMax: 10000,
+        spawnChanceMin: 0.5,
+        spawnChanceMax: 1,
+        spawnCountMin: 1,
+        spawnCountMax: 6,
+    },
     dangerVignette: {
         maxDist: 350,
         minDist: 80,
@@ -227,5 +247,6 @@ export default {
         player: './assets/images/player.png',
         crosshair: './assets/images/crosshair.png',
         enemies: './assets/images/enemies/',
+        meteors: './assets/images/meteors/',
     }
 }

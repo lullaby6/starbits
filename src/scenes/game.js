@@ -2,6 +2,7 @@ import playerEntity from "../entities/player.js";
 import { createStars } from "../entities/star.js";
 import crosshairEntity from "../entities/crosshair.js";
 import { enemies, createEnemy } from "../entities/enemies.js";
+import { spawnMeteor } from "../entities/meteor.js";
 import config from "../config/config.js";
 
 import { $id } from "../utils/utils.js";
@@ -124,8 +125,33 @@ export default {
         }, 3000)
     },
 
+    scheduleMeteorSpawn() {
+        const cfg = config.meteors;
+        const delay = CanvasEngine.Random.float(cfg.spawnTimeMin, cfg.spawnTimeMax);
+        this.meteorTimer = this.game.setTimeout(() => {
+            this.meteorTimer = null;
+            if (!this.player) return;
+
+            const chance = CanvasEngine.Random.float(cfg.spawnChanceMin, cfg.spawnChanceMax);
+            if (Math.random() < chance) {
+                const alive = this.countByTag('meteor');
+                const remaining = cfg.max - alive;
+                if (remaining > 0) {
+                    const count = Math.min(
+                        remaining,
+                        CanvasEngine.Random.int(cfg.spawnCountMin, cfg.spawnCountMax)
+                    );
+                    for (let i = 0; i < count; i++) spawnMeteor(this);
+                }
+            }
+
+            this.scheduleMeteorSpawn();
+        }, delay);
+    },
+
     onCreate() {
         this.setupDangerVignette();
+        this.scheduleMeteorSpawn();
 
         if (!CanvasEngine.Utils.isMobile()) {
             const crosshair = this.addEntity(crosshairEntity);

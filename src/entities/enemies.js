@@ -132,7 +132,7 @@ export function createEnemy(enemy) {
                 frictionAir: 0.05,
                 fixedRotation: true,
                 group: 'enemy',
-                collidesWith: ['player', 'playerBullet', 'enemy'],
+                collidesWith: ['player', 'playerBullet', 'enemy', 'meteor'],
             },
             ...enemy.physics,
         },

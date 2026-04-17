@@ -13,7 +13,8 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 - Roguelike Upgrades
 - Special Stars
 - Waves
-- Meteors
+- Meteors Rain
+- Meteors Group
 - Black Hole
 - Danger Enemy Indicator
 
