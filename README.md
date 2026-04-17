@@ -6,7 +6,6 @@ A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 
 ## To Do
 
-- Meteor Particles
 - Camera Blinks
 - Bosses
 - Sounds

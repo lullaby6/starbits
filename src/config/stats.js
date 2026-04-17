@@ -65,7 +65,7 @@ export default {
     },
     bulletPiercing: {
         label: 'Bullet Piercing',
-        weight: 30,
+        weight: 20,
         min: 0,
         max: 6,
         upgrade: 1,
