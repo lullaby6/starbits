@@ -76,6 +76,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
                     scaleEnd: 0,
                     alphaEnd: 0,
                     z: config.bullets.trail.z,
+                    rotation: this.rotation,
                     tint: this.tint,
                     onUpdate: (dt, particle) => {
                         particle.tint = this.tint

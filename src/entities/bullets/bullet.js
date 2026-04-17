@@ -56,6 +56,7 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
                     scaleEnd: 0,
                     alphaEnd: 0,
                     z: config.bullets.trail.z,
+                    rotation: this.rotation,
                 });
             }
         },
