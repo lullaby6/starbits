@@ -32,7 +32,7 @@ const game = new CanvasEngine.Game({
         options: {
             autoAim: localStorage.getItem('starbits_options_autoAim') === 'true' ? true : false,
             dangerVignette: localStorage.getItem('starbits_options_dangerVignette') === 'false' ? false : true,
-            bloom: localStorage.getItem('starbits_options_bloom') === 'true' ? true : false,
+            bloom: localStorage.getItem('starbits_options_bloom') === 'false' ? false : true,
         },
 
         joysticks: {
