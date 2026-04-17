@@ -56,7 +56,7 @@ export default {
         width,
         height,
         title: "Starbits",
-        fps: 60,
+        fps: 120,
         motionBlur,
         distanceToAutoAim: 600,
         bloom: {

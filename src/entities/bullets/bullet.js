@@ -7,12 +7,13 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
         y: y - 5,
         width: 10,
         height: 10,
-        color: 'transparent',
+        color: '#fff',
         tags: ['bullet'],
         originX: 0.5,
         originY: 0.5,
         rotation: angle,
         dontRenderIsNotVisible: true,
+        dontCollideIsNotVisible: true,
 
 
         physics: {
@@ -43,7 +44,7 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
             }
 
             this.data.trailTimer -= dt;
-            if (this.data.trailTimer <= 0) {
+            if (this.isVisible() && this.data.trailTimer <= 0) {
                 this.data.trailTimer = config.particles.bulletsTrail.interval;
                 spawnBulletTrailParticle(this.scene, this.centerX, this.centerY, this.rotation);
             }

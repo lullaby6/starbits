@@ -54,8 +54,9 @@ export default {
 
         this.game.menu.restart.show();
 
-        const player = this.findEntityByName('player');
+        const player = this.player;
         if (player) player.destroy();
+        this.player = null;
 
         const crosshair = this.findEntityByName('crosshair');
         if (crosshair) crosshair.destroy();
@@ -145,6 +146,7 @@ export default {
 
         const player = this.findEntityByName('player');
         if (player) {
+            this.player = player;
             this.game.camera.setTarget(player, 5);
         }
 
@@ -153,7 +155,7 @@ export default {
     },
 
     onUpdate(dt) {
-        const player = this.findEntityByName('player');
+        const player = this.player;
         if (!player) return;
 
         enemiesData.forEach(enemy => {
@@ -171,7 +173,7 @@ export default {
                 this.data.timers[enemy.name] = 0;
 
                 if (enemy.max != null) {
-                    const alive = this.findEntitiesByTag(enemy.name).length;
+                    const alive = this.countByTag(enemy.name);
                     if (alive >= enemy.max) return;
                 }
 
@@ -202,15 +204,15 @@ export default {
 
     updateDangerVignette(player, dt) {
         const cfg = config.dangerVignette;
-        const threats = [
-            ...this.findEntitiesByTag('enemy'),
-            ...this.findEntitiesByTag('enemyBullet'),
-        ];
 
         let minDist = Infinity;
-        for (const threat of threats) {
-            if (threat.data?.dying || threat.data?.spawnTimer > 0) continue;
-            const d = CanvasEngine.Utils.distance(threat, player);
+        const entities = this.entities;
+        for (let i = 0; i < entities.length; i++) {
+            const e = entities[i];
+            if (!e.active) continue;
+            if (!e.hasTag('enemy') && !e.hasTag('enemyBullet')) continue;
+            if (e.data?.dying || (e.data?.spawnTimer && e.data.spawnTimer > 0)) continue;
+            const d = CanvasEngine.Utils.distance(e, player);
             if (d < minDist) minDist = d;
         }
 

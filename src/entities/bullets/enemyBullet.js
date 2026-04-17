@@ -9,12 +9,13 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
         y: y - 4,
         width: 10,
         height: 10,
-        color: 'transparent',
+        color: '#fff',
         tags: ['enemyBullet'],
         originX: 0.5,
         originY: 0.5,
         rotation: angle,
         dontRenderIsNotVisible: true,
+        dontCollideIsNotVisible: true,
 
         physics: {
             frictionAir: 0,
@@ -61,8 +62,10 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
                 return;
             }
 
+            const visible = this.isVisible();
+
             this.data.trailTimer -= dt;
-            if (this.data.trailTimer <= 0) {
+            if (visible && this.data.trailTimer <= 0) {
                 this.data.trailTimer = config.particles.bulletsTrail.interval;
                 spawnBulletTrailParticle(this.scene, this.centerX, this.centerY, this.rotation, {
                     tint: this.tint,
@@ -72,11 +75,13 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
                 });
             }
 
-            const player = this.scene.findEntityByName('player');
-            if (player) {
-                const dist = CanvasEngine.Utils.distance(this, player);
-                const tintStrength = Math.max(0, 1 - dist / config.bullets.enemy.tintMaxDist);
-                this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
+            if (visible) {
+                const player = this.scene.player;
+                if (player) {
+                    const dist = CanvasEngine.Utils.distance(this, player);
+                    const tintStrength = Math.max(0, 1 - dist / config.bullets.enemy.tintMaxDist);
+                    this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
+                }
             }
         },
 

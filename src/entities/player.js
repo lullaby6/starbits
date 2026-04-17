@@ -11,6 +11,7 @@ const player = {
     color: 'transparent',
     originX: 0.5,
     originY: 0.5,
+    dontCollideIsNotVisible: true,
 
     image: {
         src: config.images.player,
@@ -65,8 +66,20 @@ const player = {
     shoot() {
         if (this.data.shotTimer > 0) return;
         this.data.shotTimer = this.data.shotCooldown;
-        spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
-        spawnShotParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width);
+
+        let spawnX = this.centerX;
+        let spawnY = this.centerY;
+
+        if (this._physicsBody) {
+            const vel = this._physicsBody.velocity;
+            console.log(vel);
+
+            spawnX += vel.x;
+            spawnY += vel.y;
+        }
+
+        spawnBullet(this.scene, spawnX, spawnY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
+        spawnShotParticles(this.scene, spawnX, spawnY, this.rotation, this.width);
     },
 
     autoAim(dt) {

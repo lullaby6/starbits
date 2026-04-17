@@ -121,6 +121,7 @@ export function createEnemy(enemy) {
         tags: ['enemy', enemy.name, ...(enemy.tags || [])],
         originX: 0.5,
         originY: 0.5,
+        dontCollideIsNotVisible: true,
 
         image: {
             src: `${config.images.enemies}${enemy.image}.png`,
@@ -153,9 +154,10 @@ export function createEnemy(enemy) {
         die() {
             if (this.data.dying) return;
 
-            spawnDestroyParticles(this.scene, this.centerX, this.centerY, { tint: this.tint });
-
-            this.game.camera.shake(config.shakes.enemyDeath.intensity, config.shakes.enemyDeath.duration);
+            if (this.isVisible()) {
+                spawnDestroyParticles(this.scene, this.centerX, this.centerY, { tint: this.tint });
+                this.game.camera.shake(config.shakes.enemyDeath.intensity, config.shakes.enemyDeath.duration);
+            }
 
             this.data.dying = true;
             this.data.deathTimer = DEATH_DURATION;
@@ -165,7 +167,9 @@ export function createEnemy(enemy) {
 
         shoot() {
             spawnEnemyBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletLifetime);
-            spawnShotParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, { tint: this.tint });
+            if (this.isVisible()) {
+                spawnShotParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, { tint: this.tint });
+            }
         },
 
         onCreate() {
@@ -186,7 +190,7 @@ export function createEnemy(enemy) {
                 return;
             }
 
-            const player = this.scene.findEntityByName('player');
+            const player = this.scene.player;
             if (!player) return;
 
             this.rotateToEntity(player);
@@ -214,15 +218,19 @@ export function createEnemy(enemy) {
                 return;
             }
 
-            const tintStrength = Math.max(0, 1 - dist / config.enemies.tintMaxDist);
-            this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
+            const visible = this.isVisible();
+
+            if (visible) {
+                const tintStrength = Math.max(0, 1 - dist / config.enemies.tintMaxDist);
+                this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
+            }
 
             for (const skill of entitySkills) {
                 skill(this, player, dist, dt);
             }
 
             this.data.thrustTimer -= dt;
-            if ((this.data._thrustX !== 0 || this.data._thrustY !== 0) && this.data.thrustTimer <= 0) {
+            if (visible && (this.data._thrustX !== 0 || this.data._thrustY !== 0) && this.data.thrustTimer <= 0) {
                 this.data.thrustTimer = config.particles.thrust.interval;
                 const len = Math.hypot(this.data._thrustX, this.data._thrustY) || 1;
                 spawnThrustParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, this.data._thrustX / len, this.data._thrustY / len, { tint: this.tint });

@@ -33,6 +33,7 @@ const game = new CanvasEngine.Game({
             autoAim: localStorage.getItem('starbits_options_autoAim') === 'true' ? true : false,
             dangerVignette: localStorage.getItem('starbits_options_dangerVignette') === 'false' ? false : true,
             bloom: localStorage.getItem('starbits_options_bloom') === 'false' ? false : true,
+            particles: localStorage.getItem('starbits_options_particles') === 'false' ? false : true,
         },
 
         joysticks: {
@@ -328,6 +329,26 @@ const game = new CanvasEngine.Game({
 
         $idEvent('menu_options_bloom', 'click', () => {
             setBloom(!this.data.options.bloom)
+        });
+
+        const setParticles = value => {
+            this.data.options.particles = value
+
+            localStorage.setItem('starbits_options_particles', this.data.options.particles)
+
+            this.setBooleanOption('particles', value)
+
+            if (value) {
+                this.enableParticles()
+            } else {
+                this.disableParticles()
+            }
+        }
+
+        setParticles(this.data.options.particles)
+
+        $idEvent('menu_options_particles', 'click', () => {
+            setParticles(!this.data.options.particles)
         });
     },
 })

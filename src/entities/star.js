@@ -29,6 +29,7 @@ function createStar() {
         originX: 0.5,
         originY: 0.5,
         ignorePause: true,
+        dontRenderIsNotVisible: true,
 
         data: {
             speed: 0,
