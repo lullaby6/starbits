@@ -56,13 +56,13 @@ function createStar() {
             const depthT = this.data.depthT;
 
             const [cMin, cMax] = config.stars.colorRange;
-            const r = CanvasEngine.Random.int(cMin, cMax);
-            const g = CanvasEngine.Random.int(cMin, cMax);
-            const b = CanvasEngine.Random.int(cMin, cMax);
+            const red = CanvasEngine.Random.int(cMin, cMax);
+            const green = CanvasEngine.Random.int(cMin, cMax);
+            const blue = CanvasEngine.Random.int(cMin, cMax);
             const [aMin, aMax] = config.stars.alphaRange;
             const alphaBase = CanvasEngine.Random.float(aMin, aMax);
-            const a = (alphaBase * (0.3 + 0.7 * depthT)).toFixed(2);
-            this.data.baseColor = `rgba(${r},${g},${b},${a})`;
+            const alpha = (alphaBase * (0.3 + 0.7 * depthT)).toFixed(2);
+            this.data.baseColor = `rgba(${red},${green},${blue},${alpha})`;
             this.color = this.data.baseColor;
 
             const [sMin, sMax] = config.stars.speed;

@@ -329,8 +329,8 @@ const game = new CanvasEngine.Game({
     },
 
     setupDom() {
-        this.container.addEventListener('click', e => {
-            const el = e.target.closest('[data-action]');
+        this.container.addEventListener('click', event => {
+            const el = event.target.closest('[data-action]');
             if (!el || !this.container.contains(el)) return;
             const handler = MENU_ACTIONS[el.dataset.action];
             if (handler) handler.call(this, el);

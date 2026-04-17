@@ -146,9 +146,9 @@ const player = {
             spawnThrustParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, thrustX / len, thrustY / len);
         }
 
-        const w = config.world;
-        const cx = CanvasEngine.Utils.clamp(this.centerX, w.minX, w.maxX);
-        const cy = CanvasEngine.Utils.clamp(this.centerY, w.minY, w.maxY);
+        const world = config.world;
+        const cx = CanvasEngine.Utils.clamp(this.centerX, world.minX, world.maxX);
+        const cy = CanvasEngine.Utils.clamp(this.centerY, world.minY, world.maxY);
         if (cx !== this.centerX || cy !== this.centerY) {
             const body = this._physicsBody;
             if (body) {

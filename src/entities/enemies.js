@@ -28,9 +28,9 @@ const skills = {
         let targetY = player.centerY;
 
         if (leadTime > 0 && player._physicsBody) {
-            const v = player._physicsBody.velocity;
-            targetX += v.x * leadTime;
-            targetY += v.y * leadTime;
+            const velocity = player._physicsBody.velocity;
+            targetX += velocity.x * leadTime;
+            targetY += velocity.y * leadTime;
         }
 
         entity.rotateAt(targetX, targetY);

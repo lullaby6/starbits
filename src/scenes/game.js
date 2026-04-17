@@ -291,8 +291,8 @@ export default {
             this.game.camera.setTarget(player, 5);
         }
 
-        const w = config.world;
-        this.game.camera.setBounds(w.minX, w.minY, w.maxX, w.maxY);
+        const world = config.world;
+        this.game.camera.setBounds(world.minX, world.minY, world.maxX, world.maxY);
     },
 
     onUpdate(dt) {
@@ -356,18 +356,18 @@ export default {
         let minDist = Infinity;
         const entities = this.entities;
         for (let i = 0; i < entities.length; i++) {
-            const e = entities[i];
-            if (!e.active) continue;
-            if (!e.hasTag('enemy') && !e.hasTag('enemyBullet')) continue;
-            if (e.data?.dying || (e.data?.spawnTimer && e.data.spawnTimer > 0)) continue;
-            const d = CanvasEngine.Utils.distance(e, player);
-            if (d < minDist) minDist = d;
+            const entity = entities[i];
+            if (!entity.active) continue;
+            if (!entity.hasTag('enemy') && !entity.hasTag('enemyBullet')) continue;
+            if (entity.data?.dying || (entity.data?.spawnTimer && entity.data.spawnTimer > 0)) continue;
+            const distance = CanvasEngine.Utils.distance(entity, player);
+            if (distance < minDist) minDist = distance;
         }
 
         let intensity = 0;
         if (minDist < cfg.maxDist) {
-            const t = 1 - (minDist - cfg.minDist) / (cfg.maxDist - cfg.minDist);
-            intensity = CanvasEngine.Utils.clamp(t, 0, 1);
+            const progress = 1 - (minDist - cfg.minDist) / (cfg.maxDist - cfg.minDist);
+            intensity = CanvasEngine.Utils.clamp(progress, 0, 1);
         }
 
         this.data.dangerTime += dt;
