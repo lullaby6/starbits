@@ -5,9 +5,9 @@ const motionBlur = 0.75; // 0 to 1
 
 const stats = {
     speed: {
-        min: 0.0025,
+        min: 0.002,
         max: 0.005,
-        upgrade: 0.00025,
+        upgrade: 0.0002,
     },
     shield: { //
         min: 0,
@@ -25,13 +25,13 @@ const stats = {
         upgrade: 1,
     },
     friction: {
-        min: 0.075,
+        min: 0.05,
         max: 0.15,
         upgrade: 0.01,
     },
     bulletSpeed: {
         min: 10,
-        max: 20,
+        max: 25,
         upgrade: 1,
     },
     bulletSize: {
@@ -39,7 +39,7 @@ const stats = {
         max: 30,
         upgrade: 1,
     },
-    bulletBurstCount: {
+    bulletBurstCount: { //
         min: 1,
         max: 5,
         upgrade: 1,
