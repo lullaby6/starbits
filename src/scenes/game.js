@@ -69,6 +69,7 @@ export default {
     gui: {
         game_score: false,
         mobile: true,
+        'mobile_fullscreen': true,
         'joystick-left': true,
         'joystick-right': true,
         danger_vignette: true,

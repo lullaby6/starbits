@@ -15,5 +15,6 @@ export default {
 
     gui: {
         version: true,
+        'mobile_fullscreen': true,
     },
 }

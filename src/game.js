@@ -61,6 +61,8 @@ const MENU_ACTIONS = {
     changeScene(el) { this.changeScene(el.dataset.scene); },
     toggleOption(el) { this.toggleOption(el.dataset.option); },
     toggleFullscreen() { this.toggleFullscreenOption(); },
+    set_fullscreen() { this.toggleFullscreenOption(); },
+    exit_fullscreen() { this.toggleFullscreenOption(); },
     quit() { window.close(); },
     selectUpgrade(el) {
         const scene = this._activeScene;
@@ -240,11 +242,13 @@ const game = new CanvasEngine.Game({
         document.addEventListener('fullscreenchange', () => {
             this.adjustCanvasHeight();
 
-            if (CanvasEngine.Utils.isFullscreen()) {
+            const isFs = CanvasEngine.Utils.isFullscreen();
+            if (isFs) {
                 this.resetCanvasSize();
             }
 
-            this.setOptionDisplay('fullscreen', CanvasEngine.Utils.isFullscreen());
+            this.setOptionDisplay('fullscreen', isFs);
+            this.updateFullscreenButtons(isFs);
         });
 
         // window.addEventListener('touchstart', event => {
@@ -315,6 +319,13 @@ const game = new CanvasEngine.Game({
             CanvasEngine.Utils.setFullscreen(this.container);
         }
         if (CanvasEngine.Utils.isMobile()) this.resetJoysticks();
+    },
+
+    updateFullscreenButtons(isFullscreen) {
+        const setBtn = this.container.querySelector('[data-action="set_fullscreen"]');
+        const exitBtn = this.container.querySelector('[data-action="exit_fullscreen"]');
+        if (setBtn) setBtn.classList.toggle('hidden', isFullscreen);
+        if (exitBtn) exitBtn.classList.toggle('hidden', !isFullscreen);
     },
 
     setupDom() {
