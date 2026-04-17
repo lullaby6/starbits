@@ -4,6 +4,7 @@ import crosshairEntity from "../entities/crosshair.js";
 import { enemies, createEnemy } from "../entities/enemies.js";
 import { spawnMeteor } from "../entities/meteor.js";
 import config from "../config/config.js";
+import Upgrades from "../utils/upgrades.js";
 
 import { $id } from "../utils/utils.js";
 
@@ -16,28 +17,6 @@ const $upgradeBtns = [
     $id('upgrade_btn_0'),
     $id('upgrade_btn_1'),
     $id('upgrade_btn_2'),
-];
-
-const UPGRADES = [
-    { statKey: 'speed', label: 'Speed', apply: (p, v) => p.data.speed = v },
-    {
-        statKey: 'friction', label: 'Acceleration', apply: (p, v) => {
-            if (p._physicsBody) p._physicsBody.frictionAir = v;
-        }
-    },
-    { statKey: 'bulletSpeed', label: 'Bullet Speed', apply: (p, v) => p.data.bulletSpeed = v },
-    { statKey: 'bulletSize', label: 'Bullet Size', apply: (p, v) => p.data.bulletSize = v },
-    { statKey: 'bulletLifetime', label: 'Bullet Lifetime', apply: (p, v) => p.data.bulletLifetime = v },
-    {
-        statKey: 'shotCooldown', label: 'Fire Rate', apply: (p, v) => {
-            p.data.shotCooldown = v
-        }
-    },
-    { statKey: 'bulletCount', label: 'Bullet Count', weight: 30, apply: (p, v) => p.data.bulletCount = v },
-    { statKey: 'bulletSpread', label: 'Precision', weight: 60, apply: (p, v) => p.data.bulletSpread = v },
-    { statKey: 'bulletBurstCount', label: 'Burst Count', weight: 25, apply: (p, v) => p.data.bulletBurstCount = v },
-    { statKey: 'bulletBurstDelay', label: 'Burst Delay', weight: 60, apply: (p, v) => p.data.bulletBurstDelay = v },
-    { statKey: 'bulletPiercing', label: 'Piercing', weight: 30, apply: (p, v) => p.data.bulletPiercing = v },
 ];
 
 function clampToMax(value, stat) {
@@ -56,11 +35,15 @@ function formatUpgradeDelta(value) {
     return `+${Math.abs(value)}`;
 }
 
+function upgradeWeight(upgrade) {
+    return config.stats[upgrade.statKey].weight ?? 100;
+}
+
 function weightedRandomPick(pool) {
-    const totalWeight = pool.reduce((sum, item) => sum + (item.weight ?? 100), 0);
+    const totalWeight = pool.reduce((sum, item) => sum + upgradeWeight(item), 0);
     let roll = CanvasEngine.Random.float(0, totalWeight);
     for (let i = 0; i < pool.length; i++) {
-        roll -= pool[i].weight ?? 100;
+        roll -= upgradeWeight(pool[i]);
         if (roll <= 0) return i;
     }
     return pool.length - 1;
@@ -101,7 +84,7 @@ export default {
         nextUpgradeAt: config.player.upgradePerScore,
         upgradeIncrement: config.player.upgradePerScore,
         pendingUpgrades: 0,
-        upgradeLevels: Object.fromEntries(UPGRADES.map(u => [u.statKey, 0])),
+        upgradeLevels: Object.fromEntries(Upgrades.map(u => [u.statKey, 0])),
         upgradeChoices: [],
 
         timers: Object.fromEntries(
@@ -201,7 +184,7 @@ export default {
     },
 
     getAvailableUpgrades() {
-        return UPGRADES.filter(u => this.data.upgradeLevels[u.statKey] < statMaxLevel(config.stats[u.statKey]));
+        return Upgrades.filter(u => this.data.upgradeLevels[u.statKey] < statMaxLevel(config.stats[u.statKey]));
     },
 
     showUpgradeMenu() {
@@ -228,7 +211,7 @@ export default {
                 const stat = config.stats[choice.statKey];
                 const nextLevel = this.data.upgradeLevels[choice.statKey] + 1;
                 const maxLevel = statMaxLevel(stat);
-                btn.textContent = `${choice.label} ${formatUpgradeDelta(stat.upgrade)} (${nextLevel}/${maxLevel})`;
+                btn.textContent = `${stat.label} ${formatUpgradeDelta(stat.upgrade)} (${nextLevel}/${maxLevel})`;
                 btn.style.display = '';
             } else {
                 btn.style.display = 'none';

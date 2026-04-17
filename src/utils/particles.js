@@ -110,3 +110,21 @@ export function spawnBulletTrailParticle(scene, x, y, rotation, extras = {}) {
         ...extras,
     });
 }
+
+export function spawnMeteorTrailParticle(scene, x, y, rotation, size, extras = {}) {
+    const cfg = config.particles.meteorsTrail;
+
+    return CanvasEngine.Particles.spawn(scene, {
+        x,
+        y,
+        size,
+        color: cfg.color,
+        lifetime: cfg.lifetime,
+        scaleEnd: cfg.scaleEnd,
+        alphaEnd: cfg.alphaEnd,
+        z: cfg.z,
+        rotation,
+        alpha: cfg.alpha,
+        ...extras,
+    });
+}

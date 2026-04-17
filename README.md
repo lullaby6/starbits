@@ -31,16 +31,15 @@ Upgrades:
 - Bullet Size
 - Bullet Lifetime
 - Shot Cooldown
-
 - Bullet Count
 - Bullet Spread
 - Bullet Burst Count
 - Bullet Burst Delay
 - Bullet Piercing
+- Bullet Recoil
 
 - Zoom
 
-- Bullet Knockback
 - Bullet Follow
 
 - Health

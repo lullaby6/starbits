@@ -9,6 +9,15 @@ export default {
         alphaEnd: 0,
         alpha: 0.5,
     },
+    meteorsTrail: {
+        interval: 0.03,
+        lifetime: 0.5,
+        color: '#fff',
+        z: -1,
+        scaleEnd: 0.25,
+        alphaEnd: 0,
+        alpha: 0.4,
+    },
     shot: {
         count: 10,
         sizeMin: 5,

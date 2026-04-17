@@ -1,34 +1,45 @@
 import config from "../../config/config.js";
-import { spawnBulletTrailParticle } from "../../particles/particles.js";
+import { spawnBulletTrailParticle } from "../../utils/particles.js";
 
-export function spawnBullet(scene, x, y, angle, speed, size, lifetime, piercing = 0) {
-    scene.addEntity({
+export function spawnBullet(scene, {
+    x, y, angle, speed, size, lifetime,
+    tags,
+    group,
+    collidesWith,
+    physicsExtras = {},
+    extraData = {},
+    onCreate,
+    beforeTick,
+    afterTick,
+    getTrailExtras,
+    onPhysicsCollision,
+    die,
+}) {
+    const entity = {
         x: x - size / 2,
         y: y - size / 2,
         width: size,
         height: size,
         color: '#fff',
-        tags: ['bullet'],
+        tags,
         originX: 0.5,
         originY: 0.5,
         rotation: angle,
         dontRenderIsNotVisible: true,
         dontCollideIsNotVisible: true,
 
-
         physics: {
-            density: 0.01,
             frictionAir: 0,
             fixedRotation: true,
-            group: 'playerBullet',
-            collidesWith: ['enemy', 'enemyBullet', 'meteor'],
+            group,
+            collidesWith,
+            ...physicsExtras,
         },
 
         data: {
             lifetime,
-            piercing,
-            hitEntities: new Set(),
             trailTimer: 0,
+            ...extraData,
         },
 
         onCreate() {
@@ -36,40 +47,32 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime, piercing 
                 x: Math.cos(angle) * speed,
                 y: Math.sin(angle) * speed,
             });
+            if (onCreate) onCreate.call(this);
         },
 
         onUpdate(dt) {
+            if (beforeTick && beforeTick.call(this, dt) === false) return;
+
             this.data.lifetime -= dt;
             if (this.data.lifetime <= 0) {
-                this.destroy();
+                if (this.die) this.die(); else this.destroy();
                 return;
             }
 
             this.data.trailTimer -= dt;
             if (this.isVisible() && this.data.trailTimer <= 0) {
                 this.data.trailTimer = config.particles.bulletsTrail.interval;
-                spawnBulletTrailParticle(this.scene, this.centerX, this.centerY, this.rotation);
+                const trailExtras = getTrailExtras ? getTrailExtras.call(this) : undefined;
+                spawnBulletTrailParticle(this.scene, this.centerX, this.centerY, this.rotation, trailExtras);
             }
+
+            if (afterTick) afterTick.call(this, dt);
         },
 
-        onPhysicsCollision(other) {
-            if (other.hasTag('enemy')) {
-                if (this.data.hitEntities.has(other)) return;
-                this.data.hitEntities.add(other);
+        onPhysicsCollision,
+    };
 
-                this.scene.addScore(other.data.score || 1);
-                if (other.die) other.die(); else other.destroy();
+    if (die) entity.die = die;
 
-                if (this.data.piercing <= 0) {
-                    this.destroy();
-                } else {
-                    this.data.piercing--;
-                }
-            } else if (other.hasTag('enemyBullet')) {
-                this.game.shakeCamera(config.shakes.bulletCollide.intensity, config.shakes.bulletCollide.duration);
-                if (other.die) other.die(); else other.destroy();
-                this.destroy();
-            }
-        },
-    });
+    return scene.addEntity(entity);
 }

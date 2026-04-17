@@ -1,5 +1,5 @@
 import config from "../config/config.js";
-import { spawnDestroyParticles } from "../particles/particles.js";
+import { spawnDestroyParticles, spawnMeteorTrailParticle } from "../utils/particles.js";
 
 export function createMeteor(x, y, vx, vy, rotationSpeed) {
     const cfg = config.meteors;
@@ -32,6 +32,7 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
             vx,
             vy,
             rotationSpeed,
+            trailTimer: 0,
         },
 
         onCreate() {
@@ -46,6 +47,13 @@ export function createMeteor(x, y, vx, vy, rotationSpeed) {
             const dist = CanvasEngine.Utils.distance(this, player);
             if (dist > cfg.destroyDistance) {
                 this.destroy();
+                return;
+            }
+
+            this.data.trailTimer -= dt;
+            if (this.isVisible() && this.data.trailTimer <= 0) {
+                this.data.trailTimer = config.particles.meteorsTrail.interval;
+                spawnMeteorTrailParticle(this.scene, this.centerX, this.centerY, this.rotation, this.width / 2);
             }
         },
 

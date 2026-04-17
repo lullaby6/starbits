@@ -1,6 +1,6 @@
 import config from "../config/config.js";
-import { spawnBullet } from "./bullets/bullet.js";
-import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../particles/particles.js";
+import { spawnPlayerBullet } from "../utils/bullets.js";
+import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../utils/particles.js";
 
 const player = {
     name: 'player',
@@ -36,6 +36,7 @@ const player = {
         bulletBurstDelay: config.stats.bulletBurstDelay.min,
         bulletLifetime: config.stats.bulletLifetime.min,
         bulletPiercing: config.stats.bulletPiercing.min,
+        recoil: config.stats.recoil.min,
         burstRemaining: 0,
         burstTimer: 0,
         thrustTimer: 0,
@@ -81,10 +82,22 @@ const player = {
         for (let bulletIndex = 0; bulletIndex < count; bulletIndex++) {
             const offset = count === 1 ? 0 : (bulletIndex - (count - 1) / 2) * spread;
             const angle = this.rotation + offset;
-            spawnBullet(this.scene, spawnX, spawnY, angle, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime, this.data.bulletPiercing);
+            spawnPlayerBullet(this.scene, spawnX, spawnY, angle, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime, this.data.bulletPiercing);
         }
 
+        this._applyShotRnockback();
+
         spawnShotParticles(this.scene, spawnX, spawnY, this.rotation, this.width);
+    },
+
+    _applyShotRnockback() {
+        const body = this._physicsBody;
+        if (!body || !this.data.recoil) return;
+        const v = body.velocity;
+        this.setVelocity({
+            x: v.x - Math.cos(this.rotation) * this.data.recoil,
+            y: v.y - Math.sin(this.rotation) * this.data.recoil,
+        });
     },
 
     shoot() {
