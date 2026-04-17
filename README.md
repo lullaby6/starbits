@@ -11,7 +11,6 @@ A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 - Sounds
 - Music
 - Special Stars
-- Waves
 - Danger Enemy Indicator
 
 Enemies:
