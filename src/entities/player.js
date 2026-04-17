@@ -236,6 +236,12 @@ const player = {
         this.rotation = -event.data.angle.radian;
     },
 
+    onPhysicsCollision(other) {
+        if (other.hasTag('enemy') || other.hasTag('enemyBullet') || other.hasTag('meteor')) {
+            this.destroy();
+        }
+    },
+
     onDestroy() {
         this.game.shakeCamera(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
 
