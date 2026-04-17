@@ -221,7 +221,7 @@ export function createEnemy(enemy) {
             const visible = this.isVisible();
 
             if (visible) {
-                const tintStrength = Math.max(0, 1 - dist / config.enemies.tintMaxDist);
+                const tintStrength = Math.max(0, 1 - dist / config.tint.enemy.max);
                 this.tint = tintStrength > 0 ? `rgba(255, 0, 0, ${tintStrength.toFixed(2)})` : null;
             }
 

@@ -99,9 +99,18 @@ export default {
         margin: 100,
         maxAttempts: 20,
     },
+    tint: {
+        enemy: {
+            min: 300,
+            max: 600
+        },
+        bullet: {
+            min: 300,
+            max: 600
+        },
+    },
     enemies: {
         max: 100,
-        tintMaxDist: 500,
         spawnDuration: 1,
         deathDuration: 0.5,
         spawnSpeedupPerScore: 0.005,
@@ -124,7 +133,6 @@ export default {
     bullets: {
         enemy: {
             lifetime: 4,
-            tintMaxDist: 600,
         },
     },
     particles: {
