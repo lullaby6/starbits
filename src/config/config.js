@@ -214,8 +214,6 @@ export default {
     images: {
         player: './assets/images/player.png',
         crosshair: './assets/images/crosshair.png',
-        bullet: './assets/images/bullet/simple.png',
         enemies: './assets/images/enemies/',
-        enemyBullet: './assets/images/bullet/simple.png',
     }
 }

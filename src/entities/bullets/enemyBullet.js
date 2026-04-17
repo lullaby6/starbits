@@ -7,18 +7,14 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
     scene.addEntity({
         x: x - 4,
         y: y - 4,
-        imageScale: 10,
-        scaleWithImageScale: true,
+        width: 10,
+        height: 10,
         color: 'transparent',
         tags: ['enemyBullet'],
         originX: 0.5,
         originY: 0.5,
         rotation: angle,
         dontRenderIsNotVisible: true,
-
-        image: {
-            src: config.images.enemyBullet,
-        },
 
         physics: {
             frictionAir: 0,

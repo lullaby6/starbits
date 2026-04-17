@@ -5,8 +5,8 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
     scene.addEntity({
         x: x - 5,
         y: y - 5,
-        imageScale: size,
-        scaleWithImageScale: true,
+        width: 10,
+        height: 10,
         color: 'transparent',
         tags: ['bullet'],
         originX: 0.5,
@@ -14,9 +14,6 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
         rotation: angle,
         dontRenderIsNotVisible: true,
 
-        image: {
-            src: config.images.bullet,
-        },
 
         physics: {
             density: 0.01,
