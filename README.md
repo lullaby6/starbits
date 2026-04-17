@@ -6,6 +6,7 @@ A JavaScript Space Roguelike Shoot 'Em Up Arcade Bullet Hell Game
 
 ## To Do
 
+- Upgrades Weight
 - Camera Blinks
 - Bosses
 - Sounds
