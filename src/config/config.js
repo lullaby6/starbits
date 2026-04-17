@@ -59,6 +59,13 @@ export default {
         fps: 60,
         motionBlur,
         distanceToAutoAim: 600,
+        bloom: {
+            threshold: 1,
+            blur: 5,
+            intensity: 0.25,
+            passes: 1,
+            scale: 0.5,
+        },
     },
     world: {
         width: width * worldGrid,

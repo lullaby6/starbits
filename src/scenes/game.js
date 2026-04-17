@@ -110,14 +110,14 @@ export default {
             localStorage.setItem('starbits_maxScore', this.data.maxScore);
         }
 
-        this.game.gui.game_score.show(300)
+        this.game.showGui('game_score', 300)
 
         if (this.guiScoreTimeout) {
-            clearTimeout(this.guiScoreTimeout)
+            this.game.clearTimer(this.guiScoreTimeout)
         }
 
-        this.guiScoreTimeout = setTimeout(() => {
-            this.game.gui.game_score.hide(300)
+        this.guiScoreTimeout = this.game.setTimeout(() => {
+            this.game.hideGui('game_score', 300)
             this.guiScoreTimeout = null
         }, 3000)
     },

@@ -19,6 +19,7 @@ const game = new CanvasEngine.Game({
     title: config.game.title,
     pauseOnBlur: true,
     contextMenu: false,
+    bloom: config.game.bloom,
 
     scenes: [
         startScene,
@@ -30,7 +31,8 @@ const game = new CanvasEngine.Game({
 
         options: {
             autoAim: localStorage.getItem('starbits_options_autoAim') === 'true' ? true : false,
-            dangerVignette: localStorage.getItem('starbits_options_dangerVignette') === 'true' ? true : false,
+            dangerVignette: localStorage.getItem('starbits_options_dangerVignette') === 'false' ? false : true,
+            bloom: localStorage.getItem('starbits_options_bloom') === 'true' ? true : false,
         },
 
         joysticks: {
@@ -280,7 +282,7 @@ const game = new CanvasEngine.Game({
             }
         }
 
-        setAutoAim()
+        setAutoAim(this.data.options.autoAim)
 
         $idEvent('menu_options_autoaim', 'click', () => {
             setAutoAim(!this.data.options.autoAim)
@@ -306,10 +308,26 @@ const game = new CanvasEngine.Game({
             }
         }
 
-        setDangerVignette()
+        setDangerVignette(this.data.options.dangerVignette)
 
         $idEvent('menu_options_dangervignette', 'click', () => {
             setDangerVignette(!this.data.options.dangerVignette)
+        });
+
+        const setBloom = value => {
+            this.data.options.bloom = value
+
+            localStorage.setItem('starbits_options_bloom', this.data.options.bloom)
+
+            this.setBooleanOption('bloom', value)
+
+            if (this.bloom) this.bloom.enabled = value
+        }
+
+        setBloom(this.data.options.bloom)
+
+        $idEvent('menu_options_bloom', 'click', () => {
+            setBloom(!this.data.options.bloom)
         });
     },
 })

@@ -6,8 +6,6 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 
 ## To Do
 
-- Player/Enemy Particle Fire Trail
-- Player/Enemy Shoot Particle
 - Camera Blinks
 - Bosses
 - Sounds
@@ -15,7 +13,6 @@ A JavaScript Shoot 'Em Up Arcade Bullet Hell Game
 - Roguelike Upgrades
 - Special Stars
 - Waves
-- Bloom
 - Meteors
 - Black Hole
 - Danger Enemy Indicator
