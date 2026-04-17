@@ -30,9 +30,9 @@ export default {
         upgrade: 1,
     },
     bulletSpread: {
-        min: 0.15,
-        max: 0.5,
-        upgrade: 0.05,
+        min: 0.5,
+        max: 0.15,
+        upgrade: -0.05,
     },
     bulletBurstCount: {
         min: 0,

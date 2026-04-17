@@ -21,7 +21,7 @@ const $upgradeBtns = [
 const UPGRADES = [
     { statKey: 'speed', label: 'Speed', apply: (p, v) => p.data.speed = v },
     {
-        statKey: 'friction', label: 'Friction', apply: (p, v) => {
+        statKey: 'friction', label: 'Acceleration', apply: (p, v) => {
             if (p._physicsBody) p._physicsBody.frictionAir = v;
         }
     },
@@ -29,11 +29,14 @@ const UPGRADES = [
     { statKey: 'bulletSize', label: 'Bullet Size', apply: (p, v) => p.data.bulletSize = v },
     { statKey: 'bulletLifetime', label: 'Bullet Lifetime', apply: (p, v) => p.data.bulletLifetime = v },
     {
-        statKey: 'shotCooldown', label: 'Shot Cooldown', apply: (p, v) => {
+        statKey: 'shotCooldown', label: 'Fire Rate', apply: (p, v) => {
             p.data.shotCooldown = v
         }
     },
-    { statKey: 'bulletBurstCount', label: 'Burst Count', weight: 25, apply: (p, v) => p.data.bulletCount = v },
+    { statKey: 'bulletCount', label: 'Bullet Count', weight: 30, apply: (p, v) => p.data.bulletCount = v },
+    { statKey: 'bulletSpread', label: 'Precision', weight: 60, apply: (p, v) => p.data.bulletSpread = v },
+    { statKey: 'bulletBurstCount', label: 'Burst Count', weight: 25, apply: (p, v) => p.data.bulletBurstCount = v },
+    { statKey: 'bulletBurstDelay', label: 'Burst Delay', weight: 60, apply: (p, v) => p.data.bulletBurstDelay = v },
     { statKey: 'bulletPiercing', label: 'Piercing', weight: 30, apply: (p, v) => p.data.bulletPiercing = v },
 ];
 
@@ -50,8 +53,7 @@ function statValueAtLevel(stat, level) {
 }
 
 function formatUpgradeDelta(value) {
-    const str = value.toString();
-    return value >= 0 ? `+${str}` : str;
+    return `+${Math.abs(value)}`;
 }
 
 function weightedRandomPick(pool) {
