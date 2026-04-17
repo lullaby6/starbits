@@ -1,4 +1,5 @@
 import config from "../../config/config.js";
+import { spawnBulletTrailParticle } from "../../particles/particles.js";
 
 export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
     scene.addEntity({
@@ -47,28 +48,17 @@ export function spawnBullet(scene, x, y, angle, speed, size, lifetime) {
             this.data.trailTimer -= dt;
             if (this.data.trailTimer <= 0) {
                 this.data.trailTimer = config.particles.bulletsTrail.interval;
-                CanvasEngine.Particles.spawn(this.scene, {
-                    x: this.centerX,
-                    y: this.centerY,
-                    size: config.particles.bulletsTrail.size,
-                    color: config.particles.bulletsTrail.color,
-                    lifetime: config.particles.bulletsTrail.lifetime,
-                    scaleEnd: config.particles.bulletsTrail.scaleEnd,
-                    alphaEnd: config.particles.bulletsTrail.alphaEnd,
-                    z: config.particles.bulletsTrail.z,
-                    rotation: this.rotation,
-                });
+                spawnBulletTrailParticle(this.scene, this.centerX, this.centerY, this.rotation);
             }
         },
 
         onPhysicsCollision(other) {
             if (other.hasTag('enemy')) {
-                this.game.camera.shake(4, 0.15);
                 this.scene.addScore(other.data.score || 1);
                 if (other.die) other.die(); else other.destroy();
                 this.destroy();
             } else if (other.hasTag('enemyBullet')) {
-                this.game.camera.shake(2, 0.1);
+                this.game.camera.shake(config.shakes.bulletCollide.intensity, config.shakes.bulletCollide.duration);
                 if (other.die) other.die(); else other.destroy();
                 this.destroy();
             }

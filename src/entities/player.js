@@ -1,5 +1,6 @@
 import config from "../config/config.js";
 import { spawnBullet } from "./bullets/bullet.js";
+import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../particles/particles.js";
 
 const player = {
     name: 'player',
@@ -34,6 +35,9 @@ const player = {
         bulletLifetime: config.upgrades.bulletLifetime.min,
         bulletPiercing: config.upgrades.bulletPiercing.min,
         bulletSize: config.upgrades.bulletSize.min,
+        thrustTimer: 0,
+        _kbX: 0,
+        _kbY: 0,
     },
 
     onMousemove({ worldX, worldY }) {
@@ -62,6 +66,7 @@ const player = {
         if (this.data.shotTimer > 0) return;
         this.data.shotTimer = this.data.shotCooldown;
         spawnBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletSize, this.data.bulletLifetime);
+        spawnShotParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width);
     },
 
     autoAim(dt) {
@@ -92,12 +97,31 @@ const player = {
             this.data.shotTimer -= dt;
         }
 
+        let thrustX = 0;
+        let thrustY = 0;
+
         if (this.data.joystickDir) {
             const dir = this.data.joystickDir;
+            thrustX += dir.x;
+            thrustY += dir.y;
             this.applyForce({
                 x: dir.x * this.data.speed,
                 y: dir.y * this.data.speed,
             });
+        }
+
+        if (this.data._kbX !== 0 || this.data._kbY !== 0) {
+            thrustX += this.data._kbX;
+            thrustY += this.data._kbY;
+            this.data._kbX = 0;
+            this.data._kbY = 0;
+        }
+
+        this.data.thrustTimer -= dt;
+        if ((thrustX !== 0 || thrustY !== 0) && this.data.thrustTimer <= 0) {
+            this.data.thrustTimer = config.particles.thrust.interval;
+            const len = Math.hypot(thrustX, thrustY) || 1;
+            spawnThrustParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, thrustX / len, thrustY / len);
         }
 
         const w = config.world;
@@ -131,6 +155,8 @@ const player = {
                 x: fx,
                 y: fy
             });
+            this.data._kbX += Math.sign(fx);
+            this.data._kbY += Math.sign(fy);
         }
     },
 
@@ -153,6 +179,10 @@ const player = {
 
         this.shoot();
         this.rotation = -event.data.angle.radian;
+    },
+
+    onDestroy() {
+        spawnDestroyParticles(this.scene, this.centerX, this.centerY);
     },
 }
 

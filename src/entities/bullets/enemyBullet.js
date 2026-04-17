@@ -1,4 +1,5 @@
 import config from "../../config/config.js";
+import { spawnBulletTrailParticle } from "../../particles/particles.js";
 
 const DEATH_DURATION = config.enemies.deathDuration;
 
@@ -67,20 +68,11 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             this.data.trailTimer -= dt;
             if (this.data.trailTimer <= 0) {
                 this.data.trailTimer = config.particles.bulletsTrail.interval;
-                CanvasEngine.Particles.spawn(this.scene, {
-                    x: this.centerX,
-                    y: this.centerY,
-                    size: config.particles.bulletsTrail.size,
-                    color: config.particles.bulletsTrail.color,
-                    lifetime: config.particles.bulletsTrail.lifetime,
-                    scaleEnd: config.particles.bulletsTrail.scaleEnd,
-                    alphaEnd: config.particles.bulletsTrail.alphaEnd,
-                    z: config.particles.bulletsTrail.z,
-                    rotation: this.rotation,
+                spawnBulletTrailParticle(this.scene, this.centerX, this.centerY, this.rotation, {
                     tint: this.tint,
                     onParticleUpdate: (dt, particle) => {
-                        particle.tint = this.tint
-                    }
+                        particle.tint = this.tint;
+                    },
                 });
             }
 
@@ -97,7 +89,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
             if (other.hasTag('enemy') || other.hasTag('enemyBullet')) return;
 
             if (other.name === 'player') {
-                this.game.camera.shake(8, 0.3);
+                this.game.camera.shake(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
                 this.die();
                 this.scene.gameOver();
             }

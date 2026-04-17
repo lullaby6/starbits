@@ -1,5 +1,6 @@
 import config from "../config/config.js";
 import { spawnEnemyBullet } from "./bullets/enemyBullet.js";
+import { spawnDestroyParticles, spawnShotParticles, spawnThrustParticles } from "../particles/particles.js";
 
 const world = config.world;
 
@@ -8,12 +9,17 @@ function isInsideWorld(entity) {
         entity.centerY >= world.minY && entity.centerY <= world.maxY;
 }
 
+function addThrust(entity, fx, fy) {
+    entity.data._thrustX += fx;
+    entity.data._thrustY += fy;
+}
+
 const skills = {
     follow(entity, player, dist, dt) {
-        entity.applyForce({
-            x: Math.cos(entity.rotation) * entity.data.speed,
-            y: Math.sin(entity.rotation) * entity.data.speed,
-        });
+        const fx = Math.cos(entity.rotation);
+        const fy = Math.sin(entity.rotation);
+        entity.applyForce({ x: fx * entity.data.speed, y: fy * entity.data.speed });
+        addThrust(entity, fx, fy);
     },
 
     smartFollow(entity, player, dist, dt) {
@@ -30,31 +36,29 @@ const skills = {
         entity.rotateAt(targetX, targetY);
         const angle = entity.rotation;
 
-        // const angle = Math.atan2(targetY - entity.centerY, targetX - entity.centerX);
-
         entity.rotateToEntity(player);
 
-        entity.applyForce({
-            x: Math.cos(angle) * entity.data.speed,
-            y: Math.sin(angle) * entity.data.speed,
-        });
+        const fx = Math.cos(angle);
+        const fy = Math.sin(angle);
+        entity.applyForce({ x: fx * entity.data.speed, y: fy * entity.data.speed });
+        addThrust(entity, fx, fy);
     },
 
     keepRange(entity, player, dist, dt) {
         if (dist > entity.data.range) {
-            entity.applyForce({
-                x: Math.cos(entity.rotation) * entity.data.speed,
-                y: Math.sin(entity.rotation) * entity.data.speed,
-            });
+            const fx = Math.cos(entity.rotation);
+            const fy = Math.sin(entity.rotation);
+            entity.applyForce({ x: fx * entity.data.speed, y: fy * entity.data.speed });
+            addThrust(entity, fx, fy);
         }
     },
 
     flee(entity, player, dist, dt) {
         if (dist < entity.data.fleeRange) {
-            entity.applyForce({
-                x: -Math.cos(entity.rotation) * entity.data.speed,
-                y: -Math.sin(entity.rotation) * entity.data.speed,
-            });
+            const fx = -Math.cos(entity.rotation);
+            const fy = -Math.sin(entity.rotation);
+            entity.applyForce({ x: fx * entity.data.speed, y: fy * entity.data.speed });
+            addThrust(entity, fx, fy);
         }
     },
 
@@ -92,10 +96,10 @@ const skills = {
         entity.data.dashTimer -= dt;
         if (entity.data.dashTimer <= 0) {
             entity.data.dashTimer = entity.data.dashCooldown;
-            entity.setVelocity({
-                x: Math.cos(entity.rotation) * entity.data.dashSpeed,
-                y: Math.sin(entity.rotation) * entity.data.dashSpeed,
-            });
+            const fx = Math.cos(entity.rotation);
+            const fy = Math.sin(entity.rotation);
+            entity.setVelocity({ x: fx * entity.data.dashSpeed, y: fy * entity.data.dashSpeed });
+            addThrust(entity, fx, fy);
         }
     },
 };
@@ -139,24 +143,37 @@ export function createEnemy(enemy) {
             spawnTimer: SPAWN_DURATION,
             dying: false,
             deathTimer: 0,
+            thrustTimer: 0,
+            _thrustX: 0,
+            _thrustY: 0,
             ...enemy.data,
         },
 
 
         die() {
             if (this.data.dying) return;
+
+            spawnDestroyParticles(this.scene, this.centerX, this.centerY, { tint: this.tint });
+
+            this.game.camera.shake(config.shakes.enemyDeath.intensity, config.shakes.enemyDeath.duration);
+
             this.data.dying = true;
             this.data.deathTimer = DEATH_DURATION;
-            this.tint = null;
+            // this.tint = null;
             this.disableCollisions();
         },
 
         shoot() {
             spawnEnemyBullet(this.scene, this.centerX, this.centerY, this.rotation, this.data.bulletSpeed, this.data.bulletLifetime);
+            spawnShotParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, { tint: this.tint });
         },
 
         onCreate() {
             if (enemy.onCreate) enemy.onCreate(this);
+        },
+
+        onDestroy() {
+            // spawnDestroyParticles(this.scene, this.centerX, this.centerY);
         },
 
         onUpdate(dt) {
@@ -204,13 +221,22 @@ export function createEnemy(enemy) {
                 skill(this, player, dist, dt);
             }
 
+            this.data.thrustTimer -= dt;
+            if ((this.data._thrustX !== 0 || this.data._thrustY !== 0) && this.data.thrustTimer <= 0) {
+                this.data.thrustTimer = config.particles.thrust.interval;
+                const len = Math.hypot(this.data._thrustX, this.data._thrustY) || 1;
+                spawnThrustParticles(this.scene, this.centerX, this.centerY, this.rotation, this.width, this.data._thrustX / len, this.data._thrustY / len, { tint: this.tint });
+            }
+            this.data._thrustX = 0;
+            this.data._thrustY = 0;
+
             if (enemy.onUpdate) enemy.onUpdate(this, player, dist, dt);
         },
 
         onPhysicsCollision(other) {
             if (this.data.spawnTimer > 0 || this.data.dying) return;
             if (other.name === 'player') {
-                this.game.camera.shake(8, 0.3);
+                this.game.camera.shake(config.shakes.playerDeath.intensity, config.shakes.playerDeath.duration);
                 this.scene.gameOver();
             }
 
