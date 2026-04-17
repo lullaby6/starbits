@@ -278,7 +278,7 @@ export const enemies = {
     // T2 — shoot y dash
     shooter: {
         image: "shooter_1",
-        data: { speed: 0.0004, range: 300, shotCooldown: 1, bulletSpeed: 4, recoil: 1 },
+        data: { speed: 0.0004, range: 400, shotCooldown: 1, bulletSpeed: 4, recoil: 1 },
         skills: ['keepRange', 'shoot'],
         score: 2,
         requireScore: 10,
@@ -302,7 +302,7 @@ export const enemies = {
     closeShooter: {
         image: "close_shooter_1",
         physics: { density: 0.01 },
-        data: { speed: 0.005, range: 200, fleeRange: 100, shotCooldown: 1, bulletSpeed: 4, bulletLifetime: config.bullets.enemy.lifetime / 2, recoil: 0.85 },
+        data: { speed: 0.005, range: 300, fleeRange: 200, shotCooldown: 1, bulletSpeed: 4, bulletLifetime: config.bullets.enemy.lifetime / 2, recoil: 0.85 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 3,
         requireScore: 50,
@@ -312,7 +312,7 @@ export const enemies = {
     },
     rapidShooter: {
         image: "rapid_shooter_1",
-        data: { speed: 0.0004, range: 300, shotCooldown: 0.5, bulletSpeed: 4, recoil: 0.7 },
+        data: { speed: 0.0004, range: 400, shotCooldown: 0.5, bulletSpeed: 4, recoil: 0.7 },
         skills: ['keepRange', 'shoot'],
         score: 4,
         requireScore: 75,
@@ -322,7 +322,7 @@ export const enemies = {
     },
     burstShooter: {
         image: "burst_shooter_1",
-        data: { speed: 0.0004, range: 300, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15, recoil: 0.7 },
+        data: { speed: 0.0004, range: 400, shotCooldown: 2.5, bulletSpeed: 4, burstCount: 2, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15, recoil: 0.7 },
         skills: ['keepRange', 'burst'],
         score: 4,
         requireScore: 100,
@@ -332,7 +332,7 @@ export const enemies = {
     },
     smartShooter: {
         image: "smart_shooter_1",
-        data: { speed: 0.001, range: 500, fleeRange: 300, shotCooldown: 1, bulletSpeed: 4, leadTime: 20, recoil: 0.6 },
+        data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 1, bulletSpeed: 4, leadTime: 20, recoil: 0.6 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 5,
         requireScore: 125,
@@ -344,7 +344,7 @@ export const enemies = {
     // T4 — upgrades, mobility
     rapidShooter2: {
         image: "rapid_shooter_1",
-        data: { speed: 0.0004, range: 300, shotCooldown: 0.375, bulletSpeed: 4, recoil: 0.5 },
+        data: { speed: 0.0004, range: 400, shotCooldown: 0.375, bulletSpeed: 4, recoil: 0.5 },
         skills: ['keepRange', 'shoot'],
         score: 6,
         requireScore: 150,
@@ -355,7 +355,7 @@ export const enemies = {
     closeShooter2: {
         image: "close_shooter_2",
         physics: { density: 0.01 },
-        data: { speed: 0.0075, range: 300, fleeRange: 200, shotCooldown: 0.5, bulletSpeed: 5, bulletLifetime: config.bullets.enemy.lifetime / 2, recoil: 0.5 },
+        data: { speed: 0.0075, range: 400, fleeRange: 300, shotCooldown: 0.5, bulletSpeed: 5, bulletLifetime: config.bullets.enemy.lifetime / 2, recoil: 0.5 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 6,
         requireScore: 175,
@@ -377,7 +377,7 @@ export const enemies = {
     dashShooter: {
         image: "dash_shooter_1",
         physics: { density: 0.01 },
-        data: { speed: 0.00075, dashSpeed: 17.5, dashTimer: 3, dashCooldown: 3, range: 300, shotCooldown: 1, bulletSpeed: 4, leadTime: 25, recoil: 0.45 },
+        data: { speed: 0.00075, dashSpeed: 17.5, dashTimer: 3, dashCooldown: 3, range: 400, shotCooldown: 1, bulletSpeed: 4, leadTime: 25, recoil: 0.45 },
         skills: ['smartFollow', 'dash', 'shoot'],
         score: 7,
         requireScore: 225,
@@ -388,7 +388,7 @@ export const enemies = {
     burstShooter2: {
         image: "burst_shooter_2",
         physics: { density: 0.01 },
-        data: { speed: 0.01, range: 400, fleeRange: 300, shotCooldown: 2, bulletSpeed: 5, burstCount: 3, burstDelay: 0.5, burstRemaining: 0, burstTimer: 0, leadTime: 15, recoil: 0.45 },
+        data: { speed: 0.01, range: 500, fleeRange: 400, shotCooldown: 2, bulletSpeed: 5, burstCount: 3, burstDelay: 0.5, burstRemaining: 0, burstTimer: 0, leadTime: 15, recoil: 0.45 },
         skills: ['keepRange', 'flee', 'burst'],
         score: 7,
         requireScore: 250,
@@ -410,7 +410,7 @@ export const enemies = {
     // T5 — elite
     rapidShooter3: {
         image: "rapid_shooter_1",
-        data: { speed: 0.0004, range: 300, shotCooldown: 0.5, bulletSpeed: 4, recoil: 0.35 },
+        data: { speed: 0.0004, range: 400, shotCooldown: 0.5, bulletSpeed: 4, recoil: 0.35 },
         skills: ['keepRange', 'shoot'],
         score: 9,
         requireScore: 350,
@@ -432,7 +432,7 @@ export const enemies = {
     dashShooter2: {
         image: "dash_shooter_2",
         physics: { density: 0.01 },
-        data: { speed: 0.00075, dashSpeed: 20, dashTimer: 2, dashCooldown: 2, range: 400, shotCooldown: 0.75, bulletSpeed: 5, leadTime: 25, recoil: 0.25 },
+        data: { speed: 0.00075, dashSpeed: 20, dashTimer: 2, dashCooldown: 2, range: 500, shotCooldown: 0.75, bulletSpeed: 5, leadTime: 25, recoil: 0.25 },
         skills: ['smartFollow', 'dash', 'shoot'],
         score: 12,
         requireScore: 450,
@@ -442,7 +442,7 @@ export const enemies = {
     },
     smartShooter3: {
         image: "smart_shooter_3",
-        data: { speed: 0.001, range: 600, fleeRange: 400, shotCooldown: 0.375, bulletSpeed: 6, leadTime: 20, recoil: 0.25 },
+        data: { speed: 0.001, range: 700, fleeRange: 500, shotCooldown: 0.375, bulletSpeed: 6, leadTime: 20, recoil: 0.25 },
         skills: ['keepRange', 'flee', 'shoot'],
         score: 12,
         requireScore: 500,
@@ -453,7 +453,7 @@ export const enemies = {
     burstShooter3: {
         image: "burst_shooter_3",
         physics: { density: 0.01 },
-        data: { speed: 0.01, range: 500, fleeRange: 400, shotCooldown: 1.5, bulletSpeed: 6, burstCount: 4, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15, recoil: 0.2 },
+        data: { speed: 0.01, range: 600, fleeRange: 500, shotCooldown: 1.5, bulletSpeed: 6, burstCount: 4, burstDelay: 0.25, burstRemaining: 0, burstTimer: 0, leadTime: 15, recoil: 0.2 },
         skills: ['keepRange', 'flee', 'burst'],
         score: 14,
         requireScore: 550,
