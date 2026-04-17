@@ -1,6 +1,6 @@
 const width = 1024;
 const height = width / (16 / 9);
-const worldGrid = 14;
+const worldGrid = 101;
 const motionBlur = 0.75; // 0 to 1
 
 const upgrades = {
