@@ -2,11 +2,12 @@ import playerEntity from "../entities/player.js";
 import { createStars } from "../entities/star.js";
 import crosshairEntity from "../entities/crosshair.js";
 import { enemies, createEnemy } from "../entities/enemies.js";
-import { spawnMeteor } from "../entities/meteor.js";
-import { spawnBlackHole } from "../entities/holes/blackHole.js";
-import { spawnWormHole } from "../entities/holes/wormHole.js";
+import { spawnMeteor } from "../entities/celestials/meteor.js";
+import { spawnBlackHole } from "../entities/celestials/blackHole.js";
+import { spawnWormHole } from "../entities/celestials/wormHole.js";
 import config from "../config/config.js";
 import Upgrades from "../utils/upgrades.js";
+import { spawnMargin } from "../utils/spawn.js";
 
 import { $id } from "../utils/utils.js";
 
@@ -127,28 +128,7 @@ export default {
     },
 
     getSpawnPosition() {
-        const cam = this.game.camera;
-        const halfW = this.game.width / 2 / cam.zoom;
-        const halfH = this.game.height / 2 / cam.zoom;
-        const margin = config.spawn.cameraMargin;
-
-        const side = CanvasEngine.Random.int(0, 3);
-        let x, y;
-        if (side === 0) {
-            x = CanvasEngine.Random.float(cam.x - halfW - margin, cam.x + halfW + margin);
-            y = cam.y - halfH - margin;
-        } else if (side === 1) {
-            x = CanvasEngine.Random.float(cam.x - halfW - margin, cam.x + halfW + margin);
-            y = cam.y + halfH + margin;
-        } else if (side === 2) {
-            x = cam.x - halfW - margin;
-            y = CanvasEngine.Random.float(cam.y - halfH - margin, cam.y + halfH + margin);
-        } else {
-            x = cam.x + halfW + margin;
-            y = CanvasEngine.Random.float(cam.y - halfH - margin, cam.y + halfH + margin);
-        }
-
-        return { x, y };
+        return spawnMargin(this, config.spawn.cameraMargin);
     },
 
     spawnEnemy(entityConfig) {

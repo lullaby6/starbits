@@ -6,7 +6,7 @@ export function spawnPlayerBullet(scene, x, y, angle, speed, size, lifetime, pie
         x, y, angle, speed, size, lifetime,
         tags: ['bullet'],
         group: 'playerBullet',
-        collidesWith: ['enemy', 'enemyBullet', 'meteor', 'hole'],
+        dontCollidesWith: ['player', 'playerBullet'],
         physicsExtras: { density: 0.01 },
         extraData: {
             piercing,

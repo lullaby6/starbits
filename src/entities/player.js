@@ -21,7 +21,7 @@ const player = {
         frictionAir: config.stats.friction.min,
         fixedRotation: true,
         group: 'player',
-        collidesWith: ['enemy', 'enemyBullet', 'meteor', 'hole'],
+        dontCollidesWith: ['playerBullet'],
     },
 
     data: {

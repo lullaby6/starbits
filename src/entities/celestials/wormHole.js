@@ -1,5 +1,6 @@
 import config from "../../config/config.js";
-import { spawnHole } from "./hole.js";
+import { destroyDistance } from "../../utils/spawn.js";
+import { spawnCelestial } from "./celestial.js";
 
 const cfg = config.holes.worm;
 
@@ -24,7 +25,6 @@ export function createWormHole(x, y, vx, vy, rotationSpeed) {
             restitution: cfg.restitution,
             fixedRotation: false,
             group: 'hole',
-            collidesWith: ['player', 'enemy', 'playerBullet', 'enemyBullet', 'meteor', 'hole'],
         },
 
         data: {
@@ -42,12 +42,7 @@ export function createWormHole(x, y, vx, vy, rotationSpeed) {
         },
 
         onUpdate(dt) {
-            const player = this.scene.player;
-            if (!player) return;
-
-            if (CanvasEngine.Utils.distance(this, player) > cfg.destroyDistance) {
-                this.destroy();
-            }
+            destroyDistance(this, cfg.destroyDistance);
         },
 
         onPhysicsCollision(other) {
@@ -77,5 +72,5 @@ export function createWormHole(x, y, vx, vy, rotationSpeed) {
 }
 
 export function spawnWormHole(scene) {
-    return spawnHole(scene, cfg, createWormHole);
+    return spawnCelestial(scene, cfg, createWormHole);
 }

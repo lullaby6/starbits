@@ -9,7 +9,7 @@ export function spawnEnemyBullet(scene, x, y, angle, speed, lifetime) {
         lifetime: lifetime ?? config.bullets.enemy.lifetime,
         tags: ['enemyBullet'],
         group: 'enemyBullet',
-        collidesWith: ['player', 'playerBullet', 'meteor', 'hole'],
+        dontCollidesWith: ['enemy', 'enemyBullet'],
         afterTick() {
             if (!this.isVisible()) return;
             const player = this.scene.player;

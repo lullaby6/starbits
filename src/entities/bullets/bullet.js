@@ -6,6 +6,8 @@ export function spawnBullet(scene, {
     tags,
     group,
     collidesWith,
+    onlyCollidesWith,
+    dontCollidesWith,
     physicsExtras = {},
     extraData = {},
     onCreate,
@@ -32,6 +34,8 @@ export function spawnBullet(scene, {
             fixedRotation: true,
             group,
             collidesWith,
+            onlyCollidesWith,
+            dontCollidesWith,
             ...physicsExtras,
         },
 

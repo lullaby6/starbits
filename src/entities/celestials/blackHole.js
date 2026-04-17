@@ -1,5 +1,6 @@
 import config from "../../config/config.js";
-import { spawnHole } from "./hole.js";
+import { destroyDistance } from "../../utils/spawn.js";
+import { spawnCelestial } from "./celestial.js";
 
 const cfg = config.holes.black;
 
@@ -24,7 +25,6 @@ export function createBlackHole(x, y, vx, vy, rotationSpeed) {
             restitution: cfg.restitution,
             fixedRotation: false,
             group: 'hole',
-            collidesWith: ['player', 'enemy', 'playerBullet', 'enemyBullet', 'meteor', 'hole'],
         },
 
         data: {
@@ -50,12 +50,7 @@ export function createBlackHole(x, y, vx, vy, rotationSpeed) {
                 this.sizeAt(this.data.targetSize, this.data.targetSize, cfg.growSpeed, dt);
             }
 
-            const player = this.scene.player;
-            if (!player) return;
-
-            if (CanvasEngine.Utils.distance(this, player) > cfg.destroyDistance) {
-                this.destroy();
-            }
+            destroyDistance(this, cfg.destroyDistance);
         },
 
         onPhysicsCollision(other) {
@@ -71,14 +66,13 @@ export function createBlackHole(x, y, vx, vy, rotationSpeed) {
         },
 
         eat() {
-            const entities = this.scene.entities;
+            const entities = this.scene.getAllEntitiesWithPhysics();
             const pullRange = cfg.pullRange + this.width * cfg.pullRangeScale;
             for (let i = 0; i < entities.length; i++) {
                 const entity = entities[i];
                 if (
                     !entity.active ||
                     entity === this ||
-                    !entity._physicsBody ||
                     entity.hasTag('particle')
                 ) continue;
 
@@ -102,5 +96,5 @@ export function createBlackHole(x, y, vx, vy, rotationSpeed) {
 }
 
 export function spawnBlackHole(scene) {
-    return spawnHole(scene, cfg, createBlackHole);
+    return spawnCelestial(scene, cfg, createBlackHole);
 }
