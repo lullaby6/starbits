@@ -88,7 +88,7 @@ export default {
     },
     player: {
         autoAimDistanceToShot: 800,
-        upgradePerScore: 25,
+        upgradePerScore: 10,
         upgradePerScoreMax: 100,
         upgradeScoreGrowth: 1.2,
     },
@@ -138,7 +138,7 @@ export default {
         spawnDistance: 1800,
         destroyDistance: 3500,
         speedMin: 0.1,
-        speedMax: 10,
+        speedMax: 5,
         rotationSpeedMin: -0.08,
         rotationSpeedMax: 0.08,
         density: 0.1,
