@@ -41,12 +41,12 @@ const player = {
     },
 
     onMousemove({ worldX, worldY }) {
-        if (CanvasEngine.Utils.isMobile()) return;
+        if (CanvasEngine.Utils.isMobile() || this.game.data.options.autoAim) return;
         this.rotateAt(worldX, worldY);
     },
 
     onMousehold() {
-        if (CanvasEngine.Utils.isMobile()) return;
+        if (CanvasEngine.Utils.isMobile() || this.game.data.options.autoAim) return;
         this.shoot();
     },
 
